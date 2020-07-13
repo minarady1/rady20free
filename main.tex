@@ -9,7 +9,7 @@
 
 \graphicspath{{figs/}}
 
-\newcommand{\fsk}          {    FSK\_868}
+\newcommand{\fsk}          {FSK\_868}
 \newcommand{\oqpsk}        {O-QPSK\_2.4}
 \newcommand{\ofdm}         {OFDM\_868}
 
@@ -22,14 +22,13 @@
 
 \begin{document}
 
-
-\title{No Free Lunch?: 6TiSCH Performance\\on Different Modulations}
+\title{No Free Lunch: 6TiSCH Performance\\on Different Modulations}
 
 \author{
     \IEEEauthorblockN{
-        Mina~Rady\IEEEauthorrefmark{1,2},
+        Mina~Rady\IEEEauthorrefmark{1}\IEEEauthorrefmark{2},
         Quentin~Lampin\IEEEauthorrefmark{1},
-        Dominique~Barthel\IEEEauthorrefmark{2},
+        Dominique~Barthel\IEEEauthorrefmark{1},
         Thomas~Watteyne\IEEEauthorrefmark{2}
     }\\
     \IEEEauthorblockA{
@@ -38,7 +37,7 @@
     \IEEEauthorblockA{
         \IEEEauthorrefmark{2}~EVA team, Inria, Paris, France
     }
-    \thanks{Corresponding author: Mina~Rady (email: {\tt poipoi})}
+    \thanks{Corresponding author: Mina~Rady (email: {\tt poipoi})}https://www.overleaf.com/project/5e99476cb8ddc80001a31015
 }
 
 \maketitle
@@ -212,16 +211,6 @@ Section~\ref{sec:opentested} \todo{}.
     \label{fig:aggregate_plot_reliability}
 \end{figure}
 
-%Network seems to be forming generalAlso combining the observations from the average network degree in Fig.~\ref{fig:avg_numNeighbors_plot} and average network depth in fig. \ref{fig:avg_dagRank_plot}, it can be observed that as the network grows, FSK seems show generally lower DAG rank on average in the network yet with generally higher network degree.
-
-%ly faster using sub-GHz radio. This is reflected in CDF of time to first packet (Fig.~\ref{fig:time_firstpacket_cdf}) and in network size at routing layer (Fig. \ref{fig:rpl_node_count_plot}). 
-
-%\begin{figure}
-%	\centering
-%	\includegraphics[width=0.90\columnwidth]{rpl_node_count_plot.png}
-%	\caption{Network growth at routing layer}
-%    \label{fig:rpl_node_count_plot}
-%\end{figure}
 
 %------------------------------------------------------------------------------
 \subsection{End-to-End Reliability}
@@ -231,7 +220,11 @@ Conclusion from fig. \ref{fig:aggregate_plot_reliability}: FSK leads to more nei
 The positive side is that motes have access to parents closer to the root with lower DAGRanks and therefore the average network depth is decreased. 
 The negative side is that a mote becomes more likely to miss newer neighbors even though they could be with link higher quality. Therefore PDR becomes less-optimal. 
 
-
+\mina{We should include a reliability metric which is a combination of
+1) Network connectivity ratio: ratio of nodes in the RPL DAG to the total nodes of the network, and
+2) PDR
+FSK has 100\%PDR but few nodes are completely disconnected from the RPL (they were desynchronized after minute 25 until end of experiment. In overall, 37 nodes out of 42 were connected during steady state. (12\% of the motes out of service)
+}
 
 \begin{table}
  \caption {Steady-state end-to-end PDR values} \label{tab:pdr_table} 
@@ -273,7 +266,7 @@ This could be caused by the larger number of nodes with higher DAG ranks (i.e. w
 \begin{figure}
 	\centering
 	\includegraphics[width=0.90\columnwidth]{avg_latency_plot}
-	\caption{Average end-to-end latency. Shaded curves represent the majority of the distribution (interquartile range)}
+	\caption{Average end-to-end latency. Shaded curves represent the majority of the distribution - i.e. interquartile range (extracted from Fig. \ref{fig:aggregate_plot_reliability})}
     \label{fig:avg_latency_plot}
 \end{figure}
 
@@ -292,7 +285,7 @@ This could be explained by the fact that more re-transmissions are needed as bit
 \begin{figure}
 	\centering
 	\includegraphics[width=0.90\columnwidth]{avg_bufferSize_plot}
-	\caption{Average queue occupancy.}
+	\caption{Average queue occupancy (extracted from Fig. \ref{fig:aggregate_plot_reliability})}
     \label{fig:avg_bufferSize_plot}
 \end{figure}
 
@@ -306,11 +299,49 @@ This could be explained by the few nodes closer to the DAG root (northern nodes)
 \begin{figure}
 	\centering
 	\includegraphics[width=0.90\columnwidth]{avg_avg_dutyCycle_plot}
-	\caption{Average duty cycle.Shaded curves represent the majority of the distribution (interquartile range)}
+	\caption{Average duty cycle.Shaded curves represent the majority of the distribution - i.e. interquartile range. (extracted from Fig. \ref{fig:aggregate_plot_reliability})}
     \label{fig:avg_avg_dutyCycle_plot}
 \end{figure}
 
+%------------------------------------------------------------------------------
+\subsection{Cumulative Comparison of the Results}
+\label{sec:cimulative}
 
+
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.90\columnwidth]{latency_cdf_plot_full}
+	\caption{CDF of latency in the network} 
+    \label{fig:latency_cdf_plot_full}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.90\columnwidth]{dutyCycle_cdf_plot_full}
+	\caption{CDF of radio duty cycle in the network} 
+    \label{fig:dutyCycle_cdf_plot_full}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.90\columnwidth]{numNeighbors_cdf_plot_full}
+	\caption{CDF of number of neighbors in the network} 
+    \label{fig:numNeighbors_cdf_plot_full}
+\end{figure}
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.90\columnwidth]{maxBufferSize_cdf_plot_full}
+	\caption{CDF of max packet buffer occupancy in the network} 
+    \label{fig:maxBufferSize_cdf_plot_full}
+\end{figure}
+\begin{figure}
+	\centering
+	\includegraphics[width=0.90\columnwidth]{dagRank_cdf_plot_full}
+	\caption{CDF of DAG Rank in the network} 
+    \label{fig:{dagRank_cdf_plot_full}}
+\end{figure}
 
 
 \mina{We need to discuss how to caclulate the expected battery life. for FSK and OFDM, Tx current is 62 mA but Rx current is 28 mA. For OQPSK in cc2538, Tx current is 24 mA and Rx current is 20 mA.I have the DC\\ measurements for total radio on (not distinguishing tx frm rx (fig 8), and the dc for tx only (fig 9). \\
@@ -318,12 +349,12 @@ I propose  to subtract Tx DC from Total Radio on DC, and assume negeligible data
 }
   
 
-
+\mina{mention the exact tx power levels you are using}
 \begin{table*}[t]
  \caption {Battery Life - assuming 2 AA batteries with total 3V and 4.2 wh capacity} \label{tab:energy_table} 
  \begin{center}
 \begin{tabular}{lllllllll}
-      & Total DC & Tx DC (measured) & \begin{tabular}[c]{@{}l@{}}RX DC\\ (estimated)\end{tabular} & \begin{tabular}[c]{@{}l@{}}Tx Current \\ (mA)\end{tabular} & \begin{tabular}[c]{@{}l@{}}Rx Current\\  (mA)\end{tabular} & \begin{tabular}[c]{@{}l@{}}Tx Power Consuption \\ (wh)\end{tabular} & \begin{tabular}[c]{@{}l@{}}Rx Power Consumption\\  (wh)\end{tabular} & \begin{tabular}[c]{@{}l@{}}Battery lifetime\\  (days)\end{tabular} \\
+      & Total DC & Tx DC (measured) &  \begin{tabular}[c]{@{}l@{}}RX DC\\ (estimated)\end{tabular} & \begin{tabular}[c]{@{}l@{}}Tx Current \\ (mA)\end{tabular} & \begin{tabular}[c]{@{}l@{}}Rx Current\\  (mA)\end{tabular} & \begin{tabular}[c]{@{}l@{}}Tx Power Consuption \\ (wh)\end{tabular} & \begin{tabular}[c]{@{}l@{}}Rx Power Consumption\\  (wh)\end{tabular} & \begin{tabular}[c]{@{}l@{}}Battery lifetime\\  (days)\end{tabular} \\
 \fsk   & 0,02     & 0,00225          & 0,01775                                                     & 62                                                         & 28                                                         & 0,186                                                               & 0,084                                                                & 251,4997                                                           \\
 \ofdm  & 0,00875  & 0,000375         & 0,008375                                                    & 62                                                         & 28                                                         & 0,186                                                               & 0,084                                                                & 872,3785                                                           \\
 \oqpsk & 0,0077   & 0,0005           & 0,0072                                                      & 24                                                         & 20                                                         & 0,072                                                               & 0,06                                                                 & 2607,892                                                          
@@ -331,7 +362,7 @@ I propose  to subtract Tx DC from Total Radio on DC, and assume negeligible data
 \end{center}
 \end{table*}
 %------------------------------------------------------------------------------
-\subsection{Discussion}
+\section{Discussion}
 \label{sec:discussion}
 \begin{table}[]
  \caption {6TiSCH performance ranking for each setting} \label{tab:summary}
