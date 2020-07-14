@@ -56,19 +56,77 @@
 
 % intro low-power wireless
 
-\lorem
+Low-power wireless communications have undergirded the fourth industrial revolution by means of enabling pervasive machine-to-machine communications, otherwise known as the Internet of Things.
+The range of applications of such technologies vary from smart-building monitoring [ref], environmental monitoring [ref], precision agriculture [ref], utility meter remote reading [ref], localization of expensive equipment [ref], smart grid monitoring [ref] and industrial equipment monitoring for preemptive maintenance [ref].
+Therefore, the financial value provided by such technology pour into a large array of economic sectors.
+A plethora of radio technologies have been introduced to serve the IoT communications demands in different contexts and with different features.
+For example, LoRa, a family of LoRa modulations, introduce a low-bitrate high link-budget modulations for long range communications.
+LoRaWAN architectures are star-based topologies and they operate and Aloha-based Medium Access Control, which non-deterministic based on the level of contention in the network [ref limitations of lorawan]
 
 % popular PHY layers
+% \lorem IEEE 802.15.4
+Another major player in the IoT communications market is the set of technologies under the IEEE 802.15.4 family of standards which were conceived in 2003 yet extended in several amendments since 2011. [ref]
+The first amendment is the IEEE 802.15.4e standard which defines a MAC sublayer that follows the Time-Slotted Channel Hopping (TSCH) paradigm for low-rate wireless personal area networks. [ref]
+In contrast to a non-deterministic protocol as LoRaWAN, the TSCH paradigm is capable of providing wire-like reliability due to the strict allocation of time and frequency resources in the network based on a hashing scheme of node IPv6 addresses. [ref]
+By means of this allocation, transmissions occur, mostly, in dedicated combinations of time-slots and channels (also known as cells).
+This allows the mitigation of the side-effects of contention, although it does not completely remove them because a minor subset of network management transactions have to take place still in "shared" cells, where contention is possible.
 
-\lorem IEEE 802.15.4
+The third amendment is the IEEE 802.15.4g standard which which defines physical layer specifications for low-data-Rate, wireless, smart metering utility networks. [ref]
+This specification outlines three families of multi-rate and multi-regional (MR) modulations: 1) Frequency Shift Keying (MR-FSK), 2) Offset quadrature phase-shift keying (MR-O-QPSK), and 3) Orthogonal frequency division multiplexing (MR-OFDM).
+Furthermore, several frequency bands are defined as part of the standards as common communication "channels" in the license-free industrial, scientific and medical (ISM) band.
+While the ISM frequency bands may vary depending national regulations, they are usually split under two categories: the 2.4 GHz band and the sub-GHz band. 
+The 2.4 GHz band is usually characterized by lower link-budget and shorter range than the sub-GHz band (due to the higher frequency). 
+This makes it sufficient for small home-area networks, yet it makes it highly susceptible to interference from common technologies in the same band such as WiFi [ref]
+The sub-GHz band is usually characterized by higher link budget and longer range than the 2.4 GHz band. 
+This makes it suitable for challenging deployments such as kilometer-scale links in rural areas or complex indoor environments. [ref munoz]
+The modulations in this amendment support a wide range of bitrates as low as 25 kbps and as high as 800 kbps (in the European sub-GHz band of 868 MHz)
 
 % capabilites of recent chips
 
-\lorem nRF52840, CC2538, CC2650
+% \lorem nRF52840, CC2538, CC2650
+Several radio chips and System-on-Chip (SoC) products have been increasingly introduced to the market in compliance the IEEE 802.15.4g standard. 
+As the technology advanced, chips began to offer multiple modulations and even multiple frequency bands depending on how their registered are configured by program running on the micro-processor.
+Common examples of these systems are CC2538 [ref] and CC2650 [ref] SoCs by Texas Instruments and nRF52840 [ref] by Nordic Semiconductor. 
+They are built around a 32-but ARM cortex with electrical features that are dedicated for low-power performance.
+Their radio-chip design allows the choice of both modulation and frequency band by the executing program. 
+Furthermore, depending if the host board has multiple antennas as part of its electronic design, the executing program maybe be able to choose which antenna to use based on the choice of frequency band. 
+The example host board used for this paper is the OpenMoteB which features a 2.4GHz antenna and a sub-GHz antenna. 
+The board design allows dynamic switching between antennas and the radio chips on board at run-time. [ref]
 
 % goal
+The IPv6 Time Slotted Channel Hopping (6TiSCH) protocol stack has been extensively standardized by the Internet Engineering Task Force (IETF). 
+The MAC layer of 6TiSCH is the IEEE 802.15.4e standard allowing industrial-grade reliability.
+The PHY layer of 6TiSCH is the IEEE802.15.4g standard allowing a wide variety of selection among the aforementioned modulations supported by the standard.
+Current refrence architectures of 6TiSCH implementations relied almost canonically on O-QPSK PHY layer in the 2.4 GHz band.[ref]
+On one hand, this limits the stack performance by the limitations of the short range \oqpsk radio and discards potential advantages of other modulations such as higher link-budget, leading to km-scale connectivity or very high bit-rate up to 800 kbps.
+On the other hand, there is no evidence, to the best of our knowledge, on how the change of the PHY layer could impact the network performance as a whole. 
 
-\lorem
+Therefore, he goal of this paper is to compare the system-level performance of the 6TiSCH stack on top three PHY layers of complementary characteristics: 
+     1)A high-frequency, high bit-rate option: O-QPSK in the 2.4 GHz band, offering a nominal bitrate of 250 kbps.   
+     2) A low bit-rate, low frequency option: FSK option 1 in the 868 MHz band, offering nominal bit-rate of 50 kbps. 
+     3) A very high bit-rate, low frequency option: OFDM option 1  in the 868 MHz band, with Modulation and Cosing Scheme (MCS) 3, offering a nominal bit-rate of 800 kbps, and 
+
+ 
+The contributions of this article are three-fold:
+
+\begin{itemize}
+   \item Using \fsk the most number of neighbors are discovered. It leads to the fastest network formation time with the lowest latency and lowest network depth.Yet it kills network battery lifetime. It risks neighbor table overflow in high density deployments.
+   \item Using \oqpsk, the least number of neighbors are discovered. It leads to the slowest network formation time, highest RPL depth (lowest DAG ranks) and effectively the highest end-to-end latency. It consumes the most packet buffer on average because of storage needed to re-transmissions, leading to a higher risk of packet-buffer overflow. 
+   \item Using \ofdm, number of discovered neighbors is in between \fsk and \oqpsk, despite being the highest bit-rate in the three modulations. It shows an intermediate neighbor discovery range between both modulations. It shows surprisingly a network formation speed, and end-to-end latency comparable to \fsk. Yet it has a duty cycle comparable to OQPSK. It shows the least steady-state PDR among the three.
+\end{itemize}
+  
+
+
+%==============================================================================
+\section{Related Work}
+\label{sec:related_work}
+
+% 154g range testing, Munoz: Gap: long range could lead to deteriorating side effects on end to end performance such as neighbor table overflow and neighbor table overflow
+
+% Multiband support Martina: We show that 
+
+% Novelty compared to state of the art:
+% Full end to end testing before
 
 % contributions
 \mina {Updated Findings in a nutshell (for abstract?):}
@@ -76,19 +134,12 @@
 
 \item  \fsk is best fo fast network formation, least end-to-end latency, and least packet buffer memory footprint, but risks neighbor table overflow in dense deployments.
 
-\item \oqpsk is worst for latency but best forneighbor discovery in dense deployments and for battery life time.
+\item \oqpsk is worst for latency but best for neighbor discovery in dense deployments and for battery life time.
  
 \item  \ofdm, even though it is the highest bitrate, it shows a comporomise between both radios. It falls in between both in terms of neighbor discovery range, battery lifetime, memory footprint, end-to-end latency. Despite its long range comparable to FSK, it has an overall low duty cycle comparable to OQPSK. And despite its high bitrate, it shows range capability comparable to FSK.
 \end{itemize}
 
-The contributions of this article are three-fold:
 
-\begin{itemize}
-   \item \todo{Using \fsk the most number of neighbors are discovered. It leads to the fastest network formation time with the highest latency and lower network depth.Yet it kills network battery lifetime. It risks neighbor table overflow in high density deployments.}
-   \item \todo{Using \oqpsk, the least number of neighbors are discovered. It leads to the slowest network formation time, highest RPL depth (lowest DAG ranks) and effectively the highest end-to-end latency. It consumes the most packet buffer on average because of storage needed to retransmissions}
-   \item \todo{Usig \ofdm, number of discovered neighbors is in between \fsk and \oqpsk, despite being the highest bitrate in the three modulations. It shows an intermeidate neighbor discovery range between both modulations. It shows surprisingly a network formation speed, and end-to-end latency comparable to \fsk. Yet it has a duty cycle comparable to OQPSK. It shows the least steady-state PDR among the three. }
-\end{itemize}
-  
 
 % remainder
 
@@ -126,7 +177,7 @@ Section~\ref{sec:opentested} \todo{}.
 \end{figure}
 
 %==============================================================================
-\section{An PHY-later Agile Extension of OpenWSN}
+\section{A PHY-layer Agile Extension of OpenWSN}
 \label{sec:openwsn}
 
 % intro to 6TiSCH
@@ -215,16 +266,14 @@ Section~\ref{sec:opentested} \todo{}.
 %------------------------------------------------------------------------------
 \subsection{End-to-End Reliability}
 \label{sec:reliability}
+% why is it important, and how is it measured? 
+% Packet loss on shared cells. 
+% Long range lead to more neighbors which leads to discovery of better neighbors closer to the root. 
 
-Conclusion from fig. \ref{fig:aggregate_plot_reliability}: FSK leads to more neighbors heard at receiver on the minimum cell and faster overflow of the neighbor table.
-The positive side is that motes have access to parents closer to the root with lower DAGRanks and therefore the average network depth is decreased. 
-The negative side is that a mote becomes more likely to miss newer neighbors even though they could be with link higher quality. Therefore PDR becomes less-optimal. 
+% The negative side is that requires more active and strict rule for accepting neighbors, otherwise it would lead to a neighbor table buffer overflow, specially in dense networks
 
-\mina{We should include a reliability metric which is a combination of
-1) Network connectivity ratio: ratio of nodes in the RPL DAG to the total nodes of the network, and
-2) PDR
-FSK has 100\%PDR but few nodes are completely disconnected from the RPL (they were desynchronized after minute 25 until end of experiment. In overall, 37 nodes out of 42 were connected during steady state. (12\% of the motes out of service)
-}
+% Short range can cause more packet loss due to lower link budget if propagation is challenging. 
+
 
 \begin{table}
  \caption {Steady-state end-to-end PDR values} \label{tab:pdr_table} 
@@ -256,12 +305,10 @@ FSK has 100\%PDR but few nodes are completely disconnected from the RPL (they we
 \subsection{End-to-End Latency}
 \label{sec:latency}
 
-The 6TiSCH stack on top of FSK demonstrates better end to end latency by 2 or 3 orders of magnitude than OFDM or OQPSK as observed in Fig.~\ref{fig:avg_latency_plot}.
-\dominique{a factor 2 or 3, not 2 or 3 orders of magnitude!!}
-The interquartile range in the same figure show generally homogeneous latency properties in the FSK-based mesh. 
-However as shorter range radios are utilized, it seems that a minority of nodes suffer from very high latency, skewing the average latency in the network far away from the interquartile range. 
-This could imply a generally unstable QOS expectation in the networks based on OFDM and OQPSK despite their high reliability as previously seen in Fig.~\ref{fig:avg_pdr_plot}. 
-This could be caused by the larger number of nodes with higher DAG ranks (i.e. with more hops away from the root).
+% why is this important? information recency, alarms, logging of critical events for the reactive or preemptive measures.
+% higher link budget lead to discovery of more neighbors which leads less hops and less end to end latency.
+
+% shorter range not only suffer from more hops but also more re-transmissions.
 
 \begin{figure}
 	\centering
@@ -274,13 +321,14 @@ This could be caused by the larger number of nodes with higher DAG ranks (i.e. w
 \subsection{Queue Occupancy}
 \label{sec:queue}
 
-% less neighbors does not mean lower packet buffer footprint
 
-Interestingly enough, it seems that there is an inverse correlation between bit-rate and average packet buffer occupancy as seen in Fig.~\ref{fig:avg_bufferSize_plot}. 
-In this setting, the packet queue buffer is of size 20 entries. 
-However it seems that the peak of the occupancy in either case is during network formations. 
-This is slightly surprising because as a node has on average more neighbors in FSK than OFDM/24GHZ (as seen in Fig.~\ref{fig:avg_numNeighbors_plot}), it is expected that there would be more network overhead for neighbor negotiation using sixtop packets; on the contrary, the overall average buffer occupancy is less for FSK. 
-This could be explained by the fact that more re-transmissions are needed as bit-rate goes higher, leading to more buffer occupancy ratio on average. 
+% why is this important? memory limitations, packet loss simply due to unavailable buffer space. 
+
+% Interestingly enough, it seems that there is an inverse correlation between bit-rate and average packet buffer occupancy as seen in Fig.~\ref{fig:avg_bufferSize_plot}. 
+
+% In this setting, the packet queue buffer is of size 20 entries. 
+
+
 
 \begin{figure}
 	\centering
@@ -293,9 +341,8 @@ This could be explained by the fact that more re-transmissions are needed as bit
 \subsection{Battery Lifetime}
 \label{sec:battery_lifetime}
 
-There is an interesting observation in \ref{fig:avg_avg_dutyCycle_plot} and \ref{fig:avg_avg_dutyCycleTx_plot} which is that the average is skewed towards the third quartile.
-This could be explained by the few nodes closer to the DAG root (northern nodes) that relay traffic that is multiple orders of magnitude more than southern nodes. 
 
+% why is this important? essential opex. OpEx presents a huge constraint and could lead to impractical deployment if batteries have to change too often (thesis reference)
 \begin{figure}
 	\centering
 	\includegraphics[width=0.90\columnwidth]{avg_avg_dutyCycle_plot}
@@ -344,10 +391,7 @@ This could be explained by the few nodes closer to the DAG root (northern nodes)
 \end{figure}
 
 
-\mina{We need to discuss how to caclulate the expected battery life. for FSK and OFDM, Tx current is 62 mA but Rx current is 28 mA. For OQPSK in cc2538, Tx current is 24 mA and Rx current is 20 mA.I have the DC\\ measurements for total radio on (not distinguishing tx frm rx (fig 8), and the dc for tx only (fig 9). \\
-I propose  to subtract Tx DC from Total Radio on DC, and assume negeligible dataprepare time. Then we calculate the total power consumption accordingly? I did this in the table \ref{tab:energy_table}
-}
-  
+
 
 \mina{mention the exact tx power levels you are using}
 \begin{table*}[t]
