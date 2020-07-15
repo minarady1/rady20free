@@ -6,6 +6,8 @@
 \usepackage{color}
 \usepackage{xcolor}
 \usepackage{xspace}
+\usepackage [sorting=none] {biblatex}
+\bibliography {rady20nofree}
 
 \graphicspath{{figs/}}
 
@@ -57,52 +59,50 @@
 % intro low-power wireless
 
 Low-power wireless communications have undergirded the fourth industrial revolution by means of enabling pervasive machine-to-machine communications, otherwise known as the Internet of Things.
-The range of applications of such technologies vary from smart-building monitoring [ref], environmental monitoring [ref], precision agriculture [ref], utility meter remote reading [ref], localization of expensive equipment [ref], smart grid monitoring [ref] and industrial equipment monitoring for preemptive maintenance [ref].
+The range of applications of such technologies vary from smart-building monitoring \cite{munoz18overview}, \cite{kazmi14review}, environmental monitoring \cite{munoz18evaluationa}, precision agriculture \cite{watteyne16peach}, utility meter remote reading \cite{sum17experimental}, localization of expensive equipment \cite{tanakademo}, smart grid monitoring \cite{fadel15survey} and industrial equipment monitoring for predictive maintenance \cite{civerchia17industrial}.
 Therefore, the financial value provided by such technology pour into a large array of economic sectors.
 A plethora of radio technologies have been introduced to serve the IoT communications demands in different contexts and with different features.
 For example, LoRa, a family of long range modulations, introduce a low-bitrate high link-budget modulations for battery powered devices.
 LoRaWAN architectures are star-based topologies and they operate and Aloha-based Medium Access Control (MAC).
-Therefore, it is non-deterministic and the network performance depends heavily on the level of contention in the medium [ref limitations of lorawan]
+Therefore, it is non-deterministic and the network performance depends heavily on the level of contention in the medium \cite{adelantado17understandinga}.
 
 % popular PHY layers
-% \lorem IEEE 802.15.4
-Another major player in the IoT communications market is the set of technologies under the IEEE 802.15.4 family of standards which were conceived in 2003 yet extended in several amendments since 2011. [ref]
-The first amendment is the IEEE 802.15.4e standard which defines a MAC sublayer that follows the Time-Slotted Channel Hopping (TSCH) paradigm for low-rate wireless personal area networks. [ref]
-In contrast to a non-deterministic protocol as LoRaWAN, the TSCH paradigm is capable of providing wire-like reliability due to the strict allocation of time and frequency resources in the network based on a hashing scheme of IPv6 addresses of the nodes. [ref]
+% \lorem IEEE802.15.4
+Another major player in the IoT communications market is the set of technologies under the IEEE802.15.4 family of standards which were conceived in 2003 yet extended in several amendments since then. \cite{11ieee}
+The  IEEE802.15.4e amendment defines a MAC sublayer that follows the Time-Slotted Channel Hopping (TSCH) paradigm for low-rate wireless personal area networks \cite{12ieeea}.
+In contrast to a non-deterministic protocol as LoRaWAN, the TSCH paradigm is capable of providing wire-like reliability due to the strict allocation of time and frequency resources in the network based on a hashing scheme of IPv6 addresses of the nodes \cite{t.chang206tisch}.
 By means of this allocation, transmissions occur, mostly, in dedicated combinations of time-slots and channels (also known as cells).
 This allows the mitigation of the side-effects of contention, although it does not completely remove them because a minor subset of network management transactions have to take place still in "shared" cells, where contention is still possible.
 
-The third amendment is the IEEE 802.15.4g standard which which defines physical layer specifications for low-data-rate, wireless, smart metering utility networks. [ref]
-This specification outlines three families of multi-rate and multi-regional (MR) modulations: 1) Frequency Shift Keying (MR-FSK), 2) offset quadrature phase-shift keying (MR-O-QPSK), and 3) orthogonal frequency division multiplexing (MR-OFDM).
-Furthermore, several frequency bands are defined as part of the standard as common communication ``channels" in the license-free industrial, scientific and medical (ISM) band.
-While the ISM frequency bands may vary depending national regulations, they are usually split into two main categories: the 2.4 GHz band and the sub-GHz band. 
+The IEEE802.15.4g amendment defines physical layer specifications for low-data-rate, wireless, smart metering utility networks \cite{12ieee}.
+This amendment was rolled into the 2016 edition of the IEEE802.15.4 standard, which includes the following three families of multi-rate and multi-regional (MR) modulations: 1) Frequency Shift Keying (MR-FSK), 2) offset quadrature phase-shift keying (MR-O-QPSK), and 3) orthogonal frequency division multiplexing (MR-OFDM).
+Furthermore, several frequency bands are defined as part of the standard as common communication ``channels" in the license-free bands.
+While the license-free frequency bands may vary depending national regulations, they are usually split into two main categories: the 2.4 GHz band and the sub-GHz band. 
 The 2.4 GHz band is usually characterized by lower link-budget and shorter range than the sub-GHz band (due to the higher frequency). 
-This makes it sufficient for small home-area networks, yet it makes it highly susceptible to interference from common technologies in the same band such as WiFi [ref]
+This makes it sufficient for small home-area networks, yet it makes it highly susceptible to interference from common technologies in the same band such as WiFi \cite{tuset-peiro19experimental}
 The sub-GHz band is usually characterized by higher link budget and longer range than the 2.4 GHz band. 
-This makes it suitable for challenging deployments such as kilometer-scale links in rural areas or complex indoor environments. [ref munoz]
+This makes it suitable for challenging deployments such as kilometer-scale links in rural areas or complex indoor environments \cite{sotokmscale}.
 The modulations in this amendment support a wide range of bitrates as low as 25 kbps and as high as 800 kbps (in the European ISM bands)
 
 % capabilites of recent chips
 
 % \lorem nRF52840, CC2538, CC2650
-Several radio chips and System-on-Chip (SoC) products have been increasingly introduced to the market in compliance with the IEEE 802.15.4g standard. 
+Several radio chips and System-on-Chip (SoC) products have been increasingly introduced to the market in compliance with the IEEE802.15.4g standard. 
 As manufacturing technology advanced, chips started to offer multiple modulations and even multiple frequency bands depending on how their registers are configured by program running on the micro-processor.
-Common examples of these systems are CC2538 [ref] and CC2650 [ref] SoCs by Texas Instruments and nRF52840 [ref] by Nordic Semiconductor. 
+Common examples of these systems are CC2538 \cite{12cc2538} and CC2650 \cite{15cc2650} SoCs by Texas Instruments and nRF52840 \cite{19nrf52840} by Nordic Semiconductor. 
 They are built around a 32-bit ARM cortex microprocessor with electrical features supporting low-power performance.
-Their radio-chip design allows the choice of both modulation and frequency band by the executing program among any of the options under the IEEE 802.15.4g standard. 
-Furthermore, depending if the host board has multiple antennas as part of its electronic design, the executing program maybe be able to choose which antenna to use based on the choice of frequency band. 
-The example host board used for the experiments in this paper is the OpenMoteB which features a 2.4 GHz antenna and a sub-GHz antenna. 
-The board design allows dynamic switching between antennas and the radio chips on board at run-time. [ref]
+Their radio-chip design allows the choice of modulation and frequency band by the executing program among any of the options under the IEEE802.15.4g standard. 
+The example host board used for the experiments in this paper is the OpenMote-B which features a 2.4 GHz antenna and a sub-GHz antenna \cite{tusetopenmote}.
 
 % goal
-The IPv6 Time Slotted Channel Hopping (6TiSCH) protocol stack has been extensively standardized by the Internet Engineering Task Force (IETF). 
-The MAC layer of 6TiSCH is the IEEE 802.15.4e standard allowing industrial-grade reliability.
-The PHY layer of 6TiSCH is the IEEE802.15.4g standard allowing a wide variety of selection among the aforementioned modulations supported by the standard.
-Current refrence architectures of 6TiSCH implementations rely almost canonically on O-QPSK PHY layer in the 2.4 GHz band.[ref]
-On one hand, this limits the stack performance by the limitations of the short range \oqpsk  radio and discards potential advantages of other modulations such as higher link-budget --enabling km-scale connectivity, or very high bit-rates up to 800 kbps --enabling lower radio duty cycles.
-On the other hand, there is no evidence, to the best of our knowledge, on how the change of the PHY layer could impact the performance of the 6TiSCH network as a whole. 
+The IPv6 Time Slotted Channel Hopping (6TiSCH) protocol stack has been  standardized by the Internet Engineering Task Force (IETF).
+The MAC layer of 6TiSCH is the IEEE802.15.4e standard allowing industrial-grade reliability.
+The PHY layer of 6TiSCH is the IEEE802.15.4 standard allowing a wide variety of selection among the aforementioned modulations supported by the standard.
+Most researched 6TiSCH implementations rely almost canonically on O-QPSK PHY layer in the 2.4 GHz band, as demonstrated by \cite{j.munoz18problem} and \cite{brachmann19ieee}.
+This limits the stack performance by the limitations of the short range \oqpsk  radio and discards potential advantages of other modulations such as higher link-budget --enabling km-scale connectivity, or very high bit-rates up to 800 kbps --enabling lower radio duty cycles.
+Furthermore, there is no evidence on how the change of the PHY layer could impact the performance of the 6TiSCH network as a whole. 
 
-Therefore, he goal of this paper is to compare the system-level performance of the 6TiSCH stack on top of three PHY layers among the IEEE 802.15.4g standard that are of complementary characteristics: 
+Therefore, he goal of this paper is to compare the system-level performance of the 6TiSCH stack on top of three PHY layers among the IEEE802.15.4g standard that are of complementary characteristics: 
      1) A high-frequency, high bit-rate option: O-QPSK in the 2.4 GHz band, offering a nominal bitrate of 250 kbps,
      2) A low bit-rate, low frequency option: FSK option 1 in the 868 MHz band, offering nominal bit-rate of 50 kbps, and 
      3) A high bit-rate, low frequency option: OFDM option 1  in the 868 MHz band, with Modulation and Cosing Scheme (MCS) 3, offering a nominal bit-rate of 800 kbps. 
@@ -111,19 +111,19 @@ Therefore, he goal of this paper is to compare the system-level performance of t
 This article demonstrates that there are significant benefits of each option yet they all come at a certain cost of one kind or another.
 Therefore, this demonstrates that there is no free lunch when it comes to the choice of PHY layer.
 
-Precisely, the contributions of this article are three-fold:
+Precisely, the contributions of this paper are three-fold:
 
 \begin{itemize}
    \item \fsk PHY allows the most number of neighbors to be discovered by mote. 
-    It leads to the fastest network formation time with the lowest latency and lowest network depth.Yet it kills network battery lifetime due to high radio duty cycle. 
+    It leads to the fastest network formation time with the lowest latency and lowest network depth.Yet it shortens network battery lifetime \mina{note} due to high radio duty cycle. 
     It also risks neighbor table overflow in high density deployments.
    
    \item \oqpsk PHY allows that the least number of neighbors are discovered by a mote. 
    It leads to the slowest network formation time, highest network depth, and effectively the highest end-to-end latency. 
    It consumes the most packet buffer on average because of storage needed to re-transmissions, leading to a higher risk of packet-buffer overflow. 
    
-   \item \ofdm, allows the discovery of a surprisngly large number of neighbors  close to \fsk, despite being the highest bit-rate in the three modulations. 
-   It shows a an intermediate network formation time, end-to-end latency, packet buffer occupancy and network depth.
+   \item \ofdm, allows the discovery of a surprisingly large number of neighbors close to \fsk, despite being the highest bit-rate in the three modulations. 
+   It shows an intermediate network formation time, end-to-end latency, packet buffer occupancy and network depth.
    Yet despite its low duty cycle, it decreases the battery lifetime of the network by more than 65\% compared to \oqpsk.
 \end{itemize}
   
@@ -133,14 +133,70 @@ Precisely, the contributions of this article are three-fold:
 \section{Related Work}
 \label{sec:related_work}
 
-% 154g range testing, Munoz: Gap: long range could lead to deteriorating side effects on end to end performance such as neighbor table overflow and neighbor table overflow
+% Problem statement
+\cite{j.munoz18problem} \mina{jon re-publish}
+\lorem
 
-% Multiband support Martina: We show that 
+% Related work is split into three main categories:
 
-% Novelty compared to state of the art:
-% Full end to end testing before
 
-% remainder
+% 1- 802.15.4g evaluation:
+\cite{munoz18evaluationa}
+\lorem
+\cite{sum17experimental}
+\lorem
+\cite{munoz18overview}
+\lorem
+
+% 2- 6TiSCH performance evaluation
+\lorem
+\cite{yang18analysis}
+\cite{sum17experimental}
+\cite{theoleyre16experimental}
+\cite{teleshermeto18reactions}
+\cite{kojima15system}
+\cite{benyaala16performance}
+
+% 3- hybrid radio utilization
+\lorem
+\cite{lemic19locationbased}
+\lorem
+\cite{brachmann19ieee}
+
+
+\subsection{The Knowledge Gap}
+% in Munoz: 154g is evaluated here based on communication range.
+% It is not clear if long range could lead to deteriorating side effects on end to end performance.
+\lorem
+
+% all evaluation of 6TiSCH performances rely on a single radio: 2.4GHZ 
+\lorem
+
+\subsection{Novelty compared to state of the Art}
+
+%\cite{brachmann19ieee} is really state of the art.
+
+% will discuss the novelty of the paper in detail here.
+% Why use long range for EBs and short range for data? why not the opposite?
+\lorem
+
+% limited data traffic diversity (only RPL packets used as data packets)
+\lorem 
+
+% what is side effect of long range in shared channels and short range in data channels? 
+\lorem
+
+% limited KPIs reporting. Why KPIs matter? 
+\lorem
+
+
+
+
+Research in [ref] is the state of the art in testing the performance of the full set of modulations supported by the IEEE802.15.4g standard.
+    Authors execute a full experimental evaluation of the 31 combinations of IEEE802.15.4g options.
+    They provide a comparative evaluation of the performance of all modulations, with a specific focus on the communication range. 
+
+
 
 The remainder of this article is organized as follows.
 Section~\ref{sec:opentested} \todo{}.
@@ -407,7 +463,7 @@ Section~\ref{sec:opentested} \todo{}.
 %------------------------------------------------------------------------------
 \section{Discussion}
 \label{sec:discussion}
-\begin{table}[]
+\begin{table*}[t]
  \caption {6TiSCH performance ranking for each setting} \label{tab:summary}
 \begin{tabular}{lllllllll}
       & network fomration speed. & energy & latency & buffer effeciency & pdr &  &  &  \\
@@ -415,7 +471,7 @@ Section~\ref{sec:opentested} \todo{}.
 \ofdm  & 1                        & 2      & 2       & 1                 & 2   &  &  &  \\
 \oqpsk & 3                        & 1      & 3       & 2                 & 1   &  &  & 
 \end{tabular}
-\end{table}
+\end{table*}
 
 
 %\begin{figure}
@@ -427,10 +483,9 @@ Section~\ref{sec:opentested} \todo{}.
 
 %------------------------------------------------------------------------------
 
+\printbibliography
 
 %==============================================================================
-
-
 \end{document}
 
 %==============================================================================
