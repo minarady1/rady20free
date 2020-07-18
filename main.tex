@@ -110,9 +110,14 @@ Therefore, he goal of this paper is to compare the system-level performance of t
  
 This article demonstrates that there are significant benefits of each option yet they all come at a certain cost of one kind or another.
 Therefore, this demonstrates that there is no free lunch when it comes to the choice of PHY layer.
-
 Precisely, the contributions of this paper are three-fold:
 
+% 
+augmented openwsn support 3 layers opensource
+conducted extensive validation camapgin 42 motes office environments: add kpis
+shown the pros and cons of each layer hoghlighting that no one is good all  kpis
+
+% lessons learned
 \begin{itemize}
    \item \fsk PHY allows the most number of neighbors to be discovered by mote. 
     It leads to the fastest network formation time with the lowest latency and lowest network depth.Yet it shortens network battery lifetime \mina{note} due to high radio duty cycle. 
@@ -134,13 +139,41 @@ Precisely, the contributions of this paper are three-fold:
 \label{sec:related_work}
 
 % Problem statement
-\cite{j.munoz18problem} \mina{jon re-publish}
-\lorem
+
+While the 6TiSCH protocol stack offers promising performance for wire-like reliability with low power consumption, there is one assumption about 6TiSCH that remained constant for nearly two decades now: it uses the IEEE802.15.4 (2003) O-QPSK modulation in 2.4 GHz band in as its PHY layer. 
+There is no doubt that \oqpsk may be sufficient in some applications, however the increasing demands for long range connectivity for several applications (such as environmental monitoring or wireless utility metering) can only be met by considering longer range radios for the 6TiSCH PHY layer.
+A problem statement has been proposed in the Internet Engineering Task Force (IETF) detailing the theoretical challenges or side-effects of re-inventing the 6TiSCH PHY layer to include different or heterogeneous radios other than the canonical \oqpsk \cite{j.munoz18problem}. 
+Although the protocol stack layers remain separate, it is reasonable to expect, in light of this problem statement, that a change in one layer might impact the end-to-end performance as a whole. 
+Utilization of a different PHY layer means, for example, different energy consumption and link-costs which would change how links to neighbors are evaluated at layer 2 and how routes are calculated at layer 3.
+It also means there is an expectation of more re-transmissions for high-frequency bands, more interference or collisions in shared cells for low-frequency bands.
+Therefore, even though only the PHY layer is expected to change, a system level evaluation in line with the end-to-end argument in computer systems design \cite{saltzer84endtoend} is indispensable.
+This is to evaluate the (potential) impact of such change on the network functions placed at the end of the communication pipe-line. 
 
 % Related work is split into three main categories:
+% networks for industrial iot
+% 1- 6TiSCH performance evaluation
+The related work is presented under three categories: 
+    1) performance improvement and evaluation of the 6TiSCH protocol stack,
+    2) performance evaluation of IEEE802.15.4g family of modulations, and
+    3) hybrid radio utilization in the 6TiSCH stack. 
+The remaining of this section will present each category and discuss its relevance to this paper.
 
+\textit{1) Performance improvement and evaluation of the 6TiSCH protocol stack:} authors of \cite{sum17experimental} provide an experimental evaluation of IEEE802.15.4e Time Slotted Channel Hopping MAC based on IEEE802.15.4g radio.
+The experiments reports range and performance testing results in terms of PDR and PER in four situations: LOS conditions, NLOS conditions, tree topology in corridor setting and line topology across buildings.
+Authors of \cite{yang18analysis} evaluate the performance of the full 6TiSCH stack on the OpenWSN reference architecture in terms of responsiveness to time critical event triggers.
+They vary the number of active slots in an 11 slot-frame length and measure how packet end-to-end latency is affected withe the variance of active slots. 
+Authors of \cite{theoleyre16experimental} evaluate the performance of the 6TiSCH stack with the deployment of traffic isolation mechanisms that allow reservation of dedicated slots to for certain applications, and reservation of shared slots for alarm events.
+They report the end-to-end latency and PDR under various schedule management strategies, including using uniformly distributed shared cells instead of contiguous (adjacent) shared cells in the slot-frame.
+Authors of \cite{teleshermeto18reactions} executes a performance evaluation of the 6TiSCH protocol stack in an indoor environment with a focus on the stability of the stack performance.
+They report the end-to-end reliability and number of parent changes as the network is converging.
+They also propose a stable link quality metric and a simplified method for schedule inconsistency management.
+The research in \cite{kojima15system} examins the impact of interference between two modulations of IEEE802.15.4g, namely: MR-FSK mode 2 and MR-OFDM option 4 MCS 3. 
+Authors deploy IEEE802.15.4e MAC with multihop capability on top of each PHY layer and measure the impact of the interference between two networks, each running one PHY.
+Results are reported in terms of the degradation of throughput of each network in the presence of the other interfering network. 
+Finally, the research in \cite{benyaala16performance}, provides 
 
-% 1- 802.15.4g evaluation:
+% one phy layer
+% 2- 802.15.4g evaluation:
 \cite{munoz18evaluationa}
 \lorem
 \cite{sum17experimental}
@@ -148,15 +181,7 @@ Precisely, the contributions of this paper are three-fold:
 \cite{munoz18overview}
 \lorem
 
-% 2- 6TiSCH performance evaluation
-\lorem
-\cite{yang18analysis}
-\cite{sum17experimental}
-\cite{theoleyre16experimental}
-\cite{teleshermeto18reactions}
-\cite{kojima15system}
-\cite{benyaala16performance}
-
+%
 % 3- hybrid radio utilization
 \lorem
 \cite{lemic19locationbased}
@@ -178,7 +203,7 @@ Precisely, the contributions of this paper are three-fold:
 
 % will discuss the novelty of the paper in detail here.
 % Why use long range for EBs and short range for data? why not the opposite?
-\lorem
+%\lorem
 
 % limited data traffic diversity (only RPL packets used as data packets)
 \lorem 
@@ -186,10 +211,11 @@ Precisely, the contributions of this paper are three-fold:
 % what is side effect of long range in shared channels and short range in data channels? 
 \lorem
 
-% limited KPIs reporting. Why KPIs matter? 
+% testbed features: non-homogeneous distribution, completely open source system made from off-the shelve products. 
 \lorem
 
-
+% limited KPIs reporting. Why KPIs matter? 
+\lorem
 
 
 Research in [ref] is the state of the art in testing the performance of the full set of modulations supported by the IEEE802.15.4g standard.
@@ -206,8 +232,11 @@ Section~\ref{sec:opentested} \todo{}.
 \label{sec:opentested}
 
 % intro testbed, architecture
-
-\lorem
+To perform the experiments for this paper, the OpenTestbed \cite{munoz19opentestbed} is found to be an appropriate choice for this context.
+The OpnTestBed is built from off-the-shelf components without requiring any dedicated wiring infrastructure or back-end server, with an open access interface. 
+Therefore, it can be re-used through remote access or even re-built locally, at low cost, to replicate the experiments in similar or different settings.  
+The core components of the OpenTestBed are OpenMote B low power devices, Raspberry Pi single-board computers, and a glass dome container.
+The general architecture is that each Raspberry Pi has four OpenMote-B devices attached to it through USB interface and it connects to an MQTT broker allowing bi-directional communication with the motes through remote access. 
 
 % OpenMote and testbox
 
