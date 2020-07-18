@@ -11,9 +11,9 @@
 
 \graphicspath{{figs/}}
 
-\newcommand{\fsk}          {FSK 868 MHz }
-\newcommand{\oqpsk}        {O-QPSK 2.4GHz }
-\newcommand{\ofdm}         {OFDM 868 MHz }
+\newcommand{\fsk}          {FSK 868 MHz}
+\newcommand{\oqpsk}        {O-QPSK 2.4GHz}
+\newcommand{\ofdm}         {OFDM 868 MHz}
 
 \newcommand{\todo}[1]      {\textbf{\textcolor{red}{[TODO] #1}}}
 \newcommand{\lorem}        {\textcolor{green}{Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.}}
@@ -107,32 +107,6 @@ Therefore, he goal of this paper is to compare the system-level performance of t
      2) A low bit-rate, low frequency option: FSK option 1 in the 868 MHz band, offering nominal bit-rate of 50 kbps, and 
      3) A high bit-rate, low frequency option: OFDM option 1  in the 868 MHz band, with Modulation and Cosing Scheme (MCS) 3, offering a nominal bit-rate of 800 kbps. 
 
- 
-This article demonstrates that there are significant benefits of each option yet they all come at a certain cost of one kind or another.
-Therefore, this demonstrates that there is no free lunch when it comes to the choice of PHY layer.
-Precisely, the contributions of this paper are three-fold:
-
-% 
-augmented openwsn support 3 layers opensource
-conducted extensive validation camapgin 42 motes office environments: add kpis
-shown the pros and cons of each layer hoghlighting that no one is good all  kpis
-
-% lessons learned
-\begin{itemize}
-   \item \fsk PHY allows the most number of neighbors to be discovered by mote. 
-    It leads to the fastest network formation time with the lowest latency and lowest network depth.Yet it shortens network battery lifetime \mina{note} due to high radio duty cycle. 
-    It also risks neighbor table overflow in high density deployments.
-   
-   \item \oqpsk PHY allows that the least number of neighbors are discovered by a mote. 
-   It leads to the slowest network formation time, highest network depth, and effectively the highest end-to-end latency. 
-   It consumes the most packet buffer on average because of storage needed to re-transmissions, leading to a higher risk of packet-buffer overflow. 
-   
-   \item \ofdm, allows the discovery of a surprisingly large number of neighbors close to \fsk, despite being the highest bit-rate in the three modulations. 
-   It shows an intermediate network formation time, end-to-end latency, packet buffer occupancy and network depth.
-   Yet despite its low duty cycle, it decreases the battery lifetime of the network by more than 65\% compared to \oqpsk.
-\end{itemize}
-  
-
 
 %==============================================================================
 \section{Related Work}
@@ -159,15 +133,15 @@ The related work is presented under three categories:
 The remaining of this section will present each category and discuss its relevance to this paper.
 
 \textit{1) Performance improvement and evaluation of the 6TiSCH protocol stack:} authors of \cite{sum17experimental} provide an experimental evaluation of IEEE802.15.4e Time Slotted Channel Hopping MAC based on IEEE802.15.4g radio.
-The experiments reports range and performance testing results in terms of PDR and PER in four situations: LOS conditions, NLOS conditions, tree topology in corridor setting and line topology across buildings.
+The experiments report range and performance testing results in terms of PDR and PER in four situations: LOS conditions, NLOS conditions, tree topology in corridor setting and line topology across buildings.
 
 Authors of \cite{yang18analysis} evaluate the performance of the full 6TiSCH stack on the OpenWSN reference architecture in terms of responsiveness to time critical event triggers.
 They vary the number of active slots in an 11 slot-frame length and measure how packet end-to-end latency is affected withe the variance of active slots. 
 
-Authors of \cite{theoleyre16experimental} evaluate the performance of the 6TiSCH stack with the deployment of traffic isolation mechanisms that allow reservation of dedicated slots to for certain applications, and reservation of shared slots for alarm events.
+Authors of \cite{theoleyre16experimental} evaluate the performance of the 6TiSCH stack with the deployment of traffic isolation mechanisms that allow reservation of dedicated slots for certain applications and reservation of shared slots for alarm events.
 They report the end-to-end latency and PDR under various schedule management strategies, including using uniformly distributed shared cells instead of contiguous (adjacent) shared cells in the slot-frame.
 
-Authors of \cite{teleshermeto18reactions} executes a performance evaluation of the 6TiSCH protocol stack in an indoor environment with a focus on the stability of the stack performance.
+Authors of \cite{teleshermeto18reactions} execute a performance evaluation of the 6TiSCH protocol stack in an indoor environment with a focus on the stability of the stack performance.
 They report the end-to-end reliability and number of parent changes as the network is converging.
 They also propose a stable link quality metric and a simplified method for schedule inconsistency management. 
 
@@ -191,53 +165,69 @@ Furthermore, the paper shows that although \oqpsk consumes less power in general
 The research in \cite{munoz18evaluationa} is the state of the art in the performance evaluation of the totality of IEEE802.15.4g modulations.
 Authors perform exhaustive  range-testing campaigns of the 31 modulations in four scenarios that are considered the most prevalent in outdoor applications: line of sight, smart agriculture, urban canyon, and smart metering. 
 Results of the range-tests are reported in terms of PDR measurements, throughput, and electric charge consumption.
-Surprising findings show that OFDM in high bit-rates reaching up to 800 kbps can outperform 2-FSK PHY layer at low bit-rate of 50-kbps in range and reliability. 
-This finding stresses caution against the assumption that lower bit rate modulations would be more reliable or longer in range because they are low bit-rate \textit{per se}. 
+Interesting findings show that OFDM in high bit-rates reaching up to 800 kbps can outperform 2-FSK PHY layer at low bit-rate of 50 kbps in range and reliability. 
+This finding stresses caution against the assumption that lower bit rate modulations would be more reliable or longer in range because they are just low bit-rate \textit{per se}. 
 
-Among all the work presented in this section, one common gap is present which is the end-to-end performance of a full 6TiSCH stack remains unknown with the change of PHY layer. 
-Therefore, it still not clear how some system-level behaviours would be impacted such as the end-to-end  PDR, end-to-end latency, network formation time, and distribution of battery lifetime of the nodes in the network.  
+Among all the work presented in this section, one common gap is present which is that the end-to-end performance of a full 6TiSCH stack remains unknown with the change of PHY layer. 
+Therefore, it is still not clear how some system-level behaviours would be impacted such as the end-to-end  PDR, end-to-end latency, network formation time, and distribution of battery lifetime of the nodes in the network.  
 
-%
 % 3- hybrid radio utilization
 
-\lorem
-\cite{brachmann19ieee}
+\textit{Hybrid radio utilization in the 6TiSCH stack:}  research in \cite{brachmann19ieee} is the state of the art to integrate hybrid PHY layers within the 6TiSCH stack. 
+First, authors perform range-testing measurements on multiple modulations, namely: 2-GFSK (at bit-rates 1.2, 8, 50, and 250 kbps), 4-GFSK (at bit-rate 1000 kbps), and \oqpsk (at bit-rate 250 kbps). 
+Link quality evaluations are reported in terms of number of motes reached by each mote in the network and link symmetry. 
+Second, authors choose two modulations in the sub-GHz band for integration in the 6TiSCH stack: 2-GFSK at bit-rate  1.2 kbps  for Enhanced Beacon (EB) transmissions in the minimal (shared) cells, and 4-GFSK at bit-rate 1000 kbps for data traffic. 
+The reason authors make such a choice is to achieve a single-hop transmission for EB, using the slowest bit-rate modulation, in order to guarantee faster and more accurate synchronization in the network than multi-hop transmissions. 
+Slot templates matching the chosen PHY layers are designed generally in accordance with IEEE802.15.4 standard and ported on Contiki-NG reference implementation of 6TiSCH. 
+Finally, authors report performance of the multi-PHY network in terms of channel utilization and the distribution of synchronization accuracy in the network in comparison with the distribution of hop-count. 
+Authors demonstrate that faster bit-rate of 4-GFSK at 1000 kbps for data packets diminishes the probability for collision and leads to less than 0.1\% channel utilization despite the increased re-transmissions.
+At the same time, the slower bit-rate of 2-GFSK at 1.2 kbps for EB packets leads to 20x higher channel occupancy, at 2\% duty cycle (leading to violation of the license-free band regulation in many regions). 
 
+This research paves the road for thorough investigation of multi-PHY integration in the 6TiSCH stack.
+However, it explicitly assumes an inverse correlation between bit-rate and range.
+While this could be true for the specific subset of modulations selected for evaluation, it is not in concordance with research results in \cite{munoz18overview} and \cite{munoz18evaluationa} , which demonstrate that a high bit-rate modulation such as OFDM 1 MCS 3 at 800 kbps can offer competitive performance compared to 2-FSK at 50 kbps in terms of range, reliability, let alone duty cycle. 
+This is a significant observation because if long-range radio is needed for EB synchronization as \cite{brachmann19ieee} suggests, higher bit-rates are appreciated for EBs in order to minimize energy consumption and also collision probability since EBs are transmitted on shared cells. 
+Furthermore, it still remains unclear whether there are any side-effects to the choice of one radio or another  on the end-to-end performance as a whole so that the costs and benefits of each PHY layer choice can be fully assessed.
 
-\subsection{The Knowledge Gap}
-% in Munoz: 154g is evaluated here based on communication range.
-% It is not clear if long range could lead to deteriorating side effects on end to end performance.
-\lorem
+%==============================================================================
+\section{Contributions}
+\label{sec:contributions}
 
-% all evaluation of 6TiSCH performances rely on a single radio: 2.4GHZ 
-\lorem
+This paper demonstrates that there are significant benefits of each of the radio options: \fsk, \ofdm, and \oqpsk, yet they all come at a certain cost of one kind or another.
+Therefore, this demonstrates that there is no free lunch when it comes to the choice of PHY layer.
+Precisely, the contributions of this paper are three-fold:
 
-\subsection{Novelty compared to state of the Art}
+%
+\begin{itemize}
+    \item Augmenting OpenWSN reference architecture of the 6TiSCH protocol stack with support of 3 PHY layers, available as open source.
+    \item Conducted exhaustive validation campaign of the end-to-end performance of the 6TiSCH stack on top of each PHY, on a testbed of 42 motes office environments.
+    Results are reported in terms of end-to-end Key Perfromance Indicators (KPI) that are necessary reference metrics for performance evaluation and service-level agreements (SLAs)
+    The KPIs are: 
+        network formation time,
+        end-to-end reliability,
+        end-to-end latency, and
+        estimated battery lifetime distribution in the network,
+        and memory footprint.
+    \item The paper shows the advantages and disadvantages of each PHY layer highlighting that not one PHY is the best across all KPIs.
+\end{itemize}
 
-%\cite{brachmann19ieee} is really state of the art.
+As a result of the conducted evaluation campaigns, three lessons have been learned:
 
-% will discuss the novelty of the paper in detail here.
-% Why use long range for EBs and short range for data? why not the opposite?
-%\lorem
-
-% limited data traffic diversity (only RPL packets used as data packets)
-\lorem 
-
-% what is side effect of long range in shared channels and short range in data channels? 
-\lorem
-
-% testbed features: non-homogeneous distribution, completely open source system made from off-the shelve products. 
-\lorem
-
-% limited KPIs reporting. Why KPIs matter? 
-\lorem
-
-
-Research in [ref] is the state of the art in testing the performance of the full set of modulations supported by the IEEE802.15.4g standard.
-    Authors execute a full experimental evaluation of the 31 combinations of IEEE802.15.4g options.
-    They provide a comparative evaluation of the performance of all modulations, with a specific focus on the communication range. 
-
-
+% lessons learned
+\begin{itemize}
+   \item \fsk PHY allows the most number of neighbors to be discovered by mote. 
+    It leads to the fastest network formation time with the lowest latency and lowest network depth.Yet it shortens network battery lifetime \mina{note} due to high radio duty cycle. 
+    It also risks neighbor table overflow in high density deployments.
+   
+   \item \oqpsk PHY allows that the least number of neighbors are discovered by a mote. 
+   It leads to the slowest network formation time, highest network depth, and effectively the highest end-to-end latency. 
+   It consumes the most packet buffer on average because of storage needed to re-transmissions, leading to a higher risk of packet-buffer overflow. 
+   
+   \item \ofdm, allows the discovery of a surprisingly large number of neighbors close to \fsk, despite being the highest bit-rate in the three modulations. 
+   It shows an intermediate network formation time, end-to-end latency, packet buffer occupancy and network depth.
+   Yet despite its low duty cycle, it decreases the battery lifetime of the network by more than 65\% compared to \oqpsk.
+\end{itemize}
+  
 
 The remainder of this article is organized as follows.
 Section~\ref{sec:opentested} \todo{}.
