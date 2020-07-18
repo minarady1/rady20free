@@ -160,31 +160,46 @@ The remaining of this section will present each category and discuss its relevan
 
 \textit{1) Performance improvement and evaluation of the 6TiSCH protocol stack:} authors of \cite{sum17experimental} provide an experimental evaluation of IEEE802.15.4e Time Slotted Channel Hopping MAC based on IEEE802.15.4g radio.
 The experiments reports range and performance testing results in terms of PDR and PER in four situations: LOS conditions, NLOS conditions, tree topology in corridor setting and line topology across buildings.
+
 Authors of \cite{yang18analysis} evaluate the performance of the full 6TiSCH stack on the OpenWSN reference architecture in terms of responsiveness to time critical event triggers.
 They vary the number of active slots in an 11 slot-frame length and measure how packet end-to-end latency is affected withe the variance of active slots. 
+
 Authors of \cite{theoleyre16experimental} evaluate the performance of the 6TiSCH stack with the deployment of traffic isolation mechanisms that allow reservation of dedicated slots to for certain applications, and reservation of shared slots for alarm events.
 They report the end-to-end latency and PDR under various schedule management strategies, including using uniformly distributed shared cells instead of contiguous (adjacent) shared cells in the slot-frame.
+
 Authors of \cite{teleshermeto18reactions} executes a performance evaluation of the 6TiSCH protocol stack in an indoor environment with a focus on the stability of the stack performance.
 They report the end-to-end reliability and number of parent changes as the network is converging.
-They also propose a stable link quality metric and a simplified method for schedule inconsistency management.
-The research in \cite{kojima15system} examins the impact of interference between two modulations of IEEE802.15.4g, namely: MR-FSK mode 2 and MR-OFDM option 4 MCS 3. 
-Authors deploy IEEE802.15.4e MAC with multihop capability on top of each PHY layer and measure the impact of the interference between two networks, each running one PHY.
-Results are reported in terms of the degradation of throughput of each network in the presence of the other interfering network. 
-Finally, the research in \cite{benyaala16performance}, provides 
+They also propose a stable link quality metric and a simplified method for schedule inconsistency management. 
+
+Finally, the research in \cite{benyaala16performance}, evaluates the performance of 6TiSCH stack in co-located networks.
+It considers both cases where the coexisting 6TiSCH networks are either  synchronized or unsynchronized.
+
+There is one common factor among all this work: the chosen PHY layer remains unchanged and therefore the impact of changing the PHY layer is not considered. 
+They are all based on the IEEE802.15.4 (2003) \oqpsk , except \cite{sum17experimental} which use MR-FSK throughout the experiments. 
 
 % one phy layer
 % 2- 802.15.4g evaluation:
-\cite{munoz18evaluationa}
-\lorem
-\cite{sum17experimental}
-\lorem
-\cite{munoz18overview}
-\lorem
+
+\textit{IEEE802.15.4g performance evaluation:} this category  demonstrates the related  work attempting to evaluate different IEEE802.15.4g PHY layers in one way or another.
+Research in \cite{kojima15system} examines the impact of interference between two modulations of IEEE802.15.4g, namely: MR-FSK mode 2 and MR-OFDM option 4 MCS 3. 
+Authors deploy IEEE802.15.4e MAC with multihop capability on top of each PHY layer and measure the impact of the interference between two networks, each running one PHY.
+Results are reported in terms of the degradation of throughput of each network in the presence of the other interfering network.
+
+The research in \cite{munoz18overview} runs experimental campaigns for comparative performance evaluations of two PHY layers for smart building applications: IEEE802.15.4 (2003) \oqpsk and IEEE802.15.4g MR-OFDM. 
+Although \oqpsk offers a nominal bitrate of 250 kbps, the experimental results demonstrate surprising range-test performance of MR-OFDM compared to \oqpsk even at bit-rates up to 800 kbps in the case of OFDM Option 1 MCS 3. 
+Furthermore, the paper shows that although \oqpsk consumes less power in general than \ofdm, it can lead to overall more power consumption for a successful transmission if the power consumed in re-transmissions is taken into account..  
+The research in \cite{munoz18evaluationa} is the state of the art in the performance evaluation of the totality of IEEE802.15.4g modulations.
+Authors perform exhaustive  range-testing campaigns of the 31 modulations in four scenarios that are considered the most prevalent in outdoor applications: line of sight, smart agriculture, urban canyon, and smart metering. 
+Results of the range-tests are reported in terms of PDR measurements, throughput, and electric charge consumption.
+Surprising findings show that OFDM in high bit-rates reaching up to 800 kbps can outperform 2-FSK PHY layer at low bit-rate of 50-kbps in range and reliability. 
+This finding stresses caution against the assumption that lower bit rate modulations would be more reliable or longer in range because they are low bit-rate \textit{per se}. 
+
+Among all the work presented in this section, one common gap is present which is the end-to-end performance of a full 6TiSCH stack remains unknown with the change of PHY layer. 
+Therefore, it still not clear how some system-level behaviours would be impacted such as the end-to-end  PDR, end-to-end latency, network formation time, and distribution of battery lifetime of the nodes in the network.  
 
 %
 % 3- hybrid radio utilization
-\lorem
-\cite{lemic19locationbased}
+
 \lorem
 \cite{brachmann19ieee}
 
