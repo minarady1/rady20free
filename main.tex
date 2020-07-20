@@ -252,7 +252,7 @@ As illustrated in in Fig. \ref{fig:testbox} in the left,  it features two radio 
 A 2.4 GHz antenna is connected to the CC2538 radio and a sub-GHz antenna is connected to the AT86rf215 radio.
 This multi-PHY capability is the main enabler for the experiments required in this research. 
 It is built aroudn the CC2538 ARM-cortex micropreocesor, which is the same used for industrial applications as in \cite{civerchia17industrial}.
-The mote offers 32 KB of RAM and 512 KB Flash which were both sufficient for running the firmware of the 6TiSCH stack on top of OpenWSN RTOS. 
+The mote offers 32 KB of RAM and 512 KB Flash which were both sufficient for running the firmware of the 6TiSCH stack on top of OpenWSN Real Time Operating System (RTOS). 
 Most importantly, it features two main debugging capabilities that enabled accurate timing configuration for the IEEE802.15.4e slot templates for several modulations:
 1) Joint Test Action Group (JTAG) port, which enables on board-debugging of firmware behavior under the new developments the radio drivers and the MAC layer as explained in section \ref{sec:openwsn}, and 
 2) Board expansion: which offered 8 pins which were indispensable for debugging. The pins were connected to a logic analyzer that allowed real-time view of the slot event triggers and synchronization accuracy.
@@ -279,7 +279,7 @@ This distribution is distinct from the distribution used in \cite{brachmann19iee
 In this distribution, we aim to introduce non-uniformity akin to that of a real world setting.
 The reason is that in an industrial plant, such as in \cite{civerchia17industrial}, sensors are clustered around the locations of machines or production lines where sensor readings are needed for their predictive maintenance.
 For example, the authors of \cite{civerchia17industrial} deploy clusters of sensors around the heavy ashes water pump, seawater pumps, and evaporators. 
-The size of clusters varied from 3 wireless sensors per cluster up to 19 wireless sensors per cluster (in the case of evaporator equipment). 
+The size of clusters varied from 3 wireless sensors per cluster up to 19 wireless sensors per cluster (in the case of the evaporator equipment consisting of multiple pumps). 
 
 
 
@@ -296,18 +296,27 @@ The size of clusters varied from 3 wireless sensors per cluster up to 19 wireles
 
 % intro to 6TiSCH
 
-\lorem
+In efforts to enable industrial-grade low power wireless networking, the IETF has standardized the set of protocol composing what is now known as the IPv6 over the TSCH mode of IEEE802.15.4e, otherwise known as 6TiSCH \cite{vilajosana21ietf}.
+The 6tiSCH protocol stack is based on IEEE802.15.4 as its PHY and TSCH mode of IEEE802.15.4e as its MAC layer.
+Multi-hop capability is supported at the routing layer via the IPv6 routing protocol for Lower-Power and Lossy Networks (RPL). 
+Furthermore, 6LoWPAN is a adaptation layer is defined enabling the interfacing between the routing layer and the specific operations of the MAC layer such as neighbor discovery, registration, ranking, and maintenance operations that impact how routes are calculated. 
 
 % intro to OpenWSN
 
-\lorem
+The 6TiSCH protocol stack has been ported to two main reference architectures: OpenWSN and Contiki-NG. 
+Since this work seeks to benefor from the multi-PHY capability of OpenMote-B as explained in section \ref{sec:opentested}, OpenWSN has been selected as the reference architecture for this experiment since it has already been maintained for several boards, including OpenMote-B. 
+OpenWSN is an RTOS that allows protocol layers and applications to run side by side on top of a real-time task scheduler implemented based on the interrupt service routine of the micro-processor.
+Before the start of this research, OpenWSN was maintained for IEEE802.15.4 O-QPSK 2.4 GHZ radio. 
+While a driver was available for the At86rf215 radio to pursue the indoor and outdoor range testing in \cite{munoz18evaluationa} and \cite{munoz18overview}, two challenges were still unmet: 
+1) IEEE802.15.4e time-slot templates were not derived for the range of modulations to be tested in this experiment.  Therefore, if the 6TiSCH stack is to run on different modulations, OpenWSN needs to offer multi-slot-template support.
+2) OpenWSN has operated based on a single radio-driver only (the CC2538 driver for \oqpsk) . Therefore, if the 6TiSCH stack is to run on different modulations, OpenWSN needs to offer multi-driver support.
 
 % goal: multiple PHY layer
-
-\lorem \fsk \oqpsk \ofdm``FSK\_subGHz''
+To overcome those challenges, an agile PHY layer needs to be designed for OpenWSN such that any the selected radio option at the physical layer and time-slot template at the MAC layer can change while the rest of the 6TiSCH stack remains intact. 
+To this end, three modulations were selected for the experiment: \fsk, \ofdm, and \oqpsk, each representing the extremes of IEEE802.15.4g modulations as longest range, highest bit-rate, and least power consuming, respectively \cite{sotokmscale}
+However, instead of simply hard-coding the radio and MAC parameters in the OpenWSN stack to use the new driver and the respective time-slot, a future-proof "parameterized " approach is needed such tat researchers or engineers may adapt the PHY layer freely by simply supplying their slot-templates and radio-drivers as parameters to the RTOS. 
 
 % OpenWSN Extension
-
 \lorem
 
 % result: footprint
