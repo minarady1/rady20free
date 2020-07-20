@@ -114,7 +114,7 @@ Therefore, he goal of this paper is to compare the system-level performance of t
 
 % Problem statement
 
-While the 6TiSCH protocol stack offers promising performance for wire-like reliability with low power consumption, there is one assumption about 6TiSCH that remained constant for nearly two decades now: it uses the IEEE802.15.4 (2003) O-QPSK modulation in 2.4 GHz band in as its PHY layer. 
+While active research proposed various enhancements in 6TiSCH  for more wire-like reliability with low power consumption, there is one assumption about 6TiSCH that remained constant for nearly two decades: it uses the IEEE802.15.4 (2003) O-QPSK modulation in 2.4 GHz band in as its PHY layer. 
 There is no doubt that \oqpsk may be sufficient in some applications, however the increasing demands for long range connectivity for several applications (such as environmental monitoring or wireless utility metering) can only be met by considering longer range radios for the 6TiSCH PHY layer.
 A problem statement has been proposed in the Internet Engineering Task Force (IETF) detailing the theoretical challenges or side-effects of re-inventing the 6TiSCH PHY layer to include different or heterogeneous radios other than the canonical \oqpsk \cite{j.munoz18problem}. 
 Although the protocol stack layers remain separate, it is reasonable to expect, in light of this problem statement, that a change in one layer might impact the end-to-end performance as a whole. 
@@ -215,15 +215,15 @@ As a result of the conducted evaluation campaigns, three lessons have been learn
 
 % lessons learned
 \begin{itemize}
-   \item \fsk PHY allows the most number of neighbors to be discovered by mote. 
+   \item \fsk\ PHY allows the most number of neighbors to be discovered by mote. 
     It leads to the fastest network formation time with the lowest latency and lowest network depth.Yet it shortens network battery lifetime \mina{note} due to high radio duty cycle. 
     It also risks neighbor table overflow in high density deployments.
    
-   \item \oqpsk PHY allows that the least number of neighbors are discovered by a mote. 
+   \item \oqpsk\  PHY allows that the least number of neighbors are discovered by a mote. 
    It leads to the slowest network formation time, highest network depth, and effectively the highest end-to-end latency. 
    It consumes the most packet buffer on average because of storage needed to re-transmissions, leading to a higher risk of packet-buffer overflow. 
    
-   \item \ofdm, allows the discovery of a surprisingly large number of neighbors close to \fsk, despite being the highest bit-rate in the three modulations. 
+   \item \ofdm\ PHY, allows the discovery of a surprisingly large number of neighbors close to \fsk, despite being the highest bit-rate in the three modulations. 
    It shows an intermediate network formation time, end-to-end latency, packet buffer occupancy and network depth.
    Yet despite its low duty cycle, it decreases the battery lifetime of the network by more than 65\% compared to \oqpsk.
 \end{itemize}
@@ -245,7 +245,24 @@ The general architecture is that each Raspberry Pi has four OpenMote-B devices a
 
 % OpenMote and testbox
 
-\lorem
+OpenMote-B a prototyping platform for the Industrial Internet of Things (IIoT) that is an enhancement to the OpenMote+ platform \cite{tusetopenmote}. 
+As illustrated in in Fig. \ref{fig:testbox} in the left,  it features two radio chips: 
+	1) CC2538 radio offering IEEE802.15.4 (2003) O-QPSK option at the 2.4 GHz band. This radio is part of the CC2538 SoC, and 
+    2) AT86rf215 radio offering both 2.4 GHz and sub-GHz bands and the full suite of modulations options under the IEEE802.15.4g amendment (the three families of MR-FSK, MR-OFDM, and MR-O-QPSK). 
+A 2.4 GHz antenna is connected to the CC2538 radio and a sub-GHz antenna is connected to the AT86rf215 radio.
+This multi-PHY capability is the main enabler for the experiments required in this research. 
+It is built aroudn the CC2538 ARM-cortex micropreocesor, which is the same used for industrial applications as in \cite{civerchia17industrial}.
+The mote offers 32 KB of RAM and 512 KB Flash which were both sufficient for running the firmware of the 6TiSCH stack on top of OpenWSN RTOS. 
+Most importantly, it features two main debugging capabilities that enabled accurate timing configuration for the IEEE802.15.4e slot templates for several modulations:
+1) Joint Test Action Group (JTAG) port, which enables on board-debugging of firmware behavior under the new developments the radio drivers and the MAC layer as explained in section \ref{sec:openwsn}, and 
+2) Board expansion: which offered 8 pins which were indispensable for debugging. The pins were connected to a logic analyzer that allowed real-time view of the slot event triggers and synchronization accuracy.
+Finally, motes are clustered such that each 4 motes were connected to a Raspberry Pi 3B + single-board computer, Fig. \ref{fig:testbox}, right.
+Motes generate local statistics and information at run-time and forwards them via the serial port to the Raspberry PI. 
+The Raspberry PI allows a bi-directional access to the motes via an MQTT broker and over a 5 GHz WiFi band so as not to interfere with the motes in case they use the 2.4 GHz band for their operation.
+First, it allows remote boot-loading of firmware via the broker as explained in \cite{munoz19opentestbed}.
+Second, it collects the serial output of the motes and forwards it to the  broker. 
+
+
 
 \begin{figure}
 	\centering
@@ -256,7 +273,15 @@ The general architecture is that each Raspberry Pi has four OpenMote-B devices a
 
 % 42-mote deployment
 
-\lorem
+The test-bed is composed of 42 motes deployed across the floor of the EVA lab in Inria Paris as shown in Fig.\ref{fig:floorplan}.
+Boxes are distributed to cover the floor, except in room A102 where a cluster of 18 motes are placed in the same room.
+This distribution is distinct from the distribution used in \cite{brachmann19ieee} in that the nodes are distributed much less uniformly across the floor. 
+In this distribution, we aim to introduce non-uniformity akin to that of a real world setting.
+The reason is that in an industrial plant, such as in \cite{civerchia17industrial}, sensors are clustered around the locations of machines or production lines where sensor readings are needed for their predictive maintenance.
+For example, the authors of \cite{civerchia17industrial} deploy clusters of sensors around the heavy ashes water pump, seawater pumps, and evaporators. 
+The size of clusters varied from 3 wireless sensors per cluster up to 19 wireless sensors per cluster (in the case of evaporator equipment). 
+
+
 
 \begin{figure}
 	\centering
@@ -382,6 +407,7 @@ The general architecture is that each Raspberry Pi has four OpenMote-B devices a
 \end{center}
 \end{table}
 
+% plot churn in bar chart or individual charts.
 
 \begin{figure}
 	\centering
