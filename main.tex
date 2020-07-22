@@ -58,7 +58,7 @@
 
 % intro low-power wireless
 
-Low-power wireless communications have undergirded the fourth industrial revolution by means of enabling pervasive machine-to-machine communications, otherwise known as the Internet of Things.
+Low-power wireless communications have undergirded the fourth industrial revolution by means of enabling pervasive machine-to-machine communications, otherwise known as the Industrial Internet of Things (IIoT).
 The range of applications of such technologies vary from smart-building monitoring \cite{munoz18overview}, \cite{kazmi14review}, environmental monitoring \cite{munoz18evaluationa}, precision agriculture \cite{watteyne16peach}, utility meter remote reading \cite{sum17experimental}, localization of expensive equipment \cite{tanakademo}, smart grid monitoring \cite{fadel15survey} and industrial equipment monitoring for predictive maintenance \cite{civerchia17industrial}.
 Therefore, the financial value provided by such technology pour into a large array of economic sectors.
 A plethora of radio technologies have been introduced to serve the IoT communications demands in different contexts and with different features.
@@ -102,7 +102,7 @@ Most researched 6TiSCH implementations rely almost canonically on O-QPSK PHY lay
 This limits the stack performance by the limitations of the short range \oqpsk  radio and discards potential advantages of other modulations such as higher link-budget --enabling km-scale connectivity, or very high bit-rates up to 800 kbps --enabling lower radio duty cycles.
 Furthermore, there is no evidence on how the change of the PHY layer could impact the performance of the 6TiSCH network as a whole. 
 
-Therefore, he goal of this paper is to compare the system-level performance of the 6TiSCH stack on top of three PHY layers among the IEEE802.15.4g standard that are of complementary characteristics: 
+Therefore, the goal of this paper is to compare the system-level performance of the 6TiSCH stack on top of three PHY layers among the IEEE802.15.4g standard that are of complementary characteristics: 
      1) A high-frequency, high bit-rate option: O-QPSK in the 2.4 GHz band, offering a nominal bitrate of 250 kbps,
      2) A low bit-rate, low frequency option: FSK option 1 in the 868 MHz band, offering nominal bit-rate of 50 kbps, and 
      3) A high bit-rate, low frequency option: OFDM option 1  in the 868 MHz band, with Modulation and Cosing Scheme (MCS) 3, offering a nominal bit-rate of 800 kbps. 
@@ -159,9 +159,10 @@ Research in \cite{kojima15system} examines the impact of interference between tw
 Authors deploy IEEE802.15.4e MAC with multihop capability on top of each PHY layer and measure the impact of the interference between two networks, each running one PHY.
 Results are reported in terms of the degradation of throughput of each network in the presence of the other interfering network.
 
-The research in \cite{munoz18overview} runs experimental campaigns for comparative performance evaluations of two PHY layers for smart building applications: IEEE802.15.4 (2003) \oqpsk and IEEE802.15.4g MR-OFDM. 
-Although \oqpsk offers a nominal bitrate of 250 kbps, the experimental results demonstrate surprising range-test performance of MR-OFDM compared to \oqpsk even at bit-rates up to 800 kbps in the case of OFDM Option 1 MCS 3. 
-Furthermore, the paper shows that although \oqpsk consumes less power in general than \ofdm, it can lead to overall more power consumption for a successful transmission if the power consumed in re-transmissions is taken into account..  
+The research in \cite{munoz18overview} runs experimental campaigns for comparative performance evaluations of two PHY layers for smart building applications: IEEE802.15.4 (2003) \oqpsk\ and IEEE802.15.4g MR-OFDM. 
+Although \oqpsk\ offers a nominal bitrate of 250 kbps, the experimental results demonstrate surprising range-test performance of MR-OFDM compared to \oqpsk\ even at bit-rates up to 800 kbps in the case of OFDM Option 1 MCS 3. 
+Furthermore, the paper shows that although \oqpsk\ consumes less power in general than \ofdm\, it can lead to overall more power consumption for a successful transmission if the power consumed in re-transmissions is taken into account..  
+
 The research in \cite{munoz18evaluationa} is the state of the art in the performance evaluation of the totality of IEEE802.15.4g modulations.
 Authors perform exhaustive  range-testing campaigns of the 31 modulations in four scenarios that are considered the most prevalent in outdoor applications: line of sight, smart agriculture, urban canyon, and smart metering. 
 Results of the range-tests are reported in terms of PDR measurements, throughput, and electric charge consumption.
@@ -169,7 +170,7 @@ Interesting findings show that OFDM in high bit-rates reaching up to 800 kbps ca
 This finding stresses caution against the assumption that lower bit rate modulations would be more reliable or longer in range because they are just low bit-rate \textit{per se}. 
 
 Among all the work presented in this section, one common gap is present which is that the end-to-end performance of a full 6TiSCH stack remains unknown with the change of PHY layer. 
-Therefore, it is still not clear how some system-level behaviours would be impacted such as the end-to-end  PDR, end-to-end latency, network formation time, and distribution of battery lifetime of the nodes in the network.  
+Therefore, it is still not clear how system-level behaviour would be impacted such as the end-to-end  PDR, end-to-end latency, network formation time, and distribution of battery lifetime of the nodes in the network.  
 
 % 3- hybrid radio utilization
 
@@ -205,7 +206,7 @@ Precisely, the contributions of this paper are three-fold:
     The KPIs are: 
         network formation time,
         end-to-end reliability,
-        end-to-end latency, and
+        end-to-end latency, 
         estimated battery lifetime distribution in the network,
         and memory footprint.
     \item The paper shows the advantages and disadvantages of each PHY layer highlighting that not one PHY is the best across all KPIs.
@@ -221,9 +222,9 @@ As a result of the conducted evaluation campaigns, three lessons have been learn
    
    \item \oqpsk\  PHY allows that the least number of neighbors are discovered by a mote. 
    It leads to the slowest network formation time, highest network depth, and effectively the highest end-to-end latency. 
-   It consumes the most packet buffer on average because of storage needed to re-transmissions, leading to a higher risk of packet-buffer overflow. 
+   It consumes the most packet buffer on average because of storage needed for re-transmissions, leading to a higher risk of packet-buffer overflow. 
    
-   \item \ofdm\ PHY, allows the discovery of a surprisingly large number of neighbors close to \fsk, despite being the highest bit-rate in the three modulations. 
+   \item \ofdm\ PHY, allows the discovery of a number of neighbors close to \fsk, despite being the highest bit-rate in the three modulations, in with the findings in \cite{munoz18evaluationa}. 
    It shows an intermediate network formation time, end-to-end latency, packet buffer occupancy and network depth.
    Yet despite its low duty cycle, it decreases the battery lifetime of the network by more than 65\% compared to \oqpsk.
 \end{itemize}
@@ -245,7 +246,7 @@ The general architecture is that each Raspberry Pi has four OpenMote-B devices a
 
 % OpenMote and testbox
 
-OpenMote-B a prototyping platform for the Industrial Internet of Things (IIoT) that is an enhancement to the OpenMote+ platform \cite{tusetopenmote}. 
+OpenMote-B a prototyping platform for IIoT that is an enhancement to the OpenMote+ platform \cite{tusetopenmote}. 
 As illustrated in in Fig. \ref{fig:testbox} in the left,  it features two radio chips: 
 	1) CC2538 radio offering IEEE802.15.4 (2003) O-QPSK option at the 2.4 GHz band. This radio is part of the CC2538 SoC, and 
     2) AT86rf215 radio offering both 2.4 GHz and sub-GHz bands and the full suite of modulations options under the IEEE802.15.4g amendment (the three families of MR-FSK, MR-OFDM, and MR-O-QPSK). 
@@ -299,29 +300,50 @@ The size of clusters varied from 3 wireless sensors per cluster up to 19 wireles
 In efforts to enable industrial-grade low power wireless networking, the IETF has standardized the set of protocol composing what is now known as the IPv6 over the TSCH mode of IEEE802.15.4e, otherwise known as 6TiSCH \cite{vilajosana21ietf}.
 The 6tiSCH protocol stack is based on IEEE802.15.4 as its PHY and TSCH mode of IEEE802.15.4e as its MAC layer.
 Multi-hop capability is supported at the routing layer via the IPv6 routing protocol for Lower-Power and Lossy Networks (RPL). 
-Furthermore, 6LoWPAN is a adaptation layer is defined enabling the interfacing between the routing layer and the specific operations of the MAC layer such as neighbor discovery, registration, ranking, and maintenance operations that impact how routes are calculated. 
+Furthermore, 6LoWPAN is an adaptation layer for enabling the interfacing between the routing layer and the specific operations of the MAC layer such as neighbor discovery, registration, ranking, and maintenance operations that impact how routes are calculated. 
 
 % intro to OpenWSN
 
 The 6TiSCH protocol stack has been ported to two main reference architectures: OpenWSN and Contiki-NG. 
-Since this work seeks to benefor from the multi-PHY capability of OpenMote-B as explained in section \ref{sec:opentested}, OpenWSN has been selected as the reference architecture for this experiment since it has already been maintained for several boards, including OpenMote-B. 
-OpenWSN is an RTOS that allows protocol layers and applications to run side by side on top of a real-time task scheduler implemented based on the interrupt service routine of the micro-processor.
-Before the start of this research, OpenWSN was maintained for IEEE802.15.4 O-QPSK 2.4 GHZ radio. 
+Since this work seeks to benefit from the multi-PHY capability of OpenMote-B as explained in section \ref{sec:opentested}, OpenWSN has been selected as the reference architecture for this experiment since it has already been maintained for several boards, including OpenMote-B. 
+OpenWSN is an RTOS that allows protocol layers and applications to run side by side on top of a real-time task scheduler implemented based on the interrupt service routine of the microprocessor.
+Before the start of this research, OpenWSN was maintained for IEEE802.15.4 O-QPSK 2.4 GHz radio. 
 While a driver was available for the At86rf215 radio to pursue the indoor and outdoor range testing in \cite{munoz18evaluationa} and \cite{munoz18overview}, two challenges were still unmet: 
-1) IEEE802.15.4e time-slot templates were not derived for the range of modulations to be tested in this experiment.  Therefore, if the 6TiSCH stack is to run on different modulations, OpenWSN needs to offer multi-slot-template support.
-2) OpenWSN has operated based on a single radio-driver only (the CC2538 driver for \oqpsk) . Therefore, if the 6TiSCH stack is to run on different modulations, OpenWSN needs to offer multi-driver support.
+1) OpenWSN has operated based on a single radio-driver only (the CC2538 driver for \oqpsk) . Therefore, if the 6TiSCH stack is to run on different modulations, OpenWSN needs to offer multi-driver support.
+2) IEEE802.15.4e time-slot templates were not derived for the range of modulations to be tested in this experiment.  Therefore, if the 6TiSCH stack is to run on different modulations, OpenWSN needs to offer multi-slot-template support.
+
 
 % goal: multiple PHY layer
-To overcome those challenges, an agile PHY layer needs to be designed for OpenWSN such that any the selected radio option at the physical layer and time-slot template at the MAC layer can change while the rest of the 6TiSCH stack remains intact. 
-To this end, three modulations were selected for the experiment: \fsk, \ofdm, and \oqpsk, each representing the extremes of IEEE802.15.4g modulations as longest range, highest bit-rate, and least power consuming, respectively \cite{sotokmscale}
-However, instead of simply hard-coding the radio and MAC parameters in the OpenWSN stack to use the new driver and the respective time-slot, a future-proof "parameterized " approach is needed such tat researchers or engineers may adapt the PHY layer freely by simply supplying their slot-templates and radio-drivers as parameters to the RTOS. 
+To overcome those challenges, an agile PHY layer is designed for OpenWSN such that the selected radio option at the PHY layer and time-slot template at the MAC layer can change while the rest of the 6TiSCH stack remains intact. 
+For this paper, three modulations were selected for the experiment: \fsk, \ofdm, and \oqpsk, each representing the extremes of IEEE802.15.4g modulations as longest range, highest bit-rate, and least power consuming, respectively \cite{sotokmscale}
+However, instead of simply hard-coding the radio and MAC parameters in the OpenWSN stack to use the new driver and the respective time-slot, a future-proof "parameterized " approach is introduced such that researchers or engineers may adapt the PHY layer freely by simply supplying their slot-templates and radio-drivers as parameters to the RTOS. 
 
 % OpenWSN Extension
-\lorem
+To this end, OpenWSN was extended with two capabilities:
+1) A generic OpenRadio interface: this interface driver is compliant to the function calls used by the IEEE802.15.4e MAC layer. 
+In contrast to a classic driver which executes read/write operations to the radio, it contains a map of function pointers to multiple radio drivers. 
+Based on the selected radio option by the MAC layer (for example the \oqpsk on CC2538 or OFDM option 1 MCS3 868 MHz on AT86rf215), the OpenRadio driver redirects the function calls from the MAC layer to the matching function call in the CC2538 driver or AT86rf215 driver. 
+2) A time-slot template configuration: three time-slot templates were created in compliance with the IEEE802.15.4e TSCH Information Element (IE) fields.
+The templates were derived experimentally by measuring  the communication time to execute commands on the radio chips and  for  and the time on air for a complete data transaction with acknowledgement.
+AT86rf215-based options required a longer SPI communication time to be taken into account during Tx/Rx data/ack prepare events. 
+This lead to an additional increase in radio duty cycle as well as a decrease in the effective bit-rate at layer 2 due to the the SPI bottleneck at both ends of the link.
+Fig. \ref{fig:openradio} demonstrates the logic analyzer trace of a  transmission of 100B data payload with acknowledgement using the configured time slot for each template. 
+Red markers highlight the approximate the time cost of SPI communications which is negligible in CC2538 SoC radio compared to the SPI-connected At86rf215. 
+A 40 ms slot template duration is used for all options since it is the minimum for \fsk\. 
+Even though \oqpsk\and \ofdm could benefit from a smaller slot duration, a single duration is needed for fair comparison of end-to-end performance using each PHY, specially for time-sensitive metrics such as total radio duty cycle or end-to-end latency.  
+
+\begin{figure}
+	\centering
+	\includegraphics[width=0.90\columnwidth]{openradio}
+	\caption{Capture of time-slots during an acknowledged transaction for each PHY layer. Radio duty cycle is extended for FSK and OFDM due to the duration of SPI transactions.}
+    \label{fig:openradio}
+\end{figure}
 
 % result: footprint
 
-\lorem
+Finally, the footprint of the previous OpenWSN release supporting only \oqpsk\ was 42 kBytes.   
+However, the resulting OpenWSN firmware has a memory footprint of 77 kB including the OpenDriver interface, CC2538 radio driver, AT86rf215 radio driver, and the array of supported slot-templates.
+This is a low footprint compare to most systems for IIoT such as CC2538 SoC with 512KB flash. 
 
 %==============================================================================
 \section{Methodology}
@@ -329,23 +351,57 @@ However, instead of simply hard-coding the radio and MAC parameters in the OpenW
 
 % repeating 3 times
 
-\lorem
+OpenWSN is boot-loaded on the OpenTestbed three times where each time the MAC layer selected on of the three radio options in the OpenRadio driver and selected the respective slot-template duration. 
+The slot frame length is expected to be a prime number to disallow overlapping channel hopping patterns as explained in  \cite{t.watteyne15using}.
+Therefore the slot frame length is configured for 41 slots which is slightly less than the number of nodes in the network of 42 to push the system to its scheduling limits. 
+Furthermore, boot-loading is executed on all motes at the same time.
+This is expected to maximize the the number of motes trying to join the network and find the best parent at the same time, therefore pushing the network to its limit.
+Therefore, this forms a basis for confidence in the performance results as worst-case scenarios.
 
 % duration of one experiment
-
-\lorem
+After boot-loading, the DAG root is set.
+The root was chosen in room A120 which is the closest possible location to the center of the floor.
+Initial runs show all motes join the network by nearly 15 minutes at 10\% EB portion.
+A node is considered unreachable if a RPL DAO is not received within 15 minutes by the root.
+Therefore, it was decided to let the network run for 90 minutes (15x4) to ensure that motes remain reachable for a reasonable duration after the join process. 
 
 % gathering data, publishing raw results, etc.
-
-\lorem
-
+A UDP application was installed on top of the OpenWSN and was configured to push a packet every 1 minute to the 6TiSCH stack. 
+The packets contained the following data fields:
+\begin{itemize}
+\item Counter,
+\item Asynchronous Slot Number (ASN) captured at the mote the time of packet composition,
+\item Current DAG rank of the mote,
+\item Neighbor table size,
+\item Total clock tics the radio is on since the previous packet
+\item Total clock tics the radio was in transmit state since the previous packet
+\item Total clock tics passed since the previous packet , and
+\item Maximum and minimum packet buffer occupancy since the previous packet.
+\end{itemize}
+Once the root receives the packet, it appends to it the current ASN of the root and then writes the array of bytes to the serial port.
+The OpenVisualizer (OV) interface \cite{munoz19opentestbed} parses all packets forwarded from the root tags it with the timestamp and pushes it over MQTT for logging.
+The OV keeps track of all RPL DAO packets received by the root and establishes a count of all the motes that has sent a packet within the last 15 minutes and pushes the updates for logging. 
 % KPIs
 
-\lorem
+The following KPIs are selected for evaluating the network performance according to \cite{vucinic20key}:
+\begin{itemize}
+\item Network Formation Time
+\item Reliability: measured as the end-to-end PDR of the UDP packets from each mote. The root counts all missing packets between the first and last received packets from each mote. A caveat in this metric is that if packets are lost in sequence, the loss is not detected until a subsequent packet arrives. 
+\item End-to-End latency: measured as difference between ASN in the UDP packet and the ASN of the root at packet reception multiplied by the slot-duration of 40ms. 
+\item Radio duty cycle:  measured as ratio of total radio tics to the total time tics. This parameter is necessary for the estimation of the mote power consumption in idle and receive state. Current withdraw is considered approximately the same in both states for the three radio configurations.  
+\item Radio Tx duty cycle:  measured as ratio of total radio tics in transmit mode to the total time tics. This parameter is necessary for the estimation of the mote power consumption and consequently its battery life time based on the Tx power consumption of each radio chip.
+\end{itemize}
+Since the stack is expected to run on memory-constrained devices, side-effects on memory footprint are also measured in terms of two parameters :
+\begin{itemize}
+\item Maximum packet buffer occupancy: this reflects the maximum number of packets in the packet buffer between data samples.  Packet occupancy is affected by the PHY layer link quality through keeping the packet in memory for re-transmission and/or forwarding. Therefore, it reflects potential packet drop for memory limitations. 
+\item Neighbor table size: this reflects the total number of neighbors registered in the neighbor table at the time the sample is collected. This parameter is affected by PHY layer link budget because neighbors registered if a packet has been received with RSSI > -80dB. Therefore, the higher the link budget, the higher the chance that more neighbors are discovered. This parameter is significant because there is no standardized mechanism to accept any new neighbor (even if it is a "better" one) in case neighbor table is saturated -- as outlines in the IETF RFC \cite{p.thuberted.00registration}. Therefore, neighbor table overflow could avert motes from picking the best neighbor in the vicinity.
+\end{itemize}
 
 % running the experiments
 
-\lorem
+After execution of each experiment, KPIs are calculated offline from the raw data captures. 
+All experiments were executed during the night during lab vacancy to ensure that the results are from the same comparable settings. 
+This is particularly important due to the expected interference from Wi-Fi with \oqpsk\ \cite{munoz18overview}.
 
 %==============================================================================
 \section{Experimental Results}
@@ -359,11 +415,14 @@ However, instead of simply hard-coding the radio and MAC parameters in the OpenW
 
 % why is it important, define
 
-\lorem
+Network formation time  is evaluated as the time elapsed until reception of the first packet  from all motes in the network.
+It is evaluated as the Cumulative Density Function (CDF) of the time elapsed since initializing the DAG root until packet reception. 
+This parameter is relevant to reflect the expected time for network installation since in some applications such as industrial settings, installation time could come at a cost of labor and/or withholding production operations.
 
 % worst case from a contention point of view
 
-\lorem
+Since all motes are boot-loaded at the same time, this metric would reflect the worst case scenario for the network formation speed after installation. 
+
 
 % results
 
