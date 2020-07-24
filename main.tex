@@ -6,6 +6,7 @@
 \usepackage{color}
 \usepackage{xcolor}
 \usepackage{xspace}
+\usepackage{subcaption}
 \usepackage [sorting=none] {biblatex}
 \bibliography {rady20nofree}
 
@@ -351,7 +352,7 @@ This is a low footprint compare to most systems for IIoT such as CC2538 SoC with
 
 % repeating 3 times
 
-OpenWSN is boot-loaded on the OpenTestbed three times where each time the MAC layer selected on of the three radio options in the OpenRadio driver and selected the respective slot-template duration. 
+OpenWSN is boot-loaded on the OpenTestbed three times where each time the MAC layer selects one of the three radio options in the OpenRadio driver and the respective slot-template. 
 The slot frame length is expected to be a prime number to disallow overlapping channel hopping patterns as explained in  \cite{t.watteyne15using}.
 Therefore the slot frame length is configured for 41 slots which is slightly less than the number of nodes in the network of 42 to push the system to its scheduling limits. 
 Furthermore, boot-loading is executed on all motes at the same time.
@@ -386,28 +387,42 @@ The OV keeps track of all RPL DAO packets received by the root and establishes a
 The following KPIs are selected for evaluating the network performance according to \cite{vucinic20key}:
 \begin{itemize}
 \item Network Formation Time
-\item Reliability: measured as the end-to-end PDR of the UDP packets from each mote. The root counts all missing packets between the first and last received packets from each mote. A caveat in this metric is that if packets are lost in sequence, the loss is not detected until a subsequent packet arrives. 
+\item End-to-End Reliability: measured as the end-to-end PDR of the UDP packets from each mote. The root counts all missing packets between the first and last received packets from each mote. A caveat in this metric is that if packets are lost in sequence, the loss is not detected until a subsequent packet arrives. 
 \item End-to-End latency: measured as difference between ASN in the UDP packet and the ASN of the root at packet reception multiplied by the slot-duration of 40ms. 
 \item Radio duty cycle:  measured as ratio of total radio tics to the total time tics. This parameter is necessary for the estimation of the mote power consumption in idle and receive state. Current withdraw is considered approximately the same in both states for the three radio configurations.  
-\item Radio Tx duty cycle:  measured as ratio of total radio tics in transmit mode to the total time tics. This parameter is necessary for the estimation of the mote power consumption and consequently its battery life time based on the Tx power consumption of each radio chip.
 \end{itemize}
-Since the stack is expected to run on memory-constrained devices, side-effects on memory footprint are also measured in terms of two parameters :
-\begin{itemize}
-\item Maximum packet buffer occupancy: this reflects the maximum number of packets in the packet buffer between data samples.  Packet occupancy is affected by the PHY layer link quality through keeping the packet in memory for re-transmission and/or forwarding. Therefore, it reflects potential packet drop for memory limitations. 
-\item Neighbor table size: this reflects the total number of neighbors registered in the neighbor table at the time the sample is collected. This parameter is affected by PHY layer link budget because neighbors registered if a packet has been received with RSSI > -80dB. Therefore, the higher the link budget, the higher the chance that more neighbors are discovered. This parameter is significant because there is no standardized mechanism to accept any new neighbor (even if it is a "better" one) in case neighbor table is saturated -- as outlines in the IETF RFC \cite{p.thuberted.00registration}. Therefore, neighbor table overflow could avert motes from picking the best neighbor in the vicinity.
-\end{itemize}
-
 % running the experiments
 
 After execution of each experiment, KPIs are calculated offline from the raw data captures. 
 All experiments were executed during the night during lab vacancy to ensure that the results are from the same comparable settings. 
 This is particularly important due to the expected interference from Wi-Fi with \oqpsk\ \cite{munoz18overview}.
 
+The data is generally reported in three forms:
+\begin{itemize}
+    \item Time series plot: showing the median and the inter-quartile range of the KPI in the network during the experiment run with a sliding-window sampling of 3 minutes window-size and one second resolution. 
+    \item Cumulative Distribution Function (CDF): showing the cumulative distribution of all the data samples captured for the network at steady state (from minute 30 to the end), at a 100-bin resolution. This allows a fair comparison among the configurations considering all the reported samples.
+    \item Probability Distribution Function (PDF): showing the probability distribution of all the data samples at steady state at a 100-bin resolution. This allows a more detailed assessment of the distribution of each data-set. 
+\end{itemize}
 %==============================================================================
 \section{Experimental Results}
 \label{sec:results}
 
-\lorem
+This section demonstrates the results of the experiment campaigns.
+Each PHY layer offers link budget as detailed in table \ref{tab:linkbudget}. 
+Each subsection demonstrates how PHY layer properties affects the end-to-end performance results. 
+
+\begin{table}[t]
+\centering
+\caption{Link characteristics for each PHY layer}
+\begin{tabular}{|l|l|l|l|}
+\hline
+        &  Tx Power (max) & Receiver Sensitivity & Link Budget \\ \hline
+\fsk\   & +14 dBm      & -114 dBm             & 128 dB      \\ \hline
+\ofdm\  & +10 dBm      & -104 dBm             & 114 dB      \\ \hline
+\oqpsk\ & +7 dBm       & -97 dBm              & 104 dB      \\ \hline
+\end{tabular}
+\label{tab:linkbudget}
+\end{table}
 
 %------------------------------------------------------------------------------
 \subsection{Network Formation}
@@ -415,18 +430,24 @@ This is particularly important due to the expected interference from Wi-Fi with 
 
 % why is it important, define
 
-Network formation time  is evaluated as the time elapsed until reception of the first packet  from all motes in the network.
+Network formation KPI is evaluated as the time-to-first-packet  from all motes in the network.
 It is evaluated as the Cumulative Density Function (CDF) of the time elapsed since initializing the DAG root until packet reception. 
 This parameter is relevant to reflect the expected time for network installation since in some applications such as industrial settings, installation time could come at a cost of labor and/or withholding production operations.
 
 % worst case from a contention point of view
-
-Since all motes are boot-loaded at the same time, this metric would reflect the worst case scenario for the network formation speed after installation. 
-
+Network formation happens as nodes establish secure join handshakes with a synchronized member of the network.
+The speed at which the network is formed depends on whether nodes are joining gradually or joining simultaneously.
+The reason is that join requests are established via shared cells, therefore a burst of join requests to a common neighbor leads to delay in the join process based on random back-off exponent. 
+To allow a fair comparison among the three modulations, it is decided to maximize the contention in the network in a worst-case scenario by boot-loading all the motes simultaneously as explained in section \ref{sec:methodology}.
 
 % results
+It can be observed in Fig.~\ref{fig:time_firstpacket_cdf} that there is an inverse correlation between link-budget and overall network formation speed. 
+The first packet is received from  90\% of the motes within 6, 8, and 10 minutes \fsk\, \ofdm\, and\oqpsk\ respectively. 
+Even though longer range radios may lead to higher contention in shared cells, their benefit seem to outweigh this disadvantage for network formation.
+Network forms faster with higher link budget PHY layer for two reasons. First, nodes discover more neighbors and therefore can hear a synchronized node faster. Second, nodes have higher chance of finding a parent closer to the root (i.e. with lower DAG Rank), if not the root itself and this decreases the number of hops necessary for an end-to-end packet delivery.
+This leads the network to reach a steady state with 1) generally higher neighbor reach and 2) lower hops to the root. 
+This is demonstrated in the following subsections: 
 
-\lorem Fig.~\ref{fig:time_firstpacket_cdf}
 
 \begin{figure}
 	\centering
@@ -435,16 +456,91 @@ Since all motes are boot-loaded at the same time, this metric would reflect the 
     \label{fig:time_firstpacket_cdf}
 \end{figure}
 
-% settling time, steady-state   
+% settling time, steady-state  
+\subsubsection{Neighbor Reach}
+\label{sec:neighbor_reach}
+First, the direct impact of the PHY layer on neighbor reach can be observed in fig. \ref{fig:neighbors_all}. 
+It can be observed in fig. \ref{fig:neighbors_time} that the median and inter-quartile range of discovered neighbors accelerate faster in inverse correlation with link budget.
+By minute 30, an average mote has discovered slightly more than of half the network with \fsk\ and still in increase until one hour later. It can be observed that the range of \ofdm\ overlaps with \fsk\ even though it is 16 times faster in bit-rate and it is better by nearly 35\% than \oqpsk even though it is 3 times faster in bit-rate.
+Fig. \ref{fig:neighbors_cdf} verifies that observation as it demonstrates the CDF of all reports over the experiment duration. 
+This pattern conforms with the range-testing observations reported in \cite{munoz18evaluationa} and therefore verifies the reliability of the configuration. 
+The PDF in fig. \ref{fig:neighbors_pdf} demonstrates on one hand that \oqpsk\ shows two clusters of values around 14 neighbors and 25 neighbors. 
+This reflects the distribution of the network of the large cluster of motes in room A102 and the surrounding smaller clusters. 
+On the other hand, the center of the distribution for \fsk and \ofdm is nearly at 70\% and 60\% of the whole network size respectively.
 
-\begin{figure}
+Therefore lower link budget can be appropriate to use for dense deployments where motes need to discover only nearby neighbors, yet it can lead to poor degree of connectivity if the network is not of high enough density. 
+However higher link budgets lead to an improved degree of connectivity, yet with a possible risk of neighbor table overflow in case of dense deployments.
+This could lead to rejection of new neighbors even though they could be better as outlined in \cite{p.thuberted.00registration}. 
+
+
+\begin{figure*}[ht!]
 	\centering
-	\includegraphics[width=0.90\columnwidth]{aggregate_plot_reliability}
-	\caption{6TiSCH reliability performance under each radio setting in the three stages of network formation: 1) discovery and formation phase (red highlight),and 2) steady-state phase (blue highlight). Shaded curves represent the majority of the distribution (interquartile range)}
-    \label{fig:aggregate_plot_reliability}
-\end{figure}
+	\begin{subfigure}{0.6\columnwidth}
+	\centering
+	\includegraphics[width=1\columnwidth]{avg_numNeighbors_plot}
+    \subcaption{Median and inter-quartile range of measurements in the time domain }
+    \label{fig:neighbors_time}
+	\end{subfigure}
+	\begin{subfigure}{0.6\columnwidth}
+		\centering
+    	\includegraphics[width=01\columnwidth]{numNeighbors_cdf_plot_full_steady}
+    	\subcaption{CDF of  the measurements for the network at steady state }
+        \label{fig:neighbors_cdf}
+	\end{subfigure}%
+    ~ 
+	\begin{subfigure}{0.6\columnwidth}
+		\centering
+	\includegraphics[width=1\columnwidth]{numNeighbors_pdf_plot_full_steady_normalized}
+	\subcaption{PDF of  the measurements for the network at steady state }
+	\label{fig:neighbors_pdf}
+	\end{subfigure}%
 
+	\caption{Reported number of neighbors in the network. The higher the link budget, the more neighbors are discovered by the 6LoWPAN adaptation layer} 
+	\label{fig:neighbors_all}
+\end{figure*}
 
+\subsubsection{DAG root reach}
+% What does DAG rank mean and Why it means less hops? 
+Second, a higher link budget at the PHY layer leads to an improved DAG rank and shorter path to the root on average. 
+DAG rank of a node is calculated locally at the RPL stack as a function of the expected transmission count (eTx) for the links leading to the root, and it is summed at each hop.
+In the current implementation, the rank is calculated as $rank = ((3*numTx/numAck)-2)-minHopIncrease$
+ , where $minHopeIncease = 256$. 
+An important feature of the DAG rank is that it monotonically decrease as  the node approaches the DAG root, as mandated by the RPL standard \cite{t.wintered.12rpl}.
+Therefore, lower DAG ranks imply overall better path quality either in the number of hops or eTx or both. 
+
+It can be observed in fig.~\ref{fig:dagrank_time} that \fsk\ maintains, generally, the lowest DAG ranks during network formation as well as late steady state since a node has more neighbor reach as discussed in section \ref{sec:neighbor_reach}. 
+ Link budget seems to be inversely correlated with the distribution of the DAG rank in the network as observed in fig.~\ref{fig:dagrank_cdf}: \fsk\ demonstrates the highest DAGrank at steady state for 90\% of the motes as shown in, followed by \ofdm\ and \oqpsk\ respectively.
+This observation is stressed in fig.\ref{fig:dagrank_pdf} which shows that the center of the distribution of the \fsk\ is at the absolute lowest rank possible while the distributions of \ofdm\ shifts to higher ranks followed by \oqpsk\. 
+
+Therefore, higher link budget may have in enabling higher quality paths towards the root. 
+However, this creates a risk of overloading nodes with good ranks (closer to the root) with scheduling requests 
+Since these requests are established on shared cells, they may cause contention leading to energy waste and potentially packet loss -- which is exacerbated in dense deployments. .
+
+\begin{figure*}[ht!]
+	\centering
+	\begin{subfigure}{0.6\columnwidth}
+	\centering
+	\includegraphics[width=1\columnwidth]{avg_dagRank_plot}
+    \subcaption{Median and inter-quartile range of measurements in the time domain }
+    \label{fig:dagrank_time}
+	\end{subfigure}
+	\begin{subfigure}{0.6\columnwidth}
+		\centering
+    	\includegraphics[width=01\columnwidth]{dagRank_cdf_plot_full_steady}
+    	\subcaption{CDF of  the measurements for the network at steady state }
+        \label{fig:dagrank_cdf}
+	\end{subfigure}%
+    ~ 
+	\begin{subfigure}{0.6\columnwidth}
+		\centering
+	\includegraphics[width=1\columnwidth]{dagRank_pdf_plot_full_steady_normalized}
+	\subcaption{PDF of  the measurements for the network at steady state }
+	\label{fig:dagrank_pdf}
+	\end{subfigure}%
+
+	\caption{Reported DAG Ranks in the network. The higher the link budget at PHY layer, the better the DAG rank and the faster the root can be reached. } 
+	\label{fig:dagrank_all}
+\end{figure*}
 %------------------------------------------------------------------------------
 \subsection{End-to-End Reliability}
 \label{sec:reliability}
@@ -499,7 +595,33 @@ Since all motes are boot-loaded at the same time, this metric would reflect the 
 	\caption{Average end-to-end latency. Shaded curves represent the majority of the distribution - i.e. interquartile range (extracted from Fig. \ref{fig:aggregate_plot_reliability})}
     \label{fig:avg_latency_plot}
 \end{figure}
+% DagRank 
 
+\begin{figure*}[ht!]
+	\centering
+	\begin{subfigure}{0.6\columnwidth}
+	\centering
+	\includegraphics[width=1\columnwidth]{avg_dagRank_plot.png}
+    \subcaption{Median and inter-quartile range of measurements in the time domain }
+    \label{fig:dagrank_time}
+	\end{subfigure}
+	\begin{subfigure}{0.6\columnwidth}
+		\centering
+    	\includegraphics[width=01\columnwidth]{dagRank_cdf_plot_full_all}
+    	\subcaption{CDF of  the measurements for all the network run }
+        \label{fig:dagrank_cdf}
+	\end{subfigure}%
+    ~ 
+	\begin{subfigure}{0.6\columnwidth}
+		\centering
+	\includegraphics[width=1\columnwidth]{dagRank_pdf_plot_full_all_normalized}
+	\subcaption{PDF of  the measurements for all the network run }
+	\label{fig:dagRank_pdf}
+	\end{subfigure}%
+
+	\caption{Reported RPL DAG Rank in the network. The higher the link budget, the better the eTx and the less hops necessary to reach the root.} 
+	\label{fig:dagrank_all}
+\end{figure*}
 %------------------------------------------------------------------------------
 \subsection{Queue Occupancy}
 \label{sec:queue}
@@ -553,12 +675,7 @@ Since all motes are boot-loaded at the same time, this metric would reflect the 
     \label{fig:dutyCycle_cdf_plot_full}
 \end{figure}
 
-\begin{figure}
-	\centering
-	\includegraphics[width=0.90\columnwidth]{numNeighbors_cdf_plot_full}
-	\caption{CDF of number of neighbors in the network} 
-    \label{fig:numNeighbors_cdf_plot_full}
-\end{figure}
+
 
 \begin{figure}
 	\centering
