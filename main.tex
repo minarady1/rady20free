@@ -83,7 +83,7 @@ The 2.4 GHz band is usually characterized by lower link-budget and shorter range
 This makes it sufficient for small home-area networks, yet it makes it highly susceptible to interference from common technologies in the same band such as WiFi \cite{tuset-peiro19experimental}
 The sub-GHz band is usually characterized by higher link budget and longer range than the 2.4 GHz band. 
 This makes it suitable for challenging deployments such as kilometer-scale links in rural areas or complex indoor environments \cite{sotokmscale}.
-The modulations in this amendment support a wide range of bitrates as low as 25 kbps and as high as 800 kbps (in the European ISM bands)
+The modulations in this amendment support a wide range of bitrates as low as 25 kbps and as high as 800 kbps (in the European ISM bands).
 
 % capabilites of recent chips
 
@@ -287,7 +287,7 @@ The size of clusters varied from 3 wireless sensors per cluster up to 19 wireles
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.90\columnwidth]{building_motes}
+	\includegraphics[width=1\columnwidth]{building_motes}
 	\caption{Floorplan of the deployment.}
     \label{fig:floorplan}
 \end{figure}
@@ -386,10 +386,10 @@ The OV keeps track of all RPL DAO packets received by the root and establishes a
 
 The following KPIs are selected for evaluating the network performance according to \cite{vucinic20key}:
 \begin{itemize}
-\item Network Formation Time
-\item End-to-End Reliability: measured as the end-to-end PDR of the UDP packets from each mote. The root counts all missing packets between the first and last received packets from each mote. A caveat in this metric is that if packets are lost in sequence, the loss is not detected until a subsequent packet arrives. 
-\item End-to-End latency: measured as difference between ASN in the UDP packet and the ASN of the root at packet reception multiplied by the slot-duration of 40ms. 
-\item Radio duty cycle:  measured as ratio of total radio tics to the total time tics. This parameter is necessary for the estimation of the mote power consumption in idle and receive state. Current withdraw is considered approximately the same in both states for the three radio configurations.  
+\item Network Formation Time: refers to the distribution of the times of arrival of first packet from all motes in the network. 
+\item End-to-End Reliability: refers to the ratio of packets transmitted all motes to the packets delivered at the root. 
+\item End-to-End latency: refers to the time difference between the triggering of the packet generating event and the time of arrival of the packet at the root. 
+\item Radio duty cycle:  refers to the ratio of time the radio is powered on, whether in transmit, receive, or idle state.
 \end{itemize}
 % running the experiments
 
@@ -416,7 +416,7 @@ Each subsection demonstrates how PHY layer properties affects the end-to-end per
 \caption{Link characteristics for each PHY layer}
 \begin{tabular}{|l|l|l|l|}
 \hline
-        &  Tx Power (max) & Receiver Sensitivity & Link Budget \\ \hline
+        &  Tx power (max) & Rx sensitivity & Link budget \\ \hline
 \fsk\   & +14 dBm      & -114 dBm             & 128 dB      \\ \hline
 \ofdm\  & +10 dBm      & -104 dBm             & 114 dB      \\ \hline
 \oqpsk\ & +7 dBm       & -97 dBm              & 104 dB      \\ \hline
@@ -430,23 +430,22 @@ Each subsection demonstrates how PHY layer properties affects the end-to-end per
 
 % why is it important, define
 
-Network formation KPI is evaluated as the time-to-first-packet  from all motes in the network.
-It is evaluated as the Cumulative Density Function (CDF) of the time elapsed since initializing the DAG root until packet reception. 
+Network formation KPI is defined as the time-to-first-packet  from all motes in the network.
+It is evaluated as the CDF of the time elapsed since initializing the DAG root until packet reception. 
 This parameter is relevant to reflect the expected time for network installation since in some applications such as industrial settings, installation time could come at a cost of labor and/or withholding production operations.
 
 % worst case from a contention point of view
-Network formation happens as nodes establish secure join handshakes with a synchronized member of the network.
-The speed at which the network is formed depends on whether nodes are joining gradually or joining simultaneously.
+Network is formed as nodes establish secure join handshakes with a synchronized member of the network.
+The rate at which the network is formed depends on whether nodes are joining gradually or  simultaneously.
 The reason is that join requests are established via shared cells, therefore a burst of join requests to a common neighbor leads to delay in the join process based on random back-off exponent. 
 To allow a fair comparison among the three modulations, it is decided to maximize the contention in the network in a worst-case scenario by boot-loading all the motes simultaneously as explained in section \ref{sec:methodology}.
 
-% results
-It can be observed in Fig.~\ref{fig:time_firstpacket_cdf} that there is an inverse correlation between link-budget and overall network formation speed. 
-The first packet is received from  90\% of the motes within 6, 8, and 10 minutes \fsk\, \ofdm\, and\oqpsk\ respectively. 
-Even though longer range radios may lead to higher contention in shared cells, their benefit seem to outweigh this disadvantage for network formation.
-Network forms faster with higher link budget PHY layer for two reasons. First, nodes discover more neighbors and therefore can hear a synchronized node faster. Second, nodes have higher chance of finding a parent closer to the root (i.e. with lower DAG Rank), if not the root itself and this decreases the number of hops necessary for an end-to-end packet delivery.
+% results: why is it affected by link budget? 
+It can be observed in Fig.~\ref{fig:time_firstpacket_cdf} that there is an inverse correlation between link-budget and the rate of network formation. 
+The first packet is received from  90\% of the motes within 6, 8, and 10 minutes with \fsk\ , \ofdm\ , and \oqpsk\ respectively. 
+The network forms faster with higher link budget PHY layer for two reasons. First, nodes discover more neighbors and therefore  it takes less time to hear a synchronized node. Second, nodes have higher chance of finding a parent closer to the root (i.e. with lower DAG rank), if not the root itself and this decreases the number of hops necessary for an end-to-end packet delivery.
 This leads the network to reach a steady state with 1) generally higher neighbor reach and 2) lower hops to the root. 
-This is demonstrated in the following subsections: 
+This is verified in the following subsections: 
 
 
 \begin{figure}
@@ -459,21 +458,27 @@ This is demonstrated in the following subsections:
 % settling time, steady-state  
 \subsubsection{Neighbor Reach}
 \label{sec:neighbor_reach}
-First, the direct impact of the PHY layer on neighbor reach can be observed in fig. \ref{fig:neighbors_all}. 
-It can be observed in fig. \ref{fig:neighbors_time} that the median and inter-quartile range of discovered neighbors accelerate faster in inverse correlation with link budget.
-By minute 30, an average mote has discovered slightly more than of half the network with \fsk\ and still in increase until one hour later. It can be observed that the range of \ofdm\ overlaps with \fsk\ even though it is 16 times faster in bit-rate and it is better by nearly 35\% than \oqpsk even though it is 3 times faster in bit-rate.
-Fig. \ref{fig:neighbors_cdf} verifies that observation as it demonstrates the CDF of all reports over the experiment duration. 
-This pattern conforms with the range-testing observations reported in \cite{munoz18evaluationa} and therefore verifies the reliability of the configuration. 
-The PDF in fig. \ref{fig:neighbors_pdf} demonstrates on one hand that \oqpsk\ shows two clusters of values around 14 neighbors and 25 neighbors. 
-This reflects the distribution of the network of the large cluster of motes in room A102 and the surrounding smaller clusters. 
-On the other hand, the center of the distribution for \fsk and \ofdm is nearly at 70\% and 60\% of the whole network size respectively.
 
+% what does it mean
+This metric is defined as the total number of neighbors registered in the neighbor table at the time the sample is collected. 
+It is affected by PHY layer link budget because neighbors registered if a packet has been received with RSSI $> -80$dB. 
+Therefore, the higher the link budget, the higher the chance that more neighbors are discovered. 
+
+% how is it affected by link budget
+The impact of the PHY layer on neighbor reach can be observed in fig. \ref{fig:neighbors_all}: the median and inter-quartile range of discovered neighbors (fig. \ref{fig:neighbors_time}) accelerate faster in an inverse correlation with link budget.
+By minute 30, an average mote has discovered slightly more than half of the network with \fsk\ and still in increase until one hour later.
+It can be observed that the range of \ofdm\ overlaps with \fsk\ even though it is 16 times faster in bit-rate; also it is better than \oqpsk\ by nearly 35\%  even though it is 3 times faster in bit-rate. 
+This observation is verified in fig. \ref{fig:neighbors_cdf} as the CDF of all the data samples in steady state shows the inverse correlation between the number of neighbors and the link budget. 
+The PDF in fig. \ref{fig:neighbors_pdf}  shows high neighbor reach for \oqpsk\only in a dense setting: a cluster around 25 neighbors in room A102 and a cluster around 14 neighbors in nearby rooms
+
+% conclusion pros and cons
 Therefore lower link budget can be appropriate to use for dense deployments where motes need to discover only nearby neighbors, yet it can lead to poor degree of connectivity if the network is not of high enough density. 
 However higher link budgets lead to an improved degree of connectivity, yet with a possible risk of neighbor table overflow in case of dense deployments.
-This could lead to rejection of new neighbors even though they could be better as outlined in \cite{p.thuberted.00registration}. 
+This risk is significant because there is no standardized mechanism to accept any new neighbor (even if it is a "better" one) in case neighbor table is saturated -- as outlines in the IETF RFC \cite{p.thuberted.00registration}. 
 
 
-\begin{figure*}[ht!]
+
+\begin{figure*}[t]
 	\centering
 	\begin{subfigure}{0.6\columnwidth}
 	\centering
@@ -500,18 +505,20 @@ This could lead to rejection of new neighbors even though they could be better a
 \end{figure*}
 
 \subsubsection{DAG root reach}
+\label{sec:dagroot}
 % What does DAG rank mean and Why it means less hops? 
-Second, a higher link budget at the PHY layer leads to an improved DAG rank and shorter path to the root on average. 
+Second, a higher link budget at the PHY layer leads to an improved DAG rank and shorter paths to the root. 
 DAG rank of a node is calculated locally at the RPL stack as a function of the expected transmission count (eTx) for the links leading to the root, and it is summed at each hop.
-In the current implementation, the rank is calculated as $rank = ((3*numTx/numAck)-2)-minHopIncrease$
- , where $minHopeIncease = 256$. 
+In the current implementation, the rank is calculated as $rank = ((3\times numTx/numAck)-2)-minHopIncrease$, where $minHopeIncease = 256$. 
 An important feature of the DAG rank is that it monotonically decrease as  the node approaches the DAG root, as mandated by the RPL standard \cite{t.wintered.12rpl}.
 Therefore, lower DAG ranks imply overall better path quality either in the number of hops or eTx or both. 
 
-It can be observed in fig.~\ref{fig:dagrank_time} that \fsk\ maintains, generally, the lowest DAG ranks during network formation as well as late steady state since a node has more neighbor reach as discussed in section \ref{sec:neighbor_reach}. 
+% why does it improves by link budget
+It can be observed in fig.~\ref{fig:dagrank_time} that \fsk\ maintains, generally, the lowest DAG ranks during network formation as well as late steady state. 
  Link budget seems to be inversely correlated with the distribution of the DAG rank in the network as observed in fig.~\ref{fig:dagrank_cdf}: \fsk\ demonstrates the highest DAGrank at steady state for 90\% of the motes as shown in, followed by \ofdm\ and \oqpsk\ respectively.
 This observation is stressed in fig.\ref{fig:dagrank_pdf} which shows that the center of the distribution of the \fsk\ is at the absolute lowest rank possible while the distributions of \ofdm\ shifts to higher ranks followed by \oqpsk\. 
 
+% conclusion pros and cons 
 Therefore, higher link budget may have in enabling higher quality paths towards the root. 
 However, this creates a risk of overloading nodes with good ranks (closer to the root) with scheduling requests 
 Since these requests are established on shared cells, they may cause contention leading to energy waste and potentially packet loss -- which is exacerbated in dense deployments. .
@@ -544,22 +551,18 @@ Since these requests are established on shared cells, they may cause contention 
 %------------------------------------------------------------------------------
 \subsection{End-to-End Reliability}
 \label{sec:reliability}
+
+%measured as the end-to-end PDR of the UDP packets from each mote. The root counts all missing packets between the first and last received packets from each mote. A caveat in this metric is that if packets are lost in sequence, the loss is not detected until a subsequent packet arrives. 
+
 % why is it important, and how is it measured? 
-% Packet loss on shared cells. 
-% Long range lead to more neighbors which leads to discovery of better neighbors closer to the root. 
-
-% The negative side is that requires more active and strict rule for accepting neighbors, otherwise it would lead to a neighbor table buffer overflow, specially in dense networks
-
-% Short range can cause more packet loss due to lower link budget if propagation is challenging. 
-
 
 \begin{table}
  \caption {Steady-state end-to-end PDR values} \label{tab:pdr_table} 
  \begin{center}
- \begin{tabular}{||c c c c||} 
+ \begin{tabular}{|c c c c|} 
  \hline
  Radio Setting & Average & Median & Stdev \\ [0.5ex] 
- \hline\hline
+ \hline
  \fsk & 100\% & 100\% & 0 \\ 
  \hline
  \ofdm & 99,9521\% & 100\% & 0.302 \\
@@ -571,129 +574,108 @@ Since these requests are established on shared cells, they may cause contention 
 \end{center}
 \end{table}
 
-% plot churn in bar chart or individual charts.
-
-\begin{figure}
+%- Why is it affected by PHY layer? 
+\begin{figure} [h]
 	\centering
-	\includegraphics[width=0.9\columnwidth]{avg_pdr_plot.png}
-	\caption{Average end-to-end PDR. }
-    \label{fig:avg_pdr_plot}
+	\includegraphics[width=0.9\columnwidth]{pdr_pdf_plot_full_steady_normalized}
+	\caption{PDF of end-to-end PDR. }
+    \label{fig:pdf_pdr_plot}
 \end{figure} 
+
+
+% Reason 1 only OQPSK interference with WiFi (cite)
+
+%  reason 2 and packet queue overflow (show queue plot) 
+% why is this important? memory limitations, packet loss simply due to unavailable buffer space. 
+
+\begin{figure}[h]
+	\centering
+	\includegraphics[width=0.90\columnwidth]{maxBufferSize_cdf_plot_full_steady}
+	\caption{CDF of packet queue occupancy at steady state}
+    \label{fig:avg_bufferSize_plot}
+\end{figure}
+
 
 %------------------------------------------------------------------------------
 \subsection{End-to-End Latency}
 \label{sec:latency}
 
-% why is this important? information recency, alarms, logging of critical events for the reactive or preemptive measures.
-% higher link budget lead to discovery of more neighbors which leads less hops and less end to end latency.
+This is a significant KPI for IIoT since some traffic is generated by alarm events.
+In this case, they need to be detected at the root as soon as possible to minimize safety-risks or equipment damage.
+It is measured as difference between ASN in the UDP packet and the ASN of the root at packet reception multiplied by the slot-duration of 40ms. 
 
-% shorter range not only suffer from more hops but also more re-transmissions.
+The link-budget of PHY layer is in inverse correlation with the end-to-end latency as observed in fig.~\ref{fig:latency_time}.
+Furthermore, 90\% of the reports are late by nearly 20, 30, and 40 seconds for \fsk\ , \ofdm\ , and \oqpsk\ respectively, as observed in Fig.\ref{fig:latency_cdf}.
+Fig. \ref{fig:latency_pdf} shows that the latency distribution is ``wider'' at lower link budget.
+On one hand, the tail of the distribution with \oqpsk\  reaches more than 50 seconds whereas the center of the distribution is around 25 seconds.
+On the other hand, the overwhelming majority of latency reports with \fsk\ is centered around 5 seconds.
 
-\begin{figure}
-	\centering
-	\includegraphics[width=0.90\columnwidth]{avg_latency_plot}
-	\caption{Average end-to-end latency. Shaded curves represent the majority of the distribution - i.e. interquartile range (extracted from Fig. \ref{fig:aggregate_plot_reliability})}
-    \label{fig:avg_latency_plot}
-\end{figure}
-% DagRank 
+This phenomena is a directly related to the increase in path-costs in the network (expressed by the DAG rank).
+As previously demonstrated in subsection \ref{sec:dagroot}, lower link-budget leads to higher DAG rank which translates to a combination of larger-number of hops and/or re-transmission count.
+Therefore, this leads directly to an increase in end-to-end latency distribution, especially for the nodes at the absolute bottom of the routing tree. 
 
-\begin{figure*}[ht!]
+\begin{figure*}[t]
 	\centering
 	\begin{subfigure}{0.6\columnwidth}
 	\centering
-	\includegraphics[width=1\columnwidth]{avg_dagRank_plot.png}
+	\includegraphics[width=1\columnwidth]{avg_latency_plot}
     \subcaption{Median and inter-quartile range of measurements in the time domain }
-    \label{fig:dagrank_time}
+    \label{fig:latency_time}
 	\end{subfigure}
 	\begin{subfigure}{0.6\columnwidth}
 		\centering
-    	\includegraphics[width=01\columnwidth]{dagRank_cdf_plot_full_all}
+    	\includegraphics[width=01\columnwidth]{latency_cdf_plot_full_all}
     	\subcaption{CDF of  the measurements for all the network run }
-        \label{fig:dagrank_cdf}
+        \label{fig:latency_cdf}
 	\end{subfigure}%
     ~ 
 	\begin{subfigure}{0.6\columnwidth}
 		\centering
-	\includegraphics[width=1\columnwidth]{dagRank_pdf_plot_full_all_normalized}
+	\includegraphics[width=1\columnwidth]{latency_pdf_plot_full_all_normalized}
 	\subcaption{PDF of  the measurements for all the network run }
-	\label{fig:dagRank_pdf}
+	\label{fig:latency_pdf}
 	\end{subfigure}%
 
-	\caption{Reported RPL DAG Rank in the network. The higher the link budget, the better the eTx and the less hops necessary to reach the root.} 
-	\label{fig:dagrank_all}
+	\caption{Reported end-to-end latency in the network. The higher the link budget, the lower the latency in the network.} 
+	\label{fig:latency_all}
 \end{figure*}
-%------------------------------------------------------------------------------
-\subsection{Queue Occupancy}
-\label{sec:queue}
-
-
-% why is this important? memory limitations, packet loss simply due to unavailable buffer space. 
-
-% Interestingly enough, it seems that there is an inverse correlation between bit-rate and average packet buffer occupancy as seen in Fig.~\ref{fig:avg_bufferSize_plot}. 
-
-% In this setting, the packet queue buffer is of size 20 entries. 
-
-
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.90\columnwidth]{avg_bufferSize_plot}
-	\caption{Average queue occupancy (extracted from Fig. \ref{fig:aggregate_plot_reliability})}
-    \label{fig:avg_bufferSize_plot}
-\end{figure}
 
 %------------------------------------------------------------------------------
 \subsection{Battery Lifetime}
 \label{sec:battery_lifetime}
+% measured as ratio of total radio tics to the total time tics. This parameter is necessary for the estimation of the mote power consumption in idle and receive state. Current withdraw is considered approximately the same in both states for the three radio configurations.  
+
+\begin{figure*}[t]
+	\centering
+	\begin{subfigure}{0.6\columnwidth}
+	\centering
+	\includegraphics[width=1\columnwidth]{avg_avg_dutyCycle_plot}
+    \subcaption{Median and inter-quartile range of measurements in the time domain }
+    \label{fig:dutyCycle_time}
+	\end{subfigure}
+	\begin{subfigure}{0.6\columnwidth}
+		\centering
+    	\includegraphics[width=01\columnwidth]{dutyCycle_cdf_plot_full_all}
+    	\subcaption{CDF of  the measurements for all the network run }
+        \label{fig:dutyCycle_cdf}
+	\end{subfigure}%
+    ~ 
+	\begin{subfigure}{0.6\columnwidth}
+		\centering
+	\includegraphics[width=1\columnwidth]{dutyCycle_pdf_plot_full_all_normalized}
+	\subcaption{PDF of  the measurements for all the network run }
+	\label{fig:dutyCycle_pdf}
+	\end{subfigure}%
+
+	\caption{Reported radio duty cycle in the network. Lower bit-rate and SPI communications overhead leads to higher duty cycle and power consumption.} 
+	\label{fig:latency_all}
+\end{figure*}
 
 
 % why is this important? essential opex. OpEx presents a huge constraint and could lead to impractical deployment if batteries have to change too often (thesis reference)
-\begin{figure}
-	\centering
-	\includegraphics[width=0.90\columnwidth]{avg_avg_dutyCycle_plot}
-	\caption{Average duty cycle.Shaded curves represent the majority of the distribution - i.e. interquartile range. (extracted from Fig. \ref{fig:aggregate_plot_reliability})}
-    \label{fig:avg_avg_dutyCycle_plot}
-\end{figure}
-
-%------------------------------------------------------------------------------
-\subsection{Cumulative Comparison of the Results}
-\label{sec:cimulative}
 
 
 
-\begin{figure}
-	\centering
-	\includegraphics[width=0.90\columnwidth]{latency_cdf_plot_full}
-	\caption{CDF of latency in the network} 
-    \label{fig:latency_cdf_plot_full}
-\end{figure}
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.90\columnwidth]{dutyCycle_cdf_plot_full}
-	\caption{CDF of radio duty cycle in the network} 
-    \label{fig:dutyCycle_cdf_plot_full}
-\end{figure}
-
-
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.90\columnwidth]{maxBufferSize_cdf_plot_full}
-	\caption{CDF of max packet buffer occupancy in the network} 
-    \label{fig:maxBufferSize_cdf_plot_full}
-\end{figure}
-\begin{figure}
-	\centering
-	\includegraphics[width=0.90\columnwidth]{dagRank_cdf_plot_full}
-	\caption{CDF of DAG Rank in the network} 
-    \label{fig:{dagRank_cdf_plot_full}}
-\end{figure}
-
-
-
-
-\mina{mention the exact tx power levels you are using}
 \begin{table*}[t]
  \caption {Battery Life - assuming 2 AA batteries with total 3V and 4.2 wh capacity} \label{tab:energy_table} 
  \begin{center}
@@ -719,12 +701,6 @@ Since these requests are established on shared cells, they may cause contention 
 \end{table*}
 
 
-%\begin{figure}
-%	\centering
-%	\includegraphics[width=0.90\columnwidth]{avg_avg_dutyCycleTx_plot}
-%	\caption{Average transmission duty cycle}
-%   \label{fig:avg_avg_dutyCycleTx_plot}
-%\end{figure}
 
 %------------------------------------------------------------------------------
 
@@ -734,47 +710,3 @@ Since these requests are established on shared cells, they may cause contention 
 \end{document}
 
 %==============================================================================
-\section{Summary}
-
-The experiments evaluate the impact of utilization of different radio access technologies at the physical layer of the 6TiSCH stack.
-\begin{itemize}
-    \item FSK 1 in the subghz band
-    \item OFDM 1 MCS3 in the subghz band
-    \item OQPSK in the 2.4 GHz band
-\end{itemize}
-
-The stack performance is evaluated at a end-to-end looking at  KPIs relevant to an SLA for a critical infrastructure, namely:
-\begin{itemize}
-    \item Network formation time: defined as CDF of time to first packet from all connected motes within a 30 minute time span.
-    \item Reliability: defined in terms of PDR
-    \item Quality of Service: defined as traffic latency
-    \item Battery lifetime: expected lifetime with a power supply of 2 AA batteries.
-    \item Resilience: defined as combination of two metrics: PDR of connected motes and ratio of disconnected motes (i.e. motes that were once connected) after sudden total failure of 10\% of the motes in the network (fixed set). 
-\end{itemize}
-    
-Furthermore, the stack performance on top of each radio is evaluated at system-level for the following scenarios:
-\begin{itemize}
-    \item Increased traffic demand (by 300\%)
-    \item Lower Network size and density (by 50\%)
-\end{itemize}
-
-%==============================================================================
-\section{Draft outline}
-
-\begin{enumerate}
-    \item We explore the performance of the 6TiSCH stack in heterogeneous radio settings and we comment on the following aspects of the stack performance: network formation, reliability, quality of service, and power consumption. We observe the following. \item FSK leads to faster network formation (section \ref{sec:network_formation}). 
-    \item However, FSK , as robust as it is, can lead to overall lower end-to-end reliability , which is contrary to the case of OFDM (section \ref{sec:reliability}) 
-    \item Despite the lower PDR of the 6TiSCH stack in top of FSK, it shows much more end-to-end stable latency. (section \ref{sec:quality_of_service})
-    \item Shorter range radios , even though they consume less energy in principle, they have a side effect as they can lead to the occupancy of the packet memory buffer due to consistent re-transmissions. This could risk reaching buffer overflow as network traffic increases. (section \ref{sec:quality_of_service})
-    \item Furthermore, higher reliability of OFDM does not mean higher resilience. 
-    Even though OFDM shows 99.6-100\% PDR on average compared to 99.0-99.5\% average PDR for FSK, FSK shows the best resilience in terms of PDR maintenance.  
-    FSK result into a higher network degree which risks reaching limits of allocated memory buffers allocated for storage of neighbor information (section \ref{sec:resilience})
-    \item Despite the advantages of FSK for end-to-end latency and network formation speed, its power consumption present a significant drawback. Also, despite the higher bitrate of OFDM compared to OQPSK, it ends up consuming similar duty cycles (b/c of re-transmissions?) (section \ref{sec:battery_lifetime})
-\end{enumerate}
-
-\begin{figure}
-	\centering
-	\includegraphics[width=0.90\columnwidth]{avg_avg_dutyCycleTx_plot}
-	\caption{Average duty cycle. Shaded curves represent the majority of the distribution (interquartile range).}
-    \label{fig:avg_avg_dutyCycleTx_plot}
-\end{figure}
