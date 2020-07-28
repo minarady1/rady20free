@@ -63,7 +63,7 @@ $^{2}$ \quad Inria, EVA Team, 75012 Paris, France 3; thomas.watteyne@e-mail.com
 % intro low-power wireless
 
 Low-power wireless communications have undergirded the fourth industrial revolution by means of enabling pervasive machine-to-machine communications, otherwise known as the Industrial Internet of Things (IIoT).
-The range of applications of such technologies spans smart-building monitoring~\cite{munoz18overview},~\cite{kazmi14review}, environmental monitoring~\cite{munoz18evaluationa}, precision agriculture~\cite{watteyne16peacha}, utility meter remote reading~\cite{sum17experimental}, localization of expensive equipment~\cite{tanaka20blink}, smart grid monitoring~\cite{fadel15survey} and industrial equipment monitoring for predictive maintenance~\cite{civerchia17industrial}.
+The range of applications of such technologies spans smart-building monitoring~\cite{munoz18overview},~\cite{kazmi14review}, environmental monitoring~\cite{munoz18evaluationa}, precision agriculture~\cite{watteyne16peach}, utility meter remote reading~\cite{sum17experimental}, localization of expensive equipment~\cite{tanaka20blink}, smart grid monitoring~\cite{fadel15survey} and industrial equipment monitoring for predictive maintenance~\cite{civerchia17industrial}.
 Therefore, the financial value provided by such technology pour into a large array of economic sectors.
 A plethora of radio technologies have been introduced to serve the IoT communications demands in different contexts and with different features.
 For example, LoRa, a family of long range modulations, introduce a low-bitrate high link-budget modulations for battery powered devices.
@@ -96,7 +96,7 @@ As manufacturing technology advanced, chips started to offer multiple modulation
 Common examples of these systems are CC2538~\cite{datasheet_cc2538} and CC2650~\cite{datasheet_cc2650} SoCs by Texas Instruments and nRF52840~\cite{datasheet_nrf52840} by Nordic Semiconductor. 
 They are typically built around a 32-bit ARM cortex microprocessor with electrical features supporting low-power performance.
 Their radio-chip design allows the choice of modulation and frequency band by the executing program among any of the options under the IEEE802.15.4g standard. 
-The example host board used for the experiments in this paper is the OpenMote~B which features a 2.4 GHz antenna and a sub-GHz antenna~\cite{tusetopenmote}.
+The example host board used for the experiments in this paper is the OpenMote~B which features a 2.4 GHz antenna and a sub-GHz antenna~\cite{tuset16openmote}.
 
 % goal
 
@@ -249,7 +249,7 @@ The general architecture is that each Raspberry Pi has four OpenMote~B devices a
 
 % OpenMote and testbox
 
-OpenMote~B a prototyping platform for IIoT that is an enhancement to the OpenMote+ platform~\cite{tusetopenmote}. 
+OpenMote~B a prototyping platform for IIoT that is an enhancement to the OpenMote+ platform~\cite{tuset16openmote}. 
 As illustrated in in Fig.~\ref{fig:mote_ot} in the left,  it features two radio chips: 
 	1) CC2538 radio offering IEEE802.15.4 (2003) O-QPSK option at the 2.4 GHz band. This radio is part of the CC2538 SoC, and 
     2) AT86rf215 radio offering both 2.4 GHz and sub-GHz bands and the full suite of modulations options under the IEEE802.15.4g amendment (the three families of MR-FSK, MR-OFDM, and MR-O-QPSK). 
@@ -296,7 +296,7 @@ The size of clusters varied from 3 wireless sensors per cluster up to 19 wireles
 
 % intro to 6TiSCH
 
-In efforts to enable industrial-grade low power wireless networking, the IETF has standardized the set of protocol composing what is now known as the IPv6 over the TSCH mode of IEEE802.15.4e, otherwise known as 6TiSCH~\cite{vilajosana21ietf}.
+In efforts to enable industrial-grade low power wireless networking, the IETF has standardized the set of protocol composing what is now known as the IPv6 over the TSCH mode of IEEE802.15.4e, otherwise known as 6TiSCH~\cite{vilajosana19ietf}.
 The 6tiSCH protocol stack is based on IEEE802.15.4 as its PHY and TSCH mode of IEEE802.15.4e as its MAC layer.
 Multi-hop capability is supported at the routing layer via the IPv6 routing protocol for Lower-Power and Lossy Networks (RPL). 
 Furthermore, 6LoWPAN is an adaptation layer for enabling the interfacing between the routing layer and the specific operations of the MAC layer such as neighbor discovery, registration, ranking, and maintenance operations that impact how routes are calculated. 
