@@ -540,14 +540,14 @@ We display the results in three forms:
 \label{sec:results}
 
 This section summarizes our key findings, focusing on
-    network formation time (Section~\ref{sec:results_formation}),
-    end-to-end reliability (Section~\ref{sec:results_reliability}),
-    end-to-end latency (Section~\ref{sec:results_latency}), and
-    battery lifetime (Section~\ref{sec:results_lifetime}).
+    network formation time (Section~\ref{sec:res_formation}),
+    end-to-end reliability (Section~\ref{sec:res_reliability}),
+    end-to-end latency (Section~\ref{sec:res_latency}), and
+    battery lifetime (Section~\ref{sec:res_lifetime}).
 
 %------------------------------------------------------------------------------
 \subsection{Network Formation Time}
-\label{sec:results_formation}
+\label{sec:res_formation}
 
 % definition
 
@@ -633,7 +633,7 @@ Fig.~\ref{fig:dagrank_time} shows that, once the network has stabilized, it tend
 
 %------------------------------------------------------------------------------
 \subsection{End-to-End Reliability}
-\label{sec:results_reliability}
+\label{sec:res_reliability}
 
 % definition
 
@@ -657,7 +657,7 @@ We expect close to 100\% PDR in all cases (commercial TSCH implementation offer 
 % queue occupancy
 
 Besides possible bugs in our implementation, packet drop might be happening because of queue overflow.
-As shown in Section~\ref{sec:results_formation}, a lower link budget leads to higher DAG rank, and more relaying, which increases the likelihood of filling up the packet buffer and dropping packets.
+As shown in Section~\ref{sec:res_formation}, a lower link budget leads to higher DAG rank, and more relaying, which increases the likelihood of filling up the packet buffer and dropping packets.
 Fig.~\ref{fig:maxBufferSize_cdf_plot_full_steady_15} show the Cumulative Density Function of the queue occupancy values reported by the motes, in the same period corresponding to Table~\ref{tab:pdr_table}.
 Even though Table~\ref{tab:stack_params} correct indicates the packet queue can hold up to 15~packets, 5~additional entries are reserve for Enhanced Beacons and acknowledgements.
 When the number of packets in the buffer exceeds 15, addional data packets received are dropped.
@@ -673,7 +673,7 @@ When the number of packets in the buffer exceeds 15, addional data packets recei
 
 %------------------------------------------------------------------------------
 \subsection{End-to-End Latency}
-\label{sec:results_latency}
+\label{sec:res_latency}
 
 % definition
 
@@ -722,7 +722,7 @@ With an increased number of hops for lower range PHYs, is it expected for the la
 
 %------------------------------------------------------------------------------
 \subsection{Battery Lifetime}
-\label{sec:results_lifetime}
+\label{sec:res_lifetime}
 
 We have the motes report what portion of the time their radio is on (``radio duty cycle'').
 We then combine that with the current draw of the radio, the supply voltage and the energy contained in a battery to compute the battery lifetime.
@@ -789,11 +789,11 @@ Despite the range, reliability and latency advantages of \fsk and \ofdm respecti
     \centering
     \begin{tabular}{|r|r|r|r|r|}
         \hline
-                & 90\% network formation & battery lifetime & 90\% end-to-end latency  & end-to-end reliability \\
-                & (Section~\ref{sec:results_formation}) & (Section~\ref{sec:results_lifetime}) & (Section~\ref{sec:results_latency})  & (Section~\ref{sec:results_reliability}) \\ \hline
-        \fsk    &                  7~min &        1.6~years &                     10~s &               100.00\% \\ \hline
-        \ofdm   &                  9~min &        6.9~years &                     25~s &                99.84\% \\ \hline
-        \oqpsk  &                 11~min &       15.1~years &                     35~s &                98.08\% \\ \hline
+        & 90\% network formation & end-to-end reliability & 90\% end-to-end latency & battery lifetime \\
+        & (Section~\ref{sec:res_formation}) & (Section~\ref{sec:res_reliability}) & (Section~\ref{sec:res_latency}) & (Section~\ref{sec:res_lifetime}) \\ \hline
+\fsk    &                  7~min &               100.00\% &                    10~s &        1.6~years \\ \hline
+\ofdm   &                  9~min &                99.84\% &                    25~s &        6.9~years \\ \hline
+\oqpsk  &                 11~min &                98.08\% &                    35~s &       15.1~years \\ \hline
     \end{tabular}
     \caption{6TiSCH performance ranking for each setting}
     \label{tab:summary}
@@ -834,7 +834,7 @@ Therefore, this has a potential as a reasonable compromise among the advantages 
 
 %------------------------------------------------------------------------------
 \subsection{Network Formation Time}
-\label{sec:results_formation}
+\label{sec:res_formation}
 
 % definition
 
