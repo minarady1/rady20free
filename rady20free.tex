@@ -385,7 +385,7 @@ Therefore, this forms a basis for confidence in the performance results as worst
 % duration of one experiment
 
 After boot-loading, the DAG root is set.
-The root was chosen in room~A120 which is the closest possible location to the center of the floor~Fig.~\ref{fig:building_motes}.
+The root was chosen in room~A120 which is the closest possible location to the center of the floor Fig.~\ref{fig:building_motes}.
 Initial runs show all motes join the network by nearly 15~minutes at 10\% EB probability (equivalent 16~sec EB period).
 A node is considered unreachable if a RPL DAO is not received within 15~minutes by the root.
 Therefore, it was decided to let the network run for 90~minutes (15x4) to ensure that motes remain reachable for a reasonable duration after the join process. 
@@ -557,8 +557,8 @@ Therefore, lower DAG ranks imply overall better path quality either in the numbe
 % why does it improves by link budget
 
 A higher link budget at the PHY layer leads to an improved DAG rank and shorter paths to the root as it reduces the need for re-transmissions and for relaying; which leads to faster network formation
-It can be observed in fig.~\ref{fig:dagrank_time} that \fsk maintains, generally, the lowest DAG ranks during network formation as well as late steady state. 
-Link budget seems to be inversely correlated with the distribution of the DAG rank in the network as observed in fig.~\ref{fig:dagrank_cdf}: \fsk\ demonstrates the highest DAGrank at steady state for 90\% of the motes as shown in, followed by \ofdm\ and \oqpsk\ respectively.
+It can be observed in Fig.~\ref{fig:dagrank_time} that \fsk maintains, generally, the lowest DAG ranks during network formation as well as late steady state. 
+Link budget seems to be inversely correlated with the distribution of the DAG rank in the network as observed in Fig.~\ref{fig:dagrank_cdf}: \fsk\ demonstrates the highest DAGrank at steady state for 90\% of the motes as shown in, followed by \ofdm\ and \oqpsk\ respectively.
 This observation is stressed in Fig.~\ref{fig:dagrank_pdf} which shows that the center of the distribution of the \fsk is at the absolute lowest rank possible while the distributions of \ofdm\ shifts to higher ranks followed by \oqpsk. 
 
 % conclusion pros and cons 
@@ -666,7 +666,7 @@ It is measured as difference between ASN in the UDP packet and the ASN of the ro
 
 % impact of phy layer. 
 
-The link-budget of PHY layer is in inverse correlation with the end-to-end latency as observed in fig.~\ref{fig:latency_time}.
+The link-budget of PHY layer is in inverse correlation with the end-to-end latency as observed in Fig.~\ref{fig:latency_time}.
 Furthermore, 90\% of the reports are late by nearly 10, 25, and 35~seconds for \fsk\ , \ofdm\ , and \oqpsk\ respectively, as observed in Fig.~\ref{fig:latency_cdf}.
 Fig.~\ref{fig:latency_pdf} shows that the latency distribution is ``wider'' at lower link budget.
 On one hand, the tail of the distribution with \oqpsk\  reaches more than 50~seconds whereas the center of the distribution is around 25~seconds.
@@ -744,14 +744,14 @@ Three measurements are captured in the firmware: 1) total time the radio is on $
 	\label{fig:dutyCycle_all}
 \end{figure}
 
-Radio DC is calculated as: $DC=T_{on}/T_{total}$ and is shown in fig.~\ref{fig:dutyCycle_all}.
+Radio DC is calculated as: $DC=T_{on}/T_{total}$ and is shown in Fig.~\ref{fig:dutyCycle_all}.
 As expected, bit-rate is inversely correlated with DC. 
 However, the DC of \fsk\ is larger than the other two options by more than a factor of 2, even though it is slower than \oqpsk\ and \ofdm\ by factors of 5 and 8 respectively. 
 Similarly, \ofdm\ is nearly 3 times as high as  \oqpsk\ in bit-rate, yet it is sightly higher in DC.
 This observation is verified in CDF in Fig.~\ref{fig:dutyCycle_cdf} and Fig.~\ref{fig:dutyCycle_pdf} where 90\% of the motes are at nearly 0.015\% for \oqpsk\ and \ofdm\ and at 2 orders of magnitude for \fsk\. 
 This is attributed to two reasons.
-First, the higher DAG-rank distribution of \oqpsk\ and \ofdm\ -- as observed in fig.~\ref{fig:dagrank_all}-- translates to more time on air due to either re-transmissions or forwarding over longer hops or both.
-Second, execution of driver commands for \texttt{AT86rf215} requires an additional time for SPI communications overhead which reaches up to 1~ms, as demonstrated in fig~\ref{fig:openradio}.
+First, the higher DAG-rank distribution of \oqpsk\ and \ofdm\ -- as observed in Fig.~\ref{fig:dagrank_all}-- translates to more time on air due to either re-transmissions or forwarding over longer hops or both.
+Second, execution of driver commands for \texttt{AT86rf215} requires an additional time for SPI communications overhead which reaches up to 1~ms, as demonstrated in Fig.~\ref{fig:openradio}.
 
 \begin{table}
     \centering
