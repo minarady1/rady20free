@@ -137,7 +137,7 @@ The example host board used for the experiments in this paper is the OpenMote~B 
 The IPv6 Time Slotted Channel Hopping (6TiSCH) protocol stack has been  standardized by the Internet Engineering Task Force (IETF).
 The MAC layer of 6TiSCH is the IEEE802.15.4e standard allowing industrial-grade reliability.
 The PHY layer of 6TiSCH is the IEEE802.15.4 standard allowing a wide variety of selection among the aforementioned modulations supported by the standard.
-Most researched 6TiSCH implementations rely almost canonically on O-QPSK PHY layer in the 2.4 GHz band, as demonstrated by~\cite{j.munoz18problem} and~\cite{brachmann19ieee}.
+Most researched 6TiSCH implementations rely almost canonically on O-QPSK PHY layer in the 2.4 GHz band, as demonstrated by~\cite{draft-munoz-6tisch-multi-phy-nodes} and~\cite{brachmann19ieee}.
 This limits the stack performance by the limitations of the short range \oqpsk radio and discards potential advantages of other modulations such as higher link-budget --enabling km-scale connectivity, or very high bit-rates up to 800~kbps --enabling lower radio duty cycles.
 Furthermore, there is no evidence on how the change of the PHY layer could impact the performance of the 6TiSCH network as a whole. 
 
@@ -154,7 +154,7 @@ Therefore, the goal of this paper is to compare the system-level performance of 
 
 While active research proposed various enhancements in 6TiSCH  for more wire-like reliability with low power consumption, there is one assumption about 6TiSCH that remained constant for nearly two decades: it uses the IEEE802.15.4 (2003) O-QPSK modulation in 2.4 GHz band in as its PHY layer. 
 There is no doubt that \oqpsk may be sufficient in some applications, however the increasing demands for long range connectivity for several applications (such as environmental monitoring or wireless utility metering) can only be met by considering longer range radios for the 6TiSCH PHY layer~\cite{munoz18evaluationa}.
-A problem statement has been proposed in the Internet Engineering Task Force (IETF) detailing the theoretical challenges or side-effects of re-inventing the 6TiSCH PHY layer to include different or heterogeneous radios other than the canonical \oqpsk~\cite{j.munoz18problem}. 
+A problem statement has been proposed in the Internet Engineering Task Force (IETF) detailing the theoretical challenges or side-effects of re-inventing the 6TiSCH PHY layer to include different or heterogeneous radios other than the canonical \oqpsk~\cite{draft-munoz-6tisch-multi-phy-nodes}. 
 Although the protocol stack layers remain separate, it is reasonable to expect, in light of this problem statement, that a change in one layer might impact the end-to-end performance as a whole. 
 Utilization of a different PHY layer means, for example, different energy consumption and link-costs which would change how links to neighbors are evaluated at layer 2 and how routes are calculated at layer 3.
 It also means there is an expectation of more re-transmissions for high-frequency bands, more interference or collisions in shared cells for low-frequency bands~\cite{kim15hybrid}.
