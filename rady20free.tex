@@ -69,7 +69,7 @@ Therefore, it is essentially non-deterministic and the network performance depen
 % popular PHY layers
 
 Another major player in the IIoT communications market is the set of technologies under the IEEE802.15.4 family of standards which were conceived in 2003 yet extended in several amendments since then.~\cite{std_ieee802154}
-The  IEEE802.15.4e amendment defines a MAC sublayer that follows the Time-Slotted Channel Hopping (TSCH) paradigm for low-rate wireless personal area networks~\cite{12ieeea}.
+The  IEEE802.15.4e amendment defines a MAC sublayer that follows the Time-Slotted Channel Hopping (TSCH) paradigm for low-rate wireless personal area networks~\cite{std_ieee802154}.
 In contrast to a non-deterministic protocol as LoRaWAN, the TSCH paradigm is capable of providing wire-like reliability due to the strict allocation of time and frequency resources in the network based on a hashing scheme of IPv6 addresses of the nodes~\cite{t.chang206tisch}.
 By means of this allocation, transmissions occur, mostly, in dedicated combinations of time-slots and channels (also known as cells).
 This allows the mitigation of the side-effects of contention from within the network, although it does not completely remove them because a minor subset of network management transactions have to take place still in ``shared'' cells, where contention is still possible.
@@ -89,7 +89,7 @@ The modulations in this amendment support a wide range of bitrates as low as 25~
 
 Several radio chips and System-on-Chip (SoC) products have been increasingly introduced to the market in compliance with the IEEE802.15.4g standard. 
 As manufacturing technology advanced, chips started to offer multiple modulations and even multiple frequency bands depending on how their registers are configured by program running on the micro-processor.
-Common examples of these systems are CC2538~\cite{12cc2538} and CC2650~\cite{15cc2650} SoCs by Texas Instruments and nRF52840~\cite{19nrf52840} by Nordic Semiconductor. 
+Common examples of these systems are CC2538~\cite{datasheet_cc2538} and CC2650~\cite{15cc2650} SoCs by Texas Instruments and nRF52840~\cite{19nrf52840} by Nordic Semiconductor. 
 They are typically built around a 32-bit ARM cortex microprocessor with electrical features supporting low-power performance.
 Their radio-chip design allows the choice of modulation and frequency band by the executing program among any of the options under the IEEE802.15.4g standard. 
 The example host board used for the experiments in this paper is the OpenMote~B which features a 2.4 GHz antenna and a sub-GHz antenna~\cite{tusetopenmote}.
@@ -100,7 +100,7 @@ The IPv6 Time Slotted Channel Hopping (6TiSCH) protocol stack has been  standard
 The MAC layer of 6TiSCH is the IEEE802.15.4e standard allowing industrial-grade reliability.
 The PHY layer of 6TiSCH is the IEEE802.15.4 standard allowing a wide variety of selection among the aforementioned modulations supported by the standard.
 Most researched 6TiSCH implementations rely almost canonically on O-QPSK PHY layer in the 2.4 GHz band, as demonstrated by~\cite{j.munoz18problem} and~\cite{brachmann19ieee}.
-This limits the stack performance by the limitations of the short range \oqpsk  radio and discards potential advantages of other modulations such as higher link-budget --enabling km-scale connectivity, or very high bit-rates up to 800~kbps --enabling lower radio duty cycles.
+This limits the stack performance by the limitations of the short range \oqpsk radio and discards potential advantages of other modulations such as higher link-budget --enabling km-scale connectivity, or very high bit-rates up to 800~kbps --enabling lower radio duty cycles.
 Furthermore, there is no evidence on how the change of the PHY layer could impact the performance of the 6TiSCH network as a whole. 
 
 Therefore, the goal of this paper is to compare the system-level performance of the 6TiSCH stack on top of three PHY layers among the IEEE802.15.4g standard that are of complementary characteristics: 
