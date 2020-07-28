@@ -74,7 +74,7 @@ Therefore, it is essentially non-deterministic and the network performance depen
 
 Another major player in the IIoT communications market is the set of technologies under the IEEE802.15.4 family of standards which were conceived in 2003 yet extended in several amendments since then.~\cite{std_ieee802154}
 The  IEEE802.15.4e amendment defines a MAC sublayer that follows the Time-Slotted Channel Hopping (TSCH) paradigm for low-rate wireless personal area networks~\cite{std_ieee802154}.
-In contrast to a non-deterministic protocol as LoRaWAN, the TSCH paradigm is capable of providing wire-like reliability due to the strict allocation of time and frequency resources in the network based on a hashing scheme of IPv6 addresses of the nodes~\cite{t.chang206tisch}.
+In contrast to a non-deterministic protocol as LoRaWAN, the TSCH paradigm is capable of providing wire-like reliability due to the strict allocation of time and frequency resources in the network based on a hashing scheme of IPv6 addresses of the nodes~\cite{draft-ietf-6tisch-msf}.
 By means of this allocation, transmissions occur, mostly, in dedicated combinations of time-slots and channels (also known as cells).
 This allows the mitigation of the side-effects of contention from within the network, although it does not completely remove them because a minor subset of network management transactions have to take place still in ``shared'' cells, where contention is still possible.
 It allows as well mitigation of external interference through frequency-channel hopping.
@@ -86,7 +86,7 @@ While the license-free frequency bands may vary depending national regulations, 
 The 2.4 GHz band is usually characterized by lower link-budget and shorter range than the sub-GHz band (due to the higher frequency). 
 This makes it sufficient for small home-area networks, yet it makes it highly susceptible to interference from common technologies in the same band such as WiFi~\cite{tuset-peiro19experimental}
 The sub-GHz band is usually characterized by higher link budget and longer range than the 2.4 GHz band. 
-This makes it suitable for challenging deployments such as kilometer-scale links in rural areas or complex indoor environments~\cite{sotokmscale}.
+This makes it suitable for challenging deployments such as kilometer-scale links in rural areas or complex indoor environments~\cite{munoz19km}.
 The modulations in this amendment support a wide range of bitrates as low as 25~kbps and as high as 800~kbps (in the European ISM bands).
 
 % capabilites of recent chips
@@ -314,7 +314,7 @@ While a driver was available for the At86rf215 radio to pursue the indoor and ou
 % goal: multiple PHY layer
 
 To overcome those challenges, an agile PHY layer is designed for OpenWSN such that the selected radio option at the PHY layer and time-slot template at the MAC layer can change while the rest of the 6TiSCH stack remains intact. 
-For this paper, three modulations were selected for the experiment: \fsk, \ofdm, and \oqpsk, each representing the extremes of IEEE802.15.4g modulations as longest range, highest bit-rate, and least power consuming, respectively~\cite{sotokmscale}
+For this paper, three modulations were selected for the experiment: \fsk, \ofdm, and \oqpsk, each representing the extremes of IEEE802.15.4g modulations as longest range, highest bit-rate, and least power consuming, respectively~\cite{munoz19km}
 However, instead of simply hard-coding the radio and MAC parameters in the OpenWSN stack to use the new driver and the respective time-slot, a future-proof ``parameterized'' approach is introduced such that researchers or engineers may adapt the PHY layer freely by simply supplying their slot-templates and radio-drivers as parameters to the RTOS. 
 
 % OpenWSN Extension
@@ -352,7 +352,7 @@ This is a low footprint compare to most systems for IIoT such as CC2538 SoC with
 % repeating 3 times
 
 OpenWSN is boot-loaded on the OpenTestbed three times where each time the MAC layer selects one of the three radio options in the OpenRadio driver and the respective slot-template. 
-The slot frame length is expected to be a prime number to disallow overlapping channel hopping patterns as explained in~\cite{t.watteyne15using}.
+The slot frame length is expected to be a prime number to disallow overlapping channel hopping patterns as explained in~\cite{rfc7554}.
 Therefore the slot frame length is configured for 41 slots which is slightly less than the number of nodes in the network of 42 to push the system to its scheduling limits. 
 Relevant configurations of the protocol stack are presented in table~\ref{tab:stack_config}.
 Furthermore, boot-loading is executed on all motes at the same time.
@@ -510,7 +510,7 @@ The PDF in Fig.~\ref{fig:neighbors_pdf}  shows high neighbor reach for \oqpsk on
 % conclusion pros and cons
 
 Therefore, on one hand, a high link budget PHY-layer leads to faster network formation yet with a possible risk of neighbor table overflow in case of dense deployments.
-This risk is significant because there is no standardized mechanism to accept any new neighbor (even if it is a ``better'' one) in case neighbor table is saturated -- as outlines in the IETF RFC~\cite{p.thuberted.00registration}. 
+This risk is significant because there is no standardized mechanism to accept any new neighbor (even if it is a ``better'' one) in case neighbor table is saturated -- as outlines in the IETF RFC~\cite{rfc8505}. 
 On the other hand, a low link budget PHY-layer may lead to slower network formation, yet it is useful in dense deployments where motes need to discover only nearby neighbors. 
 
 \begin{figure*}
@@ -546,7 +546,7 @@ On the other hand, a low link budget PHY-layer may lead to slower network format
 
 This metric is calculated at the mote at the RPL layer as a function of the expected transmission count (eTx) for the links leading to the root, and it is summed at each hop.
 In the current implementation, the rank is calculated as $rank = ((3\times numTx/numAck)-2)-minHopIncrease$, where $minHopeIncease = 256$. 
-An important feature of the DAG rank is that it monotonically decrease as  the node approaches the DAG root, as mandated by the RPL standard~\cite{t.wintered.12rpl}.
+An important feature of the DAG rank is that it monotonically decrease as  the node approaches the DAG root, as mandated by the RPL standard~\cite{rfc6550}.
 Therefore, lower DAG ranks imply overall better path quality either in the number of hops or eTx or both. 
 
 % why does it improves by link budget
