@@ -476,7 +476,7 @@ To allow a fair comparison among the three modulations, it is decided to maximiz
 % results: why is it affected by link budget? 
 
 It can be observed in Fig.~\ref{fig:time_firstpacket_cdf} that there is an inverse correlation between link-budget and the rate of network formation. 
-The first packet is received from  90\% of the motes within 5, 7, and 9~minutes with \fsk\ , \ofdm\ , and \oqpsk\ respectively. 
+The first packet is received from  90\% of the motes within 7, 9, and 11~minutes with \fsk\ , \ofdm\ , and \oqpsk\ respectively. 
 The network forms faster with higher link budget PHY layer for two reasons. 
 First, nodes discover more neighbors and therefore  it takes less time to hear a synchronized node. 
 Second, nodes have higher chance of finding a parent closer to the root (i.e. with lower DAG rank), if not the root itself and this decreases the number of hops necessary for an end-to-end packet delivery.
@@ -785,9 +785,9 @@ This practical aspect of performance may deem a network unfit for deployment sim
     \begin{tabular}{|l|l|l|l|l|}
         \hline
                 & 90\% Network formation & Battery lifetime & 90\% Latency  &  Reliability   \\ \hline
-        \fsk\   & 5~mins                 & 580~days      & 10~secs       & 100\%             \\ \hline
-        \ofdm\  & 7~mins                 & 2522~days     & 25~secs       & 99.84\%           \\ \hline
-        \oqpsk\ & 9~mins                 & 5517~days     & 35~secs       & 98.08\%           \\ \hline
+        \fsk\   & 7~mins                 & 580~days      & 10~secs       & 100\%             \\ \hline
+        \ofdm\  & 9~mins                 & 2522~days     & 25~secs       & 99.84\%           \\ \hline
+        \oqpsk\ & 11~mins                 & 5517~days     & 35~secs       & 98.08\%           \\ \hline
     \end{tabular}
     \caption{6TiSCH performance ranking for each setting}
     \label{tab:summary}
