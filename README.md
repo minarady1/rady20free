@@ -9,7 +9,6 @@ No page limit, recommended 16.
 
 authors:
 Mina Rady, Dominique Barthel, Quentin Lampin, Thomas Watteyne
-possible additional authors: Tengfei, Youssef, Xavi
 
 
 
