@@ -24,7 +24,7 @@
 \newcommand{\dominique}[1] {\textbf{\textcolor{blue}{[Dominique] #1}}}
 \newcommand{\thomas}[1]    {\textbf{\textcolor{blue}{[Thomas] #1}}}
 
-\Title{No Free Lunch: 6TiSCH Performance on Different Modulations}
+\Title{No Free Lunch: Characterizing the Performance of 6TiSCH when using Different Physical Layers}
 
 \newcommand{\orcidauthorA}{0000-0003-2529-8272}
 \newcommand{\orcidauthorB}{0000-0002-3695-9315}
@@ -46,9 +46,21 @@
 \corres{Correspondence: mina1.rady@orange.com}
 
 \abstract{
-    \lorem
-    \lorem
-    \lorem
+The 6TiSCH protocol stack is state of the art in reliable low power communications for the Industrial Internet of Things (IIoT).
+This paper provides experimental evaluations for the end-to-end performance of 6TiSCH on top of 3 physical (PHY) layers : 
+    1) the standard 250~kbps Offset-Quadrature Phase Shift Keying (O-QPSK) at 2.4~GHz frequency band, 
+    2) 50~kbps bit-rate Frequency Shift Keying (FSK) at 868~MHz band, and 
+    3) 800~kbps bit-rate Orthogonal Frequency Division Multiplexing at 868~MHz band.
+Experiments are conducted on OpenWSN -- a reference architecture for 6TiSCH, in a setting comparable to an IIoT deployment. 
+Performance of the network on top of each PHY is evaluated in terms of 4 Key Performance Indicators (KPIs): 
+    formation time, 
+    end-to-end reliability,
+    end-to-end latency, and
+    battery lifetime. 
+Results demonstrate that the high link budget of \fsk~ lead to best formation time, reliability, and latency; yet it shorten battery life time by a factor of 10 compared to \oqpsk. 
+Alternatively, the low link budget of \oqpsk~ demonstrate slowest formation time, and least reliability, and latency performance; yet it leads to the best energy saving among the three options.
+\ofdm~ performance is a compromise between both options, although it is 3 times the bit-rate of \oqpsk; yet it shortens the battery lifetime by a factor of 5 compared to  \oqpsk. 
+Therefore, there is no single PHY layer that is best across all KPIs which motivates research in a multi-PHY 6TiSCH stack.
 }
 
 \keyword{\todo{}, \todo{}, \todo{}.}
@@ -59,46 +71,79 @@
 \section{Introduction}
 \label{sec:introduction}
 
-% intro low-power wireless
+% low-power wireless use cases
 
-Low-power wireless communications have undergirded the fourth industrial revolution by means of enabling pervasive machine-to-machine communications, otherwise known as the Industrial Internet of Things (IIoT).
-The range of applications of such technologies spans smart-building monitoring~\cite{munoz18overview},~\cite{kazmi14review}, environmental monitoring~\cite{munoz18evaluationa}, precision agriculture~\cite{watteyne16peach}, utility meter remote reading~\cite{sum17experimental}, localization of expensive equipment~\cite{tanaka20blink}, smart grid monitoring~\cite{fadel15survey} and industrial equipment monitoring for predictive maintenance~\cite{civerchia17industrial}.
-Therefore, the financial value provided by such technology pour into a large array of economic sectors.
-A plethora of radio technologies have been introduced to serve the IoT communications demands in different contexts and with different features.
-For example, LoRa, a family of long range modulations, introduce a low-bitrate high link-budget modulations for battery powered devices.
-LoRaWAN architecture is a star-based topology and it operates largely in class A which is an Aloha-based Medium Access Control (MAC).
-Therefore, it is essentially non-deterministic and the network performance depends heavily on the level of contention in the medium~\cite{adelantado17understanding}.
+Applications for low-power wireless technology are numerous, including
+    smart building~\cite{munoz18overview,kazmi14review},
+    environmental monitoring~\cite{munoz18evaluationa},
+    precision agriculture~\cite{watteyne16peach},
+    automated meter reading~\cite{sum17experimental},
+    indoor localization~\cite{tanaka20blink},
+    smart grid~\cite{fadel15survey} and
+    predictive maintenance~\cite{civerchia17industrial}.
 
-% popular PHY layers
+% PHY layers
 
-Another major player in the IIoT communications market is the set of technologies under the IEEE802.15.4 family of standards which were conceived in 2003 yet extended in several amendments since then.~\cite{std_ieee802154}
-The  IEEE802.15.4e amendment defines a MAC sublayer that follows the Time-Slotted Channel Hopping (TSCH) paradigm for low-rate wireless personal area networks~\cite{std_ieee802154}.
+\todo{LoRa~\cite{adelantado17understanding}?}
+
+Several physical layers (PHYs) exist, each finding a different trade off between
+    energy consumption,
+    datarate and
+    range.
+One particularly interesting development in low-power wireless is the standardization in 2016 of the IEEE802.15.4g amendment~\cite{std_ieee802154g}, which defines additional PHY layer for the older IEEE802.15.4 standard~\cite{std_ieee802154}.
+IEEE802.15.4g defines PHY specifications initially for smart metering utility networks.
+IEEE802.15.4g defines
+    three families of modulations (Frequency Shift Keying -- FSK,  Offset Quadrature Phase-Shift Keying -- O-QPSK, Orthogonal Frequency Division Multiplexing -- OFDM),
+    data rate ranging from 25~kbps to 800~kbps, and
+    two frequency bands (sun-GHz and 2.4~GHz).
+These options result in a large set of combinations to address a wide variety of applications, from
+    small home installations~\cite{tuset19experimental} to
+    kilometer-scale smart agriculture deployments~\cite{munoz19km}.
+In the remainder of this article, we call a ``PHY'' a radio configuration, consisting of
+    a modulation,
+    a data rate and
+    a frequency band.
+
+% typical approach
+
+A traditional approach to having this array of choices is to
+    characterize each PHY,
+    select the one that best corresponds to the application, and
+    build a network solution using that PHY.
+Two elements allow for a more dynamic approach:
+    technology-agile radio chips and
+    TSCH.
+
+% technology-agile radio chips
+
+As the processes used in Integrated Circuits advance, chip manufacturers add more features into their products for the same die size,
+    maintaining low-power operation and
+    competitive pricing.
+System-on-Chip (SoC), such as Texas Instruments' CC2538~\cite{datasheet_cc2538}, which combine a micro-controller and a radio in the same die are now commonplace.
+Advanced SoC such as the Texas Instruments' CC2650~\cite{datasheet_cc2650} contain a co-processor which, combined with a 2.4~GHz front-end, implements either the Bluetooth Low Energy (BLE) standards.
+And while the CC2650 requires that co-processor to be reprogrammed to switch from one to another,
+    the newer nRF52840~\cite{datasheet_nrf52840} from Nordic Semiconductor allow switching between these standards on a frame-by-frame basis.
+The AT86RF215 from Atmel arguably goes one step further in that it implements the entire set of modulations, data rates and frequency band defined in the IEEE802.15.4 standard.
+Using such technology-agile radio chips opens up many possibilities to dynamically match the PHY used to the application.
+
+% TSCH
+
+While early low-power wireless networks used contention-based approach,
+    Time Synchronized Channel Hopping (TSCH), initially developed for industrial applications,
+    is now supported by many commercial products and open-source implementations~\cite{watteyne16industrial}.
+In a TSCH network, time is cut into timeslots and a schedule orchestrates all communication;
+    it indicates to every node what to in each timeslot: transmit, listen or sleep.
+
+
+The IEEE802.15.4e amendment defines a MAC sublayer that follows the Time-Slotted Channel Hopping (TSCH) paradigm for low-rate wireless personal area networks~\cite{std_ieee802154}.
 In contrast to a non-deterministic protocol as LoRaWAN, the TSCH paradigm is capable of providing wire-like reliability due to the strict allocation of time and frequency resources in the network based on a hashing scheme of IPv6 addresses of the nodes~\cite{draft-ietf-6tisch-msf}.
 By means of this allocation, transmissions occur, mostly, in dedicated combinations of time-slots and channels (also known as cells).
 This allows the mitigation of the side-effects of contention from within the network, although it does not completely remove them because a minor subset of network management transactions have to take place still in ``shared'' cells, where contention is still possible.
 It allows as well mitigation of external interference through frequency-channel hopping.
 
-The IEEE802.15.4g amendment defines physical layer specifications for low-data-rate, wireless, smart metering utility networks~\cite{std_ieee802154g}.
-This amendment was rolled into the 2016 edition of the IEEE802.15.4 standard, which includes the following three families of multi-rate and multi-regional (MR) modulations: 1) Frequency Shift Keying (MR-FSK), 2) offset quadrature phase-shift keying (MR-O-QPSK), and 3) orthogonal frequency division multiplexing (MR-OFDM).
-Furthermore, several frequency bands are defined as part of the standard as common communication ``channels'' in the license-free bands.
-While the license-free frequency bands may vary depending national regulations, they are usually split into two main categories: the 2.4 GHz band and the sub-GHz band. 
-The 2.4 GHz band is usually characterized by lower link-budget and shorter range than the sub-GHz band (due to the higher frequency). 
-This makes it sufficient for small home-area networks, yet it makes it highly susceptible to interference from common technologies in the same band such as WiFi~\cite{tuset19experimental}
-The sub-GHz band is usually characterized by higher link budget and longer range than the 2.4 GHz band. 
-This makes it suitable for challenging deployments such as kilometer-scale links in rural areas or complex indoor environments~\cite{munoz19km}.
-The modulations in this amendment support a wide range of bitrates as low as 25~kbps and as high as 800~kbps (in the European ISM bands).
-
-% capabilites of recent chips
-
-Several radio chips and System-on-Chip (SoC) products have been increasingly introduced to the market in compliance with the IEEE802.15.4g standard. 
-As manufacturing technology advanced, chips started to offer multiple modulations and even multiple frequency bands depending on how their registers are configured by program running on the micro-processor.
-Common examples of these systems are CC2538~\cite{datasheet_cc2538} and CC2650~\cite{datasheet_cc2650} SoCs by Texas Instruments and nRF52840~\cite{datasheet_nrf52840} by Nordic Semiconductor. 
-They are typically built around a 32-bit ARM cortex microprocessor with electrical features supporting low-power performance.
-Their radio-chip design allows the choice of modulation and frequency band by the executing program among any of the options under the IEEE802.15.4g standard. 
-The example host board used for the experiments in this paper is the OpenMote~B which features a 2.4 GHz antenna and a sub-GHz antenna~\cite{tuset16openmote}.
-
 % goal
 
+The example host board used for the experiments in this paper is the OpenMote~B which features a 2.4 GHz antenna and a sub-GHz antenna~\cite{tuset16openmote}.
 The IPv6 Time Slotted Channel Hopping (6TiSCH) protocol stack has been  standardized by the Internet Engineering Task Force (IETF).
 The MAC layer of 6TiSCH is the IEEE802.15.4e standard allowing industrial-grade reliability.
 The PHY layer of 6TiSCH is the IEEE802.15.4 standard allowing a wide variety of selection among the aforementioned modulations supported by the standard.
@@ -230,7 +275,7 @@ As a result of the conducted evaluation campaigns, three lessons have been learn
 The remainder of this article is organized as follows.
     Section~\ref{sec:opentested} introduces the testbed used for the experimental campaigns of this paper.
     Section~\ref{sec:openwsn} introduces the agile extension to the OpenWSN PHY-layer that enabled this research.
-https://www.overleaf.com/project/5e99476cb8ddc80001a31015    Section~\ref{sec:methodology} introduces the methodology of the experiments including the used metrics and KPIs.
+    Section~\ref{sec:methodology} introduces the methodology of the experiments including the used metrics and KPIs.
     Section~\ref{sec:results} demonstrates the experiment results and KPI evaluations.
     Finally, section~\ref{sec:discussion} provides insights and conclusions based on the results. 
 
@@ -771,7 +816,7 @@ Second, execution of driver commands for \texttt{AT86rf215} requires an addition
 Radio power consumption in both Tx and Rx states is noted in table \ref{tab:energy_table}.
 Since $T_{tx}$ and $T_{on}$ are known, $T_{rx}$ is estimated as $T_{on}-T_{rx}$.
 Then $DC_{tx}=T_{tx}/T_{total}$ and $DC_{rx}=T_{rx}/T_{total}$.
-Assuming two AA batteries with total 8.2 wh capacity, the battery lifetime of each configuration is estimated in table \ref{tab:energy_table}.
+Assuming two AA batteries with total 8.2~wh capacity, the battery lifetime of each configuration is estimated in table \ref{tab:energy_table}.
 It is observed that \oqpsk\ extends the battery life by nearly a factor of 5 more than \ofdm\ and by nearly a factor of 10  more than \fsk\ .
 Therefore, despite the demonstrated range, reliability, and latency advantages of \fsk\ and \ofdm\ respectively, their utilization leads to incurred significant network OpEx (as well as environmental bulk battery waste).
 This practical aspect of performance may deem a network unfit for deployment simply for budget reasons, even though it is highly reliable. 
