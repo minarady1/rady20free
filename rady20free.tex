@@ -361,25 +361,25 @@ Furthermore, boot-loading is executed on all motes at the same time.
 This is expected to maximize the the number of motes trying to join the network and find the best parent at the same time, therefore pushing the network to its limit.
 Therefore, this forms a basis for confidence in the performance results as worst-case 
 
-\begin{table}[]
-\centering
-\begin{tabular}{|l|l|}
-\hline
-Parameter                           & Value \\ \hline
-Application traffic rate            & 60~s  \\
-RPL DIO period                      & 10~s  \\
-RPL DAO period                      & 60~s  \\
-Max neighbors                       & 45    \\
-Standard packet queue size          & 15    \\
-TSCH Slot-frame length              & 41    \\
-Slot duration                       & 40~ms \\
-EB probability                      & 0.1   \\
-Radio channels                      & 16    \\
-New neighbor RSSI threshold         & -80~dB \\
-Max re-transmissions                & 15    \\ \hline
-\end{tabular}
-\caption{Protocol stack configuration}
-\label{tab:stack_config}
+\begin{table}
+    \centering
+    \begin{tabular}{|l|l|}
+        \hline
+        Parameter                           & Value  \\ \hline
+        Application traffic rate            & 60~s   \\
+        RPL DIO period                      & 10~s   \\
+        RPL DAO period                      & 60~s   \\
+        Max neighbors                       & 45     \\
+        Standard packet queue size          & 15     \\
+        TSCH Slot-frame length              & 41     \\
+        Slot duration                       & 40~ms  \\
+        EB probability                      & 0.1    \\
+        Radio channels                      & 16     \\
+        New neighbor RSSI threshold         & -80~dB \\
+        Max re-transmissions                & 15     \\ \hline
+    \end{tabular}
+    \caption{Protocol stack configuration}
+    \label{tab:stack_config}
 \end{table}
 
 % duration of one experiment
@@ -428,6 +428,7 @@ All experiments were executed during lab vacancy to ensure that the results are 
 This is particularly important due to the expected interference from Wi-Fi with \oqpsk\ as shown in~\cite{munoz18overview}.
 
 The data is generally reported in three forms:
+
 \begin{itemize}
     \item Time series plot: showing the mean and the inter-quartile range of the KPI in the network during the experiment run with a sliding-window sampling of 3~minutes window-size and one second resolution. 
     \item Cumulative Distribution Function (CDF): showing the cumulative distribution of all the data samples captured for the network at steady state (from minute 30 to the end), at a 100-bin resolution. This allows a fair comparison among the configurations considering all the reported samples.
@@ -442,17 +443,17 @@ This section demonstrates the results of the experiment campaigns.
 Each PHY layer offers link budget as detailed in table \ref{tab:linkbudget}. 
 Each subsection demonstrates how PHY layer properties affect the end-to-end performance results. 
 
-\begin{table}[t]
-\centering
-\caption{Link characteristics for each PHY layer}
-\begin{tabular}{|l|l|l|l|}
-\hline
-        &  Tx power (max) & Rx sensitivity & Link budget \\ \hline
-\fsk\   & +14~dBm      & -114~dBm             & 128~dB      \\ \hline
-\ofdm\  & +10~dBm      & -104~dBm             & 114~dB      \\ \hline
-\oqpsk\ & +7~dBm       & -97~dBm              & 104~dB      \\ \hline
-\end{tabular}
-\label{tab:linkbudget}
+\begin{table}
+    \centering
+    \begin{tabular}{|l|l|l|l|}
+        \hline
+                & Tx power (max) & Rx sensitivity & Link budget \\ \hline
+        \fsk\   & +14~dBm        & -114~dBm       & 128~dB      \\ \hline
+        \ofdm\  & +10~dBm        & -104~dBm       & 114~dB      \\ \hline
+        \oqpsk\ & +7~dBm         & -97~dBm        & 104~dB      \\ \hline
+    \end{tabular}
+    \caption{Link characteristics for each PHY layer.}
+    \label{tab:linkbudget}
 \end{table}
 
 %------------------------------------------------------------------------------
@@ -482,7 +483,6 @@ Second, nodes have higher chance of finding a parent closer to the root (i.e. wi
 This leads the network to reach a steady state with 1) generally higher neighbor reach and 2) lower hops to the root. 
 This is verified in the following subsections.
 
-
 \begin{figure}
 	\centering
 	\includegraphics[width=0.45\columnwidth]{time_firstpacket_cdf}
@@ -492,6 +492,7 @@ This is verified in the following subsections.
 
 % settling time, steady-state  
 
+% - - - - - - - - - - - - - -
 \subsubsection{Neighbor Reach}
 \label{sec:neighbor_reach}
 
@@ -542,6 +543,7 @@ On the other hand, a low link budget PHY-layer may lead to slower network format
 	\label{fig:neighbors_all}
 \end{figure}
 
+% - - - - - - - - - - - - - -
 \subsubsection{DAG root reach}
 \label{sec:dagroot}
 
@@ -564,7 +566,7 @@ This observation is stressed in Fig.~\ref{fig:dagrank_pdf} which shows that the 
 Therefore, a higher link budget PHY-layer leads to improved DAG ranks and faster network formation, yet it creates a risk of overloading nodes with good DAG ranks (closer to the root) with scheduling requests 
 Since these requests are established on shared cells, they may cause contention leading to energy waste and potentially packet loss -- which is exacerbated in dense deployments.
 
-\begin{figure*}
+\begin{figure}
 	\centering
 	\begin{subfigure}{0.49\columnwidth}
     	\centering
@@ -589,7 +591,8 @@ Since these requests are established on shared cells, they may cause contention 
 	    The higher the link budget at PHY layer, the better the DAG rank and the faster the root can be reached.
 	} 
 	\label{fig:dagrank_all}
-\end{figure*}
+\end{figure}
+
 %------------------------------------------------------------------------------
 \subsection{End-to-End Reliability}
 \label{sec:reliability}
@@ -608,18 +611,18 @@ In this case, it may not be able to forward the packets while the negotiation is
 In this case, the packet is not lost necessarily since the mote would keep it in the buffer until a schedule is negotiated with the parent. 
 However, this factor is reported for accuracy but will not be addressed in the scope of reliability since it reflects the impact of contention and not necessarily the total loss of packets; alternatively, the focus is on the end-to-end PDR. 
 
-\begin{table*}[]
-\centering
-\begin{tabular}{|l|l|l|l|l|l|l|}
-\hline
-        & Average & Median & Min     & Max   & StDev & Active motes \\ \hline
-\fsk\   & 100\%   & 100\%  & 100\%   & 100\% & 0     & 92.8\%     \\ \hline
-\ofdm\  & 99.84\% & 100\%  & 93.75\% & 100\% & 0.9\% & 100\%      \\ \hline
-\oqpsk\ & 98.08\% & 100\%  & 73.3\%  & 100\% & 6\%   & 97.6\%     \\ \hline
-\end{tabular}
-\caption{Steady-state end-to-end PDR values}
-\label{tab:pdr_table}
-\end{table*}
+\begin{table}
+    \centering
+    \begin{tabular}{|l|l|l|l|l|l|l|}
+        \hline
+                & Average & Median & Min     & Max   & StDev & Active motes \\ \hline
+        \fsk\   & 100\%   & 100\%  & 100\%   & 100\% & 0     & 92.8\%       \\ \hline
+        \ofdm\  & 99.84\% & 100\%  & 93.75\% & 100\% & 0.9\% & 100\%        \\ \hline
+        \oqpsk\ & 98.08\% & 100\%  & 73.3\%  & 100\% & 6\%   & 97.6\%       \\ \hline
+    \end{tabular}
+    \caption{Steady-state end-to-end PDR values}
+    \label{tab:pdr_table}
+\end{table}
 
 % Results, there is PDR
 
@@ -676,7 +679,7 @@ As previously demonstrated in subsection \ref{sec:dagroot}, lower link-budget le
 This leads to an increase in end-to-end latency distribution, especially for the nodes at the absolute bottom of the routing tree. 
 Therefore, at higher link budget at the PHY-layer, the distribution of the end-to-end latency is improved for the network.
 
-\begin{figure*}
+\begin{figure}
 	\centering
 	\begin{subfigure}{0.49\columnwidth}
     	\centering
@@ -701,7 +704,7 @@ Therefore, at higher link budget at the PHY-layer, the distribution of the end-t
 	    The higher the link budget, the lower the latency in the network.
 	}
 	\label{fig:latency_all}
-\end{figure*}
+\end{figure}
 
 %------------------------------------------------------------------------------
 \subsection{Battery Lifetime}
@@ -714,7 +717,7 @@ The OpEx includes battery costs as well as the labor cost, which could be signif
 It is calculated based on the radio DC and the radio power consumption in transmit and receive states. 
 Three measurements are captured in the firmware: 1) total time the radio is on $T_{on}$, 2) and total time the radio is in transmit state $T_{tx}$ , and 3) the total time the network is running $T_{total}$. 
 
-\begin{figure*}
+\begin{figure}
 	\centering
 	\begin{subfigure}{0.49\columnwidth}
     	\centering
@@ -739,7 +742,7 @@ Three measurements are captured in the firmware: 1) total time the radio is on $
 	    Lower bit-rate and SPI communications overhead leads to higher duty cycle and power consumption.
 	}
 	\label{fig:dutyCycle_all}
-\end{figure*}
+\end{figure}
 
 Radio DC is calculated as: $DC=T_{on}/T_{total}$ and is shown in fig.~\ref{fig:dutyCycle_all}.
 As expected, bit-rate is inversely correlated with DC. 
@@ -750,18 +753,18 @@ This is attributed to two reasons.
 First, the higher DAG-rank distribution of \oqpsk\ and \ofdm\ -- as observed in fig.~\ref{fig:dagrank_all}-- translates to more time on air due to either re-transmissions or forwarding over longer hops or both.
 Second, execution of driver commands for \texttt{AT86rf215} requires an additional time for SPI communications overhead which reaches up to 1~ms, as demonstrated in fig~\ref{fig:openradio}.
 
-\begin{table*}[]
-\centering
-\begin{tabular}{|l|l|l|l|l|l|l|l|l|}
-\hline
-        & DC     & $DC_{tx}$ & $DC_{rx}$ & $P_{tx}^{max}$ (w) & $P_{rx}^{max}$(w) & Supply voltage (v) & Energy per day (wh) & \textbf{Estimated days} \\ \hline
-\fsk\   & 0.021  & 0.0025    & 0.0185    & 62             & 28             & 2.5            & 0.0141174           & 580.8435       \\ \hline
-\ofdm\  & 0.0075 & 0.000375  & 0.007125  & 62             & 28             & 2.5            & 0.00325035          & 2522.805       \\ \hline
-\oqpsk\ & 0.0065 & 0.0005    & 0.006     & 24             & 20             & 3              & 0.00148608          & 5517.873       \\ \hline
-\end{tabular}
-\caption{Battery lifetime for each configuration}
-\label{tab:energy_table}
-\end{table*}
+\begin{table}
+    \centering
+    \begin{tabular}{|l|l|l|l|l|l|l|l|l|}
+        \hline
+                & DC     & $DC_{tx}$ & $DC_{rx}$ & $P_{tx}^{max}$ (w) & $P_{rx}^{max}$(w) & Supply voltage (v) & Energy per day (wh) & \textbf{Estimated days} \\ \hline
+        \fsk\   & 0.021  & 0.0025    & 0.0185    & 62             & 28             & 2.5            & 0.0141174           & 580.8435       \\ \hline
+        \ofdm\  & 0.0075 & 0.000375  & 0.007125  & 62             & 28             & 2.5            & 0.00325035          & 2522.805       \\ \hline
+        \oqpsk\ & 0.0065 & 0.0005    & 0.006     & 24             & 20             & 3              & 0.00148608          & 5517.873       \\ \hline
+    \end{tabular}
+    \caption{Battery lifetime for each configuration}
+    \label{tab:energy_table}
+\end{table}
 
 % OpEx reasons. 
 
@@ -777,7 +780,7 @@ This practical aspect of performance may deem a network unfit for deployment sim
 \section{Discussion}
 \label{sec:discussion}
 
-\begin{table*}[]
+\begin{table*}
     \centering
     \begin{tabular}{|l|l|l|l|l|}
         \hline
