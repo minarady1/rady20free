@@ -1,16 +1,6 @@
-No Free Lunch: 6TiSCH Performance on Different Modulations
-. Mina Rady, Dominique Barthel, Quentin Lampin, Thomas Watteyne. MDPI Sensors, to appear in 2020.
+No Free Lunch: 6TiSCH Performance on Different Modulations. Mina Rady, Dominique Barthel, Quentin Lampin, Thomas Watteyne. MDPI Sensors, to appear in 2020.
 
-============================================
-
-title:
-No Free Lunch: 6TiSCH Performance on Different Modulations
-No page limit, recommended 16. 
-
-authors:
-Mina Rady, Dominique Barthel, Quentin Lampin, Thomas Watteyne
-
-
+Page limit: 16
 
 =============================================
 
