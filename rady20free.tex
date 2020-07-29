@@ -54,9 +54,9 @@
     Given such a set of constraints which physical layer should I be using?
     We study this question in the context of 6TiSCH, a state-of-the-art recently standardized protocol stack developed for harsh industrial applications.
     Specifically, we augment OpenWSN, the reference 6TiSCH open-source implementation, to support one of three physical layers from the IEEE802.15.4g standard:
-        \fsk   which offers long range,
-        \ofdm  which offers high data rate, and
-        \oqpsk which offers more balanced performance.
+        \fsk\   which offers long range,
+        \ofdm\   which offers high data rate, and
+        \oqpsk\ which offers more balanced performance.
     We run the result firmware on the 42-mote OpenTestbed deployed in an office environment, once for each physical layer.
     Performance results show that, indeed, no physical outperforms the other all metrics.
     This article argues for combining the physical layers, rather than choosing one, in a generalized 6TiSCH architecture in which technology-agile radio chips (or which there are now many) are driven by a protocol stack which chooses the most appropriate physical layer on a frame-by-frame basis.
@@ -151,13 +151,13 @@ The goal of this article is to get one step closer to this vision by comparing t
 This is a necessary first step towards dynamically changing the PHY layer,
     the object of our future research.
 Specifically, we augment the OpenWSN reference 6TiSCH implementation to support the following three PHYs:
-    \oqpsk at 250~kbps,
-    \fsk option 1 at 50~kbps,
-    \ofdm option 1 MCS 3 at 800~kbps.
+    \oqpsk\ at 250~kbps,
+    \fsk\ option 1 at 50~kbps,
+    \ofdm\  option 1 MCS 3 at 800~kbps.
 The literature indicates that these three PHYs cover the range of possibilities of IEEE802.15.4g:
     very high data rate with \ofdm,
     very long range with \fsk,
-    \oqpsk being a balance between range and data rate~\cite{munoz19km,draft-munoz-6tisch-multi-phy-nodes,brachmann19ieee}.
+    \oqpsk\ being a balance between range and data rate~\cite{munoz19km,draft-munoz-6tisch-multi-phy-nodes,brachmann19ieee}.
 We then conduct a comprehensive experimental campaign on the OpenTestbed, a 42-node testbed of OpenMote~B boards~\cite{tuset16openmote}, a platform which features the AT86RF215 and CC2538 chips.
 We compare the performance of the network in terms of
     network formation time,
@@ -205,8 +205,8 @@ They also propose a stable link quality metric and a simplified method for sched
 Ben Yaala~\etal~\cite{benyaala16performance} evaluate the performance of the 6TiSCH stack in co-located networks.
 They consider both cases where the coexisting 6TiSCH networks are either synchronized or un-synchronized.
 
-In all of thise related work, the PHY used is IEEE802.15.4 \oqpsk.
-Sum~\etal~\cite{sum17experimental} are the exception, as they provide an experimental evaluation of IEEE802.15.4e Time Slotted Channel Hopping MAC based on IEEE802.15.4g \fsk radio.
+In all of these related work, the PHY used is IEEE802.15.4 \oqpsk.
+Sum~\etal~\cite{sum17experimental} are the exception, as they provide an experimental evaluation of IEEE802.15.4e Time Slotted Channel Hopping MAC based on IEEE802.15.4g \fsk\ radio.
 The experiments report range and performance testing results in terms of PDR and PER in four situations:
     LOS conditions,
     NLOS conditions,
@@ -222,9 +222,10 @@ Some related work evaluate the performance of IEEE802.15.4g PHYs.
 Kojima~\etal~\cite{kojima15system} examine the impact of interference between MR-FSK mode 2 and MR-OFDM option 4 MCS 3. 
 Authors deploy IEEE802.15.4e MAC with multihop capability on top of each PHY layer and measure the impact of the interference between two networks, each running one PHY.
 Results are reported in terms of the degradation of throughput of each network in the presence of the other interfering network.
+\todo{}
 
 Mu\~noz~\etal~\cite{munoz18overview} run an experimental campaign to compare the performance of
-    IEEE802.15.4 \oqpsk at 250~kbps, and
+    IEEE802.15.4 \oqpsk\ at 250~kbps, and
     IEEE802.15.4g OFDM.
 They show a higher robustness of OFDM, even though it operates as a higher bit rate (800~kbps).
 They show that, although a radio draws less current when running \oqpsk\, using \ofdm\ leads to an overall lower power budget as transmission happens much faster.
@@ -249,12 +250,12 @@ Brachmann~\etal~\cite{brachmann19ieee} integrate multiple PHY layers within the 
 The authors perform range-testing measurements on multiple modulations:
      2-GFSK (at 1.2, 8, 50, and 250~kbps),
      4-GFSK (at 1,000~kbps),
-     \oqpsk (at   250~kbps). 
+     \oqpsk\ (at   250~kbps). 
 They report the link quality in terms of number of motes reached by each mote in the network, and link symmetry.
 The authors then choose two modulations in the sub-GHz band for integration in the 6TiSCH stack:
     2-GFSK at 1.2~kbps for transmitting Enhanced Beacons (EB),
     4-GFSK at 1,000~kbps for data traffic. 
-This allows for EB sent by the gateway to reach more nodes, resulting in faster and more accurate synchronization compared to multi-hop transmissions. 
+This allows for EB sent by the gateway to reach more nodes, resulting in faster and more accurate network-wide synchronization compared to multi-hop transmissions. 
 The slot templates for the PHY layers are designed in accordance with the IEEE802.15.4 standard,
     and ported on Contiki-NG implementation of 6TiSCH. 
 The authors report on the performance of the multi-PHY network in terms of channel utilization and the distribution of synchronization accuracy in the network, in comparison with the distribution of hop-count. 
@@ -306,13 +307,13 @@ The contribution of this article is three-fold:
             the memory footprint of the implementation.
     \item We highlight the advantages and disadvantages of each PHY layer, specifically:
         \begin{itemize}
-            \item Using \fsk yields
+            \item Using \fsk\ yields
                 the fastest network formation,
                 the highest end-to-end reliability, and
                 the lowest end-to-end latency,
                     at the cost of
                         a 10$\times$ decreased battery lifetime compared to \oqpsk.
-            \item Using \oqpsk yields
+            \item Using \oqpsk\ yields
                 the longest battery lifetime,
                     at the cost of
                         the slowest network formation,
@@ -451,8 +452,8 @@ During an experiment, one can interact (read/write) with the serial port of each
 % OpenMote
 
 As show in Fig.~\ref{fig:mote_ot}, the OpenMote~B is an IoT platform which features both
-    a CC2538 (a micro-controller and \oqpsk radio) and
-    an AT86RF215 (an \fsk and \ofdm radio)~\cite{tuset16openmote}.
+    a CC2538 (a micro-controller and \oqpsk\ radio) and
+    an AT86RF215 (an \fsk\ and \ofdm\  radio)~\cite{tuset16openmote}.
 There are two antennas:
     a 2.4~GHz antenna connected to the CC2538,
     a sub-GHz antenna connected to the AT86RF215.
@@ -561,7 +562,7 @@ All motes trying to join approximately at the same time will cause a lot of cont
 
 % network formation time
 
-Fig.~\ref{fig:time_firstpacket_cdf} shows that the \fsk, \ofdm , and \oqpsk\ network is 90\%-formed in 7, 9, and 11~min, respectively.
+Fig.~\ref{fig:time_firstpacket_cdf} shows that the \fsk\, \ofdm\  , and \oqpsk\ network is 90\%-formed in 7, 9, and 11~min, respectively.
 The higher the link budget (i.e., the longer the range), the faster the network forms.
 
 \begin{figure}
@@ -759,7 +760,7 @@ Table~\ref{tab:energy_table} details the calculation of battery lifetime, assumi
 \oqpsk\ exhibits a battery lifetime
       5~times larger than \ofdm\ and
      10~times larger than \fsk.
-Despite the advantages in range, reliability and latency advantages of \fsk\ and \ofdm\ respectively, their utilization leads to more frequent battery replacement.
+Despite the advantages of \fsk\ and \ofdm\ in range, reliability and latency, their utilization leads to more frequent battery replacement.
 
 \begin{table}
     \centering
@@ -836,9 +837,9 @@ This result holds when contemplating additional PHY layer,
     one obvious candidate being LoRa~\cite{adelantado17understanding}.
 As alluded to in Section~\ref{sec:introduction}, we are at an exciting stage where we have both radio chips which are able to switch PHY on a frame-by-frame basis, and we have the scheduling technology to orchestrate this PHY-layer agility.
 We argue for technology-agile network, in which each mote keeps track of the quality of its link to its neighbors \textit{for each PHY layer}, and uses the PHY layer most appropriate for each frame.
-This means a mote may use a different PHY to communicate with different neighbors.
+This means a mote may use a different PHY to communicate with different neighbors or to send frames belonging to different classes of traffic. 
 This also means that, in a multi-hop scenario, a packet can travel from source to destination using a different PHY at each hop.
-In that context, neighbor discovery and network consistency are the main challenges, elements we are working on in our current research.
+In that context, energy efficient neighbor discovery and network consistency are the main challenges, elements we are working on in our current research.
 
 %==============================================================================
 
@@ -873,7 +874,7 @@ All motes trying to join approximately at the same time will cause a lot of cont
 
 % results: why is it affected by link budget? 
 
-Fig.~\ref{fig:time_firstpacket_cdf} shows that the \fsk, \ofdm , and \oqpsk\ network is 90\%-formed in 7, 9, and 11~min, respectively.
+Fig.~\ref{fig:time_firstpacket_cdf} shows that the \fsk\, \ofdm\ , and \oqpsk\ network is 90\%-formed in 7, 9, and 11~min, respectively.
 The higher the link budget (i.e., the longer the range), the faster the network forms.
 
 \begin{figure}
