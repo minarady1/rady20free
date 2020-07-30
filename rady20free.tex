@@ -123,8 +123,8 @@ As the processes used in integrated circuits advance, chip manufacturers add mor
     maintaining low-power operation and
     competitive pricing.
 System-on-Chip (SoC), such as Texas Instruments' CC2538~\cite{datasheet_cc2538}, which combine a micro-controller and a radio in the same die, are now commonplace.
-Advanced SoC such as the Texas Instruments' CC2650~\cite{datasheet_cc2650} contain a co-processor which, combined with a 2.4~GHz front-end, implements either the Bluetooth Low Energy (BLE) or IEEE802.15.4 standards.
-And while the CC2650 requires that co-processor to be reprogrammed to switch from one to another,
+Advanced SoC such as the Texas Instruments' CC2650~\cite{datasheet_cc2650} contain a co-processor which, combined with a 2.4~GHz front-end, implements either the Bluetooth Low Energy (BLE) or the IEEE802.15.4 standards.
+And while the CC2650 requires that the co-processor be reprogrammed to switch from one to another,
     the newer nRF52840~\cite{datasheet_nrf52840} from Nordic Semiconductor allow switching between these standards on a frame-by-frame basis.
 The AT86RF215 from Atmel arguably goes one step further in that it implements the entire set of modulations, data rates and frequency bands defined in the IEEE802.15.4 standard.
 Using such technology-agile radio chips opens up many possibilities to dynamically match the PHY used to the application.
@@ -325,8 +325,8 @@ The contribution of this article is three-fold:
                 end-to-end latency
                     at the cost of
                         a 5$\times$ decreased battery lifetime compared to \oqpsk.
-                In line with~\cite{munoz18evaluation}, a node using \ofdm\ discovers a number of neighbors close to \fsk\ despite having the highest data rate. 
-                    This is because it is more robust against frequency selective interference than \fsk\ and less vulnerable to Wi-Fi interference than \oqpsk.
+                In line with~\cite{munoz18evaluation}, a node using \ofdm\ discovers a number of neighbors close to that of \fsk\ despite having the highest data rate. 
+                    This is because it is more robust against frequency selective interference than \fsk\ ~\cite{kojima15system} and less vulnerable to Wi-Fi interference than \oqpsk\ ~\cite{munoz18overview}.
         \end{itemize}
         This shows there is no PHY among our candidates that is best across all metrics.
 \end{itemize}
@@ -380,8 +380,8 @@ We further introduce a timeslot template for each PHY.
 The ``timeslot template'' consists of the appropriate timing of the sequence of phases within a timeslot, which we fine tuned using a logic analyzer.
 The duration of Serial Peripheral Interface (SPI) transactions, the datarate of the communication or the turn-around time of the radio all influence the timeslot template.
 Fig.~\ref{fig:timeslot_templates} illustrates the different timeslot templates when transmitting a 100~B data payload with acknowledgement.
-Red markers highlight the approximate time for SPI communications with the AT86rf215 radio (none for the on-chip CC2538 radio).
-A 40~ms slot template duration is used for options, allow for fair comparison between all three PHYs.
+Red markers highlight the approximate time for SPI communications from the microcontroller to the AT86rf215 radio (none for the CC2538 on-chip radio).
+A 40~ms slot template duration is used for options, allowing for fair comparison between all three PHYs.
 
 \begin{figure}
 	\centering
@@ -724,8 +724,8 @@ We have the motes report what portion of the time their radio is active (``radio
 We then combine that with the current draw of the radio in transmit and receive states, the supply voltage and the energy contained in a battery to compute a battery lifetime.
 This computation does not take into account the possible current draw of other electronics, and assumes the battery is a perfect bucket of charge (i.e, ideal battery).
 Even though this is not an accurate prediction of the lifetime of the mote on a real battery, it is good enough to compare the effect on lifetime of the different PHYs 
-    \footnote{We are aware that current peaks shorten the effective mote lifetime compared to the ``ideal battery lifetime''.
-    It turns out that the PHYs leading to the shorter battery lifetime also have the higher peak current.}.
+    \footnote{We are aware that current peaks shorten the effective mote lifetime compared to the ``ideal battery'' lifetime.
+    It turns out that the PHYs leading to the shorter ``ideal battery'' lifetime in our survey also have the higher peak current. This reinforces our conclusions.}.
 
 % duty-cycle
 
