@@ -17,7 +17,7 @@
 \newcommand{\oqpsk}         {O-QPSK~2.4~GHz}
 \newcommand{\ofdm}          {OFDM~868~MHz}
 \newcommand{\openradio}     {\texttt{openradio}}
-\newcommand{\figwidth}      {0.80}
+\newcommand{\figwidth}      {0.78}
 
 \newcommand{\etal}          {\textit{et al.}}
 
@@ -123,7 +123,7 @@ As the processes used in integrated circuits advance, chip manufacturers add mor
     maintaining low-power operation and
     competitive pricing.
 System-on-Chip (SoC), such as Texas Instruments' CC2538~\cite{datasheet_cc2538}, which combine a micro-controller and a radio in the same die, are now commonplace.
-Advanced SoC such as the Texas Instruments' CC2650~\cite{datasheet_cc2650} contain a co-processor which, combined with a 2.4~GHz front-end, implements either the Bluetooth Low Energy (BLE) standards.
+Advanced SoC such as the Texas Instruments' CC2650~\cite{datasheet_cc2650} contain a co-processor which, combined with a 2.4~GHz front-end, implements either the Bluetooth Low Energy (BLE) or IEEE802.15.4 standards.
 And while the CC2650 requires that co-processor to be reprogrammed to switch from one to another,
     the newer nRF52840~\cite{datasheet_nrf52840} from Nordic Semiconductor allow switching between these standards on a frame-by-frame basis.
 The AT86RF215 from Atmel arguably goes one step further in that it implements the entire set of modulations, data rates and frequency bands defined in the IEEE802.15.4 standard.
@@ -222,7 +222,7 @@ Some related work evaluate the performance of IEEE802.15.4g PHYs.
 Kojima~\etal~\cite{kojima15system} examine the impact of interference between MR-FSK mode 2 and MR-OFDM option 4 MCS 3. 
 Authors deploy IEEE802.15.4e MAC with multihop capability on top of each PHY layer and measure the impact of the interference between two networks, each running one PHY.
 Results are reported in terms of the degradation of throughput of each network in the presence of the other interfering network.
-Authors demonstrate that MR-OFDM can  tolerate 15~dB of interference more than MR-FSK.
+Authors demonstrates that since the OFDM modulation scheme uses multiple sub-carriers, it performs better than FSK in the presence of frequency selective interference. 
 
 Mu\~noz~\etal~\cite{munoz18overview} run an experimental campaign to compare the performance of
     IEEE802.15.4 \oqpsk\ at 250~kbps, and
@@ -237,10 +237,10 @@ They conduct a complete range-testing campaigns for the 31 PHYs on the four scen
     urban canyon,
     smart metering. 
 Results of the range-tests are reported in terms of PDR measurements, throughput, and electric charge consumption.
-They demonstrate the longer range of FSK and O-QPSK in the sub-GHz band compared to OFDM options due to their higher receiver sensitivity.  
+They demonstrate the longer range of FSK and O-QPSK in the sub-GHz band compared to OFDM options due to their higher receiver sensitivity.
 
-
-These works do not address the performance of a full 6TiSCH stack using these PHY layers.  
+They provide interesting results as to which radio could be better in certain scenarios.
+This paper goes one step further to address the end-to-end performance of a full 6TiSCH stack using these PHY layers.
 
 %------------------------------------------------------------------------------
 \subsection{Hybrid Radio Utilization}
@@ -260,12 +260,12 @@ The slot templates for the PHY layers are designed in accordance with the IEEE80
     and ported on Contiki-NG implementation of 6TiSCH. 
 The authors report on the performance of the multi-PHY network in terms of channel utilization and the distribution of synchronization accuracy in the network, in comparison with the distribution of hop-count. 
 They demonstrate that a faster bit-rate of 4-GFSK at 1,000~kbps for data packets diminishes the probability for collision and leads to less than 0.1\% channel utilization despite the increased re-transmission rate.
-At the same time, the slower bit-rate of 2-GFSK at 1.2~kbps for EB packets leads to 20$\times$ higher channel occupancy,
-    at 2\% duty cycle (leading to violation of the license-free band regulation in many regions). 
+At the same time, the slower bit-rate of 2-GFSK at 1.2~kbps for EB packets leads to higher channel occupancy,
+    at 2\% duty cycle (leading to violation of the license-free band regulation in many regions).
 
 This research paves the road for a thorough investigation of multi-PHY integration in the 6TiSCH stack.
 However, it explicitly assumes an inverse correlation between bit-rate and range.
-While this could be true for the specific subset of modulations selected for evaluation, it is not in concordance with research results in~\cite{munoz18overview} and~\cite{munoz18evaluation}, which show that a high bit-rate modulation such as OFDM 1 MCS 3 at 800~kbps can offer competitive performance compared to 2-FSK at 50~kbps in terms of range, reliability, and duty cycle. 
+This assumption is challenged by the research results in another practical setting in~\cite{munoz18overview} and~\cite{munoz18evaluation}, which show that a high bit-rate modulation such as OFDM 1 MCS 3 at 800~kbps can offer competitive performance compared to 2-FSK at 50~kbps in terms of range, reliability, and duty cycle (as explained in subsection~\ref{sec:related_4g}).
 This is a significant observation because if long-range radio is needed for EB synchronization as~\cite{brachmann19ieee} suggests, higher bit-rates are appreciated for EBs in order to minimize energy consumption and also collision probability since EBs are transmitted on shared cells. 
 Furthermore, it still remains unclear whether there are any side-effects to the choice of one radio or another  on the end-to-end performance as a whole so that the costs and benefits of each PHY layer choice can be fully assessed.
 
@@ -325,10 +325,10 @@ The contribution of this article is three-fold:
                 end-to-end latency
                     at the cost of
                         a 5$\times$ decreased battery lifetime compared to \oqpsk.
-                In line with~\cite{munoz18evaluation}, a node using \ofdm\ discovers number of neighbors closer to \fsk\ than \oqpsk\,
-                    despite having the highest data rate. This is due to higher  link budget and lower vulnerability to Wi-Fi interference than \oqpsk.
+                In line with~\cite{munoz18evaluation}, a node using \ofdm\ discovers a number of neighbors close to \fsk\ despite having the highest data rate. 
+                    This is because it is more robust against frequency selective interference than \fsk\ and less vulnerable to Wi-Fi interference than \oqpsk.
         \end{itemize}
-        This shows there is no PHY that is best across all metrics.
+        This shows there is no PHY among our candidates that is best across all metrics.
 \end{itemize}
 
 %==============================================================================
@@ -340,7 +340,7 @@ The contribution of this article is three-fold:
 The IETF ``IPv6 over the TSCH mode of IEEE802.15.4e'' 6TiSCH working group has standardized how to combine TSCH and IPv6~\cite{vilajosana19ietf}.
 The 6TiSCH protocol stack is rooted in IEEE802.15.4 at the PHY, and the TSCH mode of IEEE802.15.4e at the link layer.
 Multi-hop capability is supported at the routing layer via the IPv6 routing protocol for Low-Power and Lossy Networks (RPL).
-Furthermore, 6LoWPAN is an adaptation layer for enabling the interfacing between the routing layer and the specific operations of the MAC layer such as neighbor discovery, registration, ranking, and maintenance operations that impact how routes are calculated. 
+Furthermore, it uses 6LoWPAN as an adaptation layer to interface  between the routing layer and the specific operations of the MAC layer such as neighbor discovery, registration, ranking, and maintenance operations that impact how routes are calculated. 
 The 6TiSCH protocol stack has been ported to all main open-source IoT protocol stacks: OpenWSN, Contiki-NG, RIOT and TinyOS~\cite{watteyne16industrial}. 
 
 % intro to OpenWSN
@@ -377,10 +377,10 @@ Table~\ref{tab:phys} lists the main characteristics of the PHY layers tested;
 We extend OpenWSN with a generic \openradio\ interface.
 This interface driver implements the same set of functions called by the TSCH state machine, and maps them to that of the radio driver of the PHY being used.
 We further introduce a timeslot template for each PHY.
-The ``timeslot template'' consists of the appropriate timeslot timings, which we fine tuned using a logic analyzer.
-The duration of SPI transactions, the datarate of the communication or the turn-around time of the radio all influence the timeslot template.
+The ``timeslot template'' consists of the appropriate timing of the sequence of phases within a timeslot, which we fine tuned using a logic analyzer.
+The duration of Serial Peripheral Interface (SPI) transactions, the datarate of the communication or the turn-around time of the radio all influence the timeslot template.
 Fig.~\ref{fig:timeslot_templates} illustrates the different timeslot templates when transmitting a 100~B data payload with acknowledgement.
-Red markers highlight the approximate time for SPI communications (none for the on-chip CC2538 radio).
+Red markers highlight the approximate time for SPI communications with the AT86rf215 radio (none for the on-chip CC2538 radio).
 A 40~ms slot template duration is used for options, allow for fair comparison between all three PHYs.
 
 \begin{figure}
@@ -480,7 +480,7 @@ We use a combination of JTAG in-circuit debugging and a logic analyzer to debug 
 
 We run the OpenWSN network once for each of the three PHYs.
 During the experiments, the floor is mostly unoccupied, so we don't expect WiFi interference beyond the regular 100~ms beaconing interval of the 8~WiFi access points on that floor~\cite{munoz18overview}.
-Each time, we load the firmware onto the testbed, the switch on then OpenVisualizer software, which connects to all motes over their serial port (over MQTT).
+Each time, we load the firmware onto the testbed, then switch on the OpenVisualizer software, which connects to all motes over their serial port (over MQTT).
 In the OpenVisualizer, we then select the mote that we want to play the role of DAG root.
 We always select the same mote, shown in Fig.~\ref{fig:building_motes}, which is positioned at the center of the floor in room~A.
 We then let the network run for 90~min, recording all the data generated by the motes.
@@ -495,8 +495,8 @@ That application sends a data packet every minute containing the following field
     \item the time at which the data packet is generated (Asynchronous Slot Number ASN),
     \item the DAG rank of the sender,
     \item the size of the neighbor table of the sender,
-    \item $T_{on}$ how long the sender's radio has been on receiving since the previous data packet transmission,
-    \item $T_{TX}$ how long the sender's radio has been on transmitting since the previous data packet transmission,
+    \item $T_{on}$ how long the sender's radio has been on since the previous data packet transmission,
+    \item $T_{TX}$ how long the sender's radio has been on and transmitting since the previous data packet transmission,
     \item $T_{total}$ the amount of time since the previous data packet transmission,
     \item the maximum and minimum number of packets in the packet buffer since the previous packet.
 \end{itemize}
@@ -584,7 +584,7 @@ Second, it gives a mote a higher probability of joining through a neighbor close
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.85\columnwidth]{neighbors_time}
+	\includegraphics[width=\figwidth\columnwidth]{neighbors_time}
     \caption{Motes discover more neighbors faster when using a longer-range PHY.}
     \label{fig:neighbors_time}
 \end{figure}
@@ -606,7 +606,7 @@ If that link becomes lossy (i.e.~$numTx/numAck>1$), the ``cost'' associated with
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.85\columnwidth]{dagrank_time}
+	\includegraphics[width=\figwidth\columnwidth]{dagrank_time}
     \caption{Contention and slow neighbor discovery cause the nodes' rank to be artificially high at the beginning of network formation.}
     \label{fig:dagrank_time}
 \end{figure}
@@ -714,20 +714,18 @@ Given the increased number of hops for lower range PHYs, the higher latency of \
 	\label{fig:latency_all}
 \end{figure}
 
-\thomas{stopped here}
-
 %------------------------------------------------------------------------------
 \subsection{Battery Lifetime}
 \label{sec:res_lifetime}
 
-\mina{stopped here}
+% \mina{stopped here}
 
 We have the motes report what portion of the time their radio is active (``radio duty cycle''), and what portion of the time the radio is transmitting (``transmit duty cycle'').
 We then combine that with the current draw of the radio in transmit and receive states, the supply voltage and the energy contained in a battery to compute a battery lifetime.
 This computation does not take into account the possible current draw of other electronics, and assumes the battery is a perfect bucket of charge (i.e, ideal battery).
-Even though this is not an accurate prediction of the lifetime of the mote on a real battery, it is good enough to compare the effect on lifetime of the different PHYs \footnote{We are aware that current peaks shorten the effective mote lifetime compared to the ``ideal battery lifetime''.
-It turns out that the PHYs leading to the shorter battery lifetime also have the higher peak current.}.
-
+Even though this is not an accurate prediction of the lifetime of the mote on a real battery, it is good enough to compare the effect on lifetime of the different PHYs 
+    \footnote{We are aware that current peaks shorten the effective mote lifetime compared to the ``ideal battery lifetime''.
+    It turns out that the PHYs leading to the shorter battery lifetime also have the higher peak current.}.
 
 % duty-cycle
 
@@ -826,7 +824,7 @@ Finally, for an ``in between'' performance, choose \ofdm.
 
 The problem is that the reasoning in the paragraph above is flawed in at least two ways.
 First, the results presented in this article, while conducted and presented in a rigorous fashion, only hold for use cases very similar to the deployment shown in Fig.~\ref{fig:building_motes}.
-There are undoubtedly cases (deeply sparse network, heavily unbalanced deployed, \dots) where our results don't hold, and where the ``ranking'' of the different PHYs is different.
+There are undoubtedly cases (deeply sparse network, heavily unbalanced deployment, \dots) where our results don't hold, and where the ``ranking'' of the different PHYs is different.
 Second, even if every precaution is taken to pick the right PHY during the design phase of the network, it is entirely possible that conditions or requirements change during the operation of the network.
 This could lead to operating with the ``wrong'' PHY layer, leading to sub-optimal performance.
 
