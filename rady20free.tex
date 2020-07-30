@@ -51,15 +51,15 @@
 
 \abstract{
     Low-power wireless applications require different trade-off points between latency, reliability, data rate and power consumption.
-    Given such a set of constraints which physical layer should I be using?
+    Given such a set of constraints, which physical layer should I be using?
     We study this question in the context of 6TiSCH, a state-of-the-art recently standardized protocol stack developed for harsh industrial applications.
     Specifically, we augment OpenWSN, the reference 6TiSCH open-source implementation, to support one of three physical layers from the IEEE802.15.4g standard:
         \fsk\   which offers long range,
         \ofdm\   which offers high data rate, and
         \oqpsk\ which offers more balanced performance.
-    We run the result firmware on the 42-mote OpenTestbed deployed in an office environment, once for each physical layer.
-    Performance results show that, indeed, no physical outperforms the other all metrics.
-    This article argues for combining the physical layers, rather than choosing one, in a generalized 6TiSCH architecture in which technology-agile radio chips (or which there are now many) are driven by a protocol stack which chooses the most appropriate physical layer on a frame-by-frame basis.
+    We run the resulting firmware on the 42-mote OpenTestbed deployed in an office environment, once for each physical layer.
+    Performance results show that, indeed, no physical layer outperforms the other for all metrics.
+    This article argues for combining the physical layers, rather than choosing one, in a generalized 6TiSCH architecture in which technology-agile radio chips (of which there are now many) are driven by a protocol stack which chooses the most appropriate physical layer on a frame-by-frame basis.
 }
 
 \keyword{
@@ -89,11 +89,11 @@ Applications for low-power wireless technology are numerous, including
 
 % PHY layers
 
-Several physical layers (PHYs) exist, each finding a different trade off between
+Several physical layers (PHYs) exist, each finding a different trade-off between
     energy consumption,
     datarate and
     range.
-One particularly interesting development in low-power wireless is the standardization in 2016 of the IEEE802.15.4g amendment~\cite{std_ieee802154g}, which defines additional PHY layer for the older IEEE802.15.4 standard~\cite{std_ieee802154}.
+One particularly interesting development in low-power wireless technology is the standardization in 2016 of the IEEE802.15.4g amendment~\cite{std_ieee802154g}, which defines additional PHY layers for the older IEEE802.15.4 standard~\cite{std_ieee802154}.
 IEEE802.15.4g defines PHY specifications initially for smart metering utility networks.
 IEEE802.15.4g defines
     three families of modulations (Frequency Shift Keying -- FSK,  Offset Quadrature Phase-Shift Keying -- O-QPSK, Orthogonal Frequency Division Multiplexing -- OFDM),
@@ -119,14 +119,14 @@ Two elements allow for a more dynamic approach:
 
 % technology-agile radio chips
 
-As the processes used in Integrated Circuits advance, chip manufacturers add more features into their products for the same die size,
+As the processes used in integrated circuits advance, chip manufacturers add more features into their products for the same die size,
     maintaining low-power operation and
     competitive pricing.
-System-on-Chip (SoC), such as Texas Instruments' CC2538~\cite{datasheet_cc2538}, which combine a micro-controller and a radio in the same die are now commonplace.
+System-on-Chip (SoC), such as Texas Instruments' CC2538~\cite{datasheet_cc2538}, which combine a micro-controller and a radio in the same die, are now commonplace.
 Advanced SoC such as the Texas Instruments' CC2650~\cite{datasheet_cc2650} contain a co-processor which, combined with a 2.4~GHz front-end, implements either the Bluetooth Low Energy (BLE) standards.
 And while the CC2650 requires that co-processor to be reprogrammed to switch from one to another,
     the newer nRF52840~\cite{datasheet_nrf52840} from Nordic Semiconductor allow switching between these standards on a frame-by-frame basis.
-The AT86RF215 from Atmel arguably goes one step further in that it implements the entire set of modulations, data rates and frequency band defined in the IEEE802.15.4 standard.
+The AT86RF215 from Atmel arguably goes one step further in that it implements the entire set of modulations, data rates and frequency bands defined in the IEEE802.15.4 standard.
 Using such technology-agile radio chips opens up many possibilities to dynamically match the PHY used to the application.
 
 % TSCH
@@ -135,13 +135,13 @@ While early low-power wireless networks used contention-based approach,
     Time Synchronized Channel Hopping (TSCH), initially developed for industrial applications,
     is now supported by many commercial products and open-source implementations~\cite{watteyne16industrial}.
 In a TSCH network, time is cut into timeslots and a schedule orchestrates all communication;
-    it indicates to every node what to in each timeslot: transmit, listen or sleep.
-TSCH is the base principle of standards such as WirelessHART, ISA100.11a, IEEE802.15.4, and, more recently, 6TiSCH, a set of IETF standard which combines the industrial performance of TSCH with the ease of use of IPv6~\cite{draft-ietf-6tisch-msf}.
+    it indicates to every node what to do in each timeslot: transmit, listen or sleep.
+TSCH is the base principle of standards such as WirelessHART, ISA100.11a, IEEE802.15.4e, and, more recently, 6TiSCH, a set of IETF standard which combines the industrial performance of TSCH with the ease of use of IPv6~\cite{draft-ietf-6tisch-msf}.
 In today's TSCH networks, for each cell, the schedule indicates the frequency to communicate on, resulting in ``channel hopping'', a technique known to efficiently combat external interference and multi-path fading.
 
 % vision
 
-Our long-term vision is that low-power wireless network will combine the technology-agility of modern radio chips which TSCH-like scheduling approaches so nodes dynamically change their PHY layer on a frame-by-frame basis.
+Our long-term vision is that low-power wireless networks will combine the technology-agility of modern radio chips which TSCH-like scheduling approaches so nodes dynamically change their PHY layer on a frame-by-frame basis.
 That is, if the next hop is far,   use a long-range (but slower and more energy-hungry) PHY.
          If the next hop is close, use a fast PHY so the radio can be switched of as fast as possible.
 
@@ -222,16 +222,16 @@ Some related work evaluate the performance of IEEE802.15.4g PHYs.
 Kojima~\etal~\cite{kojima15system} examine the impact of interference between MR-FSK mode 2 and MR-OFDM option 4 MCS 3. 
 Authors deploy IEEE802.15.4e MAC with multihop capability on top of each PHY layer and measure the impact of the interference between two networks, each running one PHY.
 Results are reported in terms of the degradation of throughput of each network in the presence of the other interfering network.
-\todo{}
+Authors demonstrate that MR-OFDM can  tolerate 15~dB of interference more than MR-FSK.
 
 Mu\~noz~\etal~\cite{munoz18overview} run an experimental campaign to compare the performance of
     IEEE802.15.4 \oqpsk\ at 250~kbps, and
     IEEE802.15.4g OFDM.
 They show a higher robustness of OFDM, even though it operates as a higher bit rate (800~kbps).
-They show that, although a radio draws less current when running \oqpsk\, using \ofdm\ leads to an overall lower power budget as transmission happens much faster.
+They show that, although a radio draws less current when running \oqpsk\ , using \ofdm\ leads to an overall lower power budget as transmission happens much faster.
 
 The same authors also evaluate the performance of all IEEE802.15.4g PHYs~\cite{munoz18evaluation}.
-They conduct an complete range-testing campaigns for the 31 PHYs on the four scenarios they consider the most prevalent in outdoor applications:
+They conduct a complete range-testing campaigns for the 31 PHYs on the four scenarios they consider the most prevalent in outdoor applications:
     line of sight,
     smart agriculture,
     urban canyon,
@@ -289,7 +289,7 @@ A different PHY also impacts
     the amount of contention is shared cells~\cite{kim15hybrid}.
 Changing the PHY layer triggers subtle changes in the behavior of the protocol stack,
     resulting in different performance.
-We believe measuring this different is best done through a real-world system level evaluation~\cite{saltzer84endtoend}.
+We believe measuring this difference is best done through a real-world system level evaluation~\cite{saltzer84endtoend}.
 We show that there are significant benefits of each of the radio options: \fsk, \ofdm, and \oqpsk, yet they all come at a certain cost.
 
 % contributions
@@ -326,7 +326,7 @@ The contribution of this article is three-fold:
                     at the cost of
                         a 5$\times$ decreased battery lifetime compared to \oqpsk.
                 In line with~\cite{munoz18evaluation}, a node using \ofdm\ discovers number of neighbors closer to \fsk\ than \oqpsk\,
-                    despite being much higher data rate.
+                    despite having the highest data rate. This is due to higher  link budget and lower vulnerability to Wi-Fi interference than \oqpsk.
         \end{itemize}
         This shows there is no PHY that is best across all metrics.
 \end{itemize}
@@ -337,9 +337,9 @@ The contribution of this article is three-fold:
 
 % intro to 6TiSCH
 
-The IETF ``IPv6 over the TSCH mode of IEEE802.15.4e'' 6TiSCH working group has standardized how to combine the TSCH and IPv6~\cite{vilajosana19ietf}.
+The IETF ``IPv6 over the TSCH mode of IEEE802.15.4e'' 6TiSCH working group has standardized how to combine TSCH and IPv6~\cite{vilajosana19ietf}.
 The 6TiSCH protocol stack is rooted in IEEE802.15.4 at the PHY, and the TSCH mode of IEEE802.15.4e at the link layer.
-Multi-hop capability is supported at the routing layer via the IPv6 routing protocol for Lower-Power and Lossy Networks (RPL).
+Multi-hop capability is supported at the routing layer via the IPv6 routing protocol for Low-Power and Lossy Networks (RPL).
 Furthermore, 6LoWPAN is an adaptation layer for enabling the interfacing between the routing layer and the specific operations of the MAC layer such as neighbor discovery, registration, ranking, and maintenance operations that impact how routes are calculated. 
 The 6TiSCH protocol stack has been ported to all main open-source IoT protocol stacks: OpenWSN, Contiki-NG, RIOT and TinyOS~\cite{watteyne16industrial}. 
 
@@ -347,16 +347,16 @@ The 6TiSCH protocol stack has been ported to all main open-source IoT protocol s
 
 Since it is the reference implementation, and since it is ported to the OpenMote~B, we use the OpenWSN implementation in this article.
 Prior to this work, OpenWSN only supported the IEEE802.15.4 O-QPSK 2.4~GHz PHY.
-Initial range measurements were using the OpenMote's AT86RF215 radio~\cite{munoz18evaluation,munoz18overview}, but the full 6TiSCH stack was never ported.
-We therefore extend OpenWSN to support the following PHYs: \fsk, \ofdm, \oqpsk.
-This extension consist of three steps:
+Initial range measurements were conducted using the OpenMote's AT86RF215 radio~\cite{munoz18evaluation,munoz18overview}, but the full 6TiSCH stack had never been ported.
+We therefore extend OpenWSN to support the following PHYs: \fsk, \ofdm, and \oqpsk.
+This extension consists of three steps:
      writing the low-level drivers to configure the radio chips appropriately,
      tuning the durations within the timeslots to each PHY, and
      providing a clean software abstraction to allow the TSCH implementation to switch between them.
 
 % PHY layer
 
-Table~\ref{tab:phys} lists the main characteristics of the PHY layer tested;
+Table~\ref{tab:phys} lists the main characteristics of the PHY layers tested;
     TX power and sensitivity number are taken for the chip used.
 
 \begin{table}
@@ -375,12 +375,12 @@ Table~\ref{tab:phys} lists the main characteristics of the PHY layer tested;
 % OpenWSN Extension
 
 We extend OpenWSN with a generic \openradio\ interface.
-This interface driver implements the same set of functions called by the TSCH state machine, and maps those to radio driver corresponding to the PHY being used.
+This interface driver implements the same set of functions called by the TSCH state machine, and maps them to that of the radio driver of the PHY being used.
 We further introduce a timeslot template for each PHY.
 The ``timeslot template'' consists of the appropriate timeslot timings, which we fine tuned using a logic analyzer.
-The duration of SPI transactions, the datarate of the communication or the turn-around time of the radio all influence in the timeslot template.
+The duration of SPI transactions, the datarate of the communication or the turn-around time of the radio all influence the timeslot template.
 Fig.~\ref{fig:timeslot_templates} illustrates the different timeslot templates when transmitting a 100~B data payload with acknowledgement.
-Red markers highlight the approximate time for SPI communications (non in CC2538).
+Red markers highlight the approximate time for SPI communications (none for the on-chip CC2538 radio).
 A 40~ms slot template duration is used for options, allow for fair comparison between all three PHYs.
 
 \begin{figure}
@@ -433,7 +433,7 @@ This is a very small footprint which comfortably fits in modern SoC which all ha
 
 We use the OpenTestbed~\cite{munoz19opentestbed} to extract the performance of the OpenWSN stack with the extensions detailed in Section~\ref{sec:openwsn}.
 The OpenTestbed is composed of 42~OpenMote~B boards deployed across an office floor at the Inria research center in Paris in groups of 4 (see floorplan on Fig.~\ref{fig:building_motes}).
-The distribution of the motes happens in clusters of 4-18 motes, mimicking nodes clustered around machines in an industrial setting.
+The distribution of the motes happens in clusters of 4-18 motes, mimicking nodes clustered around machines in an industrial setting~\cite{civerchia17industrial}.
 The OpenTestbed is built from off-the-shelf components,
     networked together using the building's 5~GHz Wi-Fi network (i.e. no dedicated Ethernet network),
     without requiring back-end servers, and
@@ -451,13 +451,13 @@ During an experiment, one can interact (read/write) with the serial port of each
 
 % OpenMote
 
-As show in Fig.~\ref{fig:mote_ot}, the OpenMote~B is an IoT platform which features both
+As shown in Fig.~\ref{fig:mote_ot}, the OpenMote~B is an IoT platform which features both
     a CC2538 (a micro-controller and \oqpsk\ radio) and
     an AT86RF215 (an \fsk\ and \ofdm\  radio)~\cite{tuset16openmote}.
 There are two antennas:
     a 2.4~GHz antenna connected to the CC2538,
     a sub-GHz antenna connected to the AT86RF215.
-The ARM Cortex-M3 on the CC2538 features 32~bB of RAM and 512~kB of flash.
+The ARM Cortex-M3 on the CC2538 features 32~kB of RAM and 512~kB of flash.
 The OpenWSN firmware is loaded onto that micro-controller;
     that firmware then interacts with the CC2538's radio directly using the registers,
     and with the AT86RF215 over SPI.
@@ -480,10 +480,10 @@ We use a combination of JTAG in-circuit debugging and a logic analyzer to debug 
 
 We run the OpenWSN network once for each of the three PHYs.
 During the experiments, the floor is mostly unoccupied, so we don't expect WiFi interference beyond the regular 100~ms beaconing interval of the 8~WiFi access points on that floor~\cite{munoz18overview}.
-Each time, we load the firmware onto the testbed, the switch on the OpenVisualizer software, which connects to all motes over their serial port (over MQTT).
-In the OpenVisualizer, we the select the mote which we want to play the role of DAG root.
+Each time, we load the firmware onto the testbed, the switch on then OpenVisualizer software, which connects to all motes over their serial port (over MQTT).
+In the OpenVisualizer, we then select the mote that we want to play the role of DAG root.
 We always select the same mote, shown in Fig.~\ref{fig:building_motes}, which is positioned at the center of the floor in room~A.
-We then let the network run for 90~min, recording all of data generated by the motes.
+We then let the network run for 90~min, recording all the data generated by the motes.
 
 % application layer
 
@@ -491,13 +491,13 @@ We developed a custom-built application which runs at the application layer of e
 That application sends a data packet every minute containing the following fields:
 
 \begin{itemize}
-    \item a counter we use to detect packets lost,
-    \item the time at which the packet is generated (Asynchronous Slot Number ASN),
+    \item a counter, which we use to detect lost data packets,
+    \item the time at which the data packet is generated (Asynchronous Slot Number ASN),
     \item the DAG rank of the sender,
-    \item the size of the neighbor of the sender,
-    \item $T_{on}$ how long the sender's radio has been on receiving since the previous transmission,
-    \item $T_{TX}$ how long the sender's radio has been on transmitting since the previous transmission,
-    \item $T_{total}$ the amount of time sine the previous transmission,
+    \item the size of the neighbor table of the sender,
+    \item $T_{on}$ how long the sender's radio has been on receiving since the previous data packet transmission,
+    \item $T_{TX}$ how long the sender's radio has been on transmitting since the previous data packet transmission,
+    \item $T_{total}$ the amount of time since the previous data packet transmission,
     \item the maximum and minimum number of packets in the packet buffer since the previous packet.
 \end{itemize}
 
@@ -507,13 +507,13 @@ After the experiment is done, we use that information to compute the following K
 
 \begin{itemize}
     \item Network Formation Time:
-        how much time between the moment the root is selected and that root has received at least one packet from \textit{each} mote. 
+        how much time elapses between the moment the root is selected and that root has received at least one packet from \textit{each} mote. 
     \item End-to-End Reliability:
         what portion of all packet generated in the network are received by the root. 
     \item End-to-End latency:
-        how much time between the generation of the packet at the sender, and reception at the root.
+        how much time elapses between the generation of the packet at the sender, and reception at the root.
     \item Radio duty cycle:
-        what portion of the time is a node's radio on; a good indication for its power consumption.
+        what portion of the time a node's radio is on; a good indication for its power consumption.
 \end{itemize}
 
 % running the experiments
@@ -616,7 +616,7 @@ If that link becomes lossy (i.e.~$numTx/numAck>1$), the ``cost'' associated with
     \label{eq:rank}
 \end{equation}
 
-The first portion of Fig.~\ref{fig:dagrank_time} ($t<50s$) show that the nodes start by having a very high rank.
+The first portion of Fig.~\ref{fig:dagrank_time} ($t<50~min$) shows that the nodes start by having a very high rank.
 This is caused by two phenomena, combined.
 First, a mote may not discover its neighbor with the lowest rank immediately, and instead join with a artificially high rank; this resolves over time as the network stabilizes by becoming shallower.
 Second, all motes attempting to join create contention on the minimal cell, causing
@@ -639,12 +639,12 @@ We expect close to 100\% PDR in all cases (commercial TSCH implementation offer 
 
 \begin{table}
     \centering
-    \begin{tabular}{|r|r|r|r|r|r|r|}
+    \begin{tabular}{|r|r|r|r|r|r|}
         \hline
-                &      Min &  Average &   Median &      Max &  StDev & Active motes \\ \hline
-        \fsk    &  100.0\% &  100.0\% &  100.0\% &  100.0\% &  0.0\% &       92.8\% \\ \hline
-        \ofdm   &   93.8\% &   99.8\% &  100.0\% &  100.0\% &  0.9\% &      100.0\% \\ \hline
-        \oqpsk  &   73.3\% &   98.1\% &  100.0\% &  100.0\% &  6.0\% &       97.6\% \\ \hline
+                &      Min &  Average &   Median &      Max &  StDev \\ \hline
+        \fsk    &  100.0\% &  100.0\% &  100.0\% &  100.0\% &  0.0\% \\ \hline
+        \ofdm   &   93.8\% &   99.8\% &  100.0\% &  100.0\% &  0.9\% \\ \hline
+        \oqpsk  &   73.3\% &   98.1\% &  100.0\% &  100.0\% &  6.0\% \\ \hline
     \end{tabular}
     \caption{End-to-end PDR statistics over all motes in the network, computed over the last 15~min of the experiments.}
     \label{tab:pdr_table}
@@ -719,6 +719,8 @@ Given the increased number of hops for lower range PHYs, the higher latency of \
 %------------------------------------------------------------------------------
 \subsection{Battery Lifetime}
 \label{sec:res_lifetime}
+
+\mina{stopped here}
 
 We have the motes report what portion of the time their radio is active (``radio duty cycle''), and what portion of the time the radio is transmitting (``transmit duty cycle'').
 We then combine that with the current draw of the radio in transmit and receive states, the supply voltage and the energy contained in a battery to compute a battery lifetime.
