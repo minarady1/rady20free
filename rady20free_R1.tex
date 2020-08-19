@@ -118,7 +118,7 @@ A traditional approach to having this array of choices is to
     build a network solution using that PHY.
 Two elements allow for a more dynamic approach:
     technology-agile radio chips and
-    TSCH.
+    \update{Time Synchronized Channel Hopping (TSCH)}.
 
 % technology-agile radio chips
 
@@ -135,11 +135,11 @@ Using such technology-agile radio chips opens up many possibilities to dynamical
 % TSCH
 
 While early low-power wireless networks used contention-based approach,
-    Time Synchronized Channel Hopping (TSCH), initially developed for industrial applications,
+    TSCH, initially developed for industrial applications,
     is now supported by many commercial products and open-source implementations~\cite{watteyne16industrial}.
 In a TSCH network, time is cut into timeslots and a schedule orchestrates all communication;
     it indicates to every node what to do in each timeslot: transmit, listen or sleep.
-TSCH is the base principle of standards such as WirelessHART, ISA100.11a, IEEE802.15.4e, and, more recently, 6TiSCH, a set of IETF standard which combines the industrial performance of TSCH with the ease of use of IPv6~\cite{draft-ietf-6tisch-msf}.
+TSCH is the base principle of standards such as WirelessHART, ISA100.11a, IEEE802.15.4e, and, more recently, 6TiSCH, a set of IETF standards which combines the industrial performance of TSCH with the ease of use of IPv6~\cite{draft-ietf-6tisch-msf}.
 In today's TSCH networks, for each cell, the schedule indicates the frequency to communicate on, resulting in ``channel hopping'', a technique known to efficiently combat external interference and multi-path fading.
 
 % vision
@@ -156,7 +156,7 @@ This is a necessary first step towards dynamically changing the PHY layer,
 Specifically, we augment the OpenWSN reference 6TiSCH implementation to support the following three PHYs:
     \oqpsk\ at 250~kbps,
     \fsk\ option 1 at 50~kbps,
-    \ofdm\  option 1 MCS 3 at 800~kbps.
+    \ofdm\  \update {option 1 Modulation and Coding Scheme (MCS) 3 at 800~kbps}.
 The literature indicates that these three PHYs cover the range of possibilities of IEEE802.15.4g:
     very high data rate with \ofdm,
     very long range with \fsk,
@@ -199,7 +199,7 @@ Yang~\etal~\cite{yang18analysis} evaluate the performance of the full 6TiSCH sta
 They vary the number of active slots in a frame of length 11 slots and measure how packet end-to-end latency is affected.
 
 Theoleyre~\etal~\cite{theoleyre16experimental} evaluate the performance of the 6TiSCH stack with the deployment of traffic isolation mechanisms that allow reservation of dedicated slots for certain applications and reservation of shared slots for alarm events.
-They report end-to-end latency and PDR under various schedule management strategies,
+They report end-to-end latency and \update{Packet Delivery Ratio (PDR)} under various schedule management strategies,
     including using uniformly distributed shared cells instead of contiguous (adjacent) shared cells in the slot-frame.
 
 Teles Hermeto~\etal~\cite{teleshermeto18reactions} execute a performance evaluation of the 6TiSCH protocol stack in an indoor environment with a focus on the stability of the stack performance.
@@ -210,10 +210,10 @@ Ben Yaala~\etal~\cite{benyaala16performance} evaluate the performance of the 6Ti
 They consider both cases where the coexisting 6TiSCH networks are either synchronized or un-synchronized.
 
 In all of these related work, the PHY used is IEEE802.15.4 \oqpsk.
-Sum~\etal~\cite{sum17experimental} are the exception, as they provide an experimental evaluation of IEEE802.15.4e Time Slotted Channel Hopping MAC based on IEEE802.15.4g \fsk\ radio.
-The experiments report range and performance testing results in terms of PDR and PER in four situations:
-    LOS conditions,
-    NLOS conditions,
+Sum~\etal~\cite{sum17experimental} are the exception, as they provide an experimental evaluation of IEEE802.15.4e \update {TSCH Medium Access Control (MAC)} based on IEEE802.15.4g \fsk\ radio.
+The experiments report range and performance testing results in terms of PDR and Packet Error Rate in four situations:
+    \update{Line-of-Sight conditions,
+    Non-line-of-sight conditions,}
     tree topology in corridor setting and
     line topology across buildings.
 
@@ -363,8 +363,9 @@ This extension consists of three steps:
 Table~\ref{tab:phys} lists the main characteristics of the PHY layers tested;
     TX power and sensitivity number are taken for the chip used.
 
-\begin{table}
+\begin{table}[h]
     \centering
+    \caption{The PHY layers tested.}    
     \begin{tabular}{|r|r|r|r|r|r|}
         \hline
                 & Radio chip & Data rate  & TX power        & Sensitivity   &   Link budget \\ \hline
@@ -372,7 +373,7 @@ Table~\ref{tab:phys} lists the main characteristics of the PHY layers tested;
         \ofdm   &  AT86RF215 &   800~kbps &  +10.0~dBm      &    -104~dBm   &   114.0~dB \\ \hline
         \oqpsk  &  CC2538    &   250~kbps &  +07.0~dBm      &     -97~dBm   &   104.0~dB \\ \hline
     \end{tabular}
-    \caption{The PHY layers tested.}
+
     \label{tab:phys}
 \end{table}
 
@@ -383,8 +384,8 @@ This interface driver implements the same set of functions called by the TSCH st
 We further introduce a timeslot template for each PHY.
 The ``timeslot template'' consists of the appropriate timing of the sequence of phases within a timeslot, which we fine tuned using a logic analyzer.
 The duration of Serial Peripheral Interface (SPI) transactions, the datarate of the communication or the turn-around time of the radio all influence the timeslot template.
-Fig.~\ref{fig:timeslot_templates} illustrates the different timeslot templates when transmitting a 100~B data payload with acknowledgement.
-Red markers highlight the approximate time for SPI communications from the microcontroller to the AT86rf215 radio (none for the CC2538 on-chip radio).
+\update{Figure}~\ref{fig:timeslot_templates} illustrates the different timeslot templates when transmitting a 100~B data payload with acknowledgement.
+Red markers highlight the approximate time for SPI communications from the micro-controller to the AT86rf215 radio (none for the CC2538 on-chip radio).
 A 40~ms slot template duration is used for options, allowing for fair comparison between all three PHYs.
 
 \begin{figure}
@@ -402,8 +403,9 @@ A 40~ms slot template duration is used for options, allowing for fair comparison
 We use a slotframe length of~41 timeslots.
 Table~\ref{tab:stack_params} summarizes the parameters of the stack.
 
-\begin{table}
+\begin{table}[ht]
 \centering
+    \caption{Parameters of the OpenWSN protocol stack.}
     \begin{tabular}{|l|r|}
         \hline
         Parameter                           &   Value \\ \hline
@@ -416,12 +418,16 @@ Table~\ref{tab:stack_params} summarizes the parameters of the stack.
         timeslot duration                   &   40~ms \\
         EB probability                      &    10\% \\
         Number of radio channels            &      16 \\
-        New neighbor RSSI threshold         & -80~dBm \\
+        New neighbor RSSI$^{*}$ threshold         & -80~dBm \\
         Max num. re-transmissions           &      15 \\ \hline
     \end{tabular}
-    \caption{Parameters of the OpenWSN protocol stack.}
     \label{tab:stack_params}
+    
+    \update{
+    \footnotesize {$^{(*)}$ Received Signal Strength Indicator}
+    }
 \end{table}
+
 
 % result: footprint
 
@@ -446,26 +452,26 @@ This section demonstrates
 
 % intro testbed, architecture
 
-The OpenTestbed is composed of 42~OpenMote~B boards deployed across an office floor at the Inria research center in Paris in groups of 4 (see floorplan on Fig.~\ref{fig:building_motes}).
+The OpenTestbed is composed of 42~OpenMote~B boards deployed across an office floor at the Inria research center in Paris in groups of 4 (see floorplan on \update{Figure}~\ref{fig:building_motes}).
 The distribution of the motes happens in clusters of 4-18 motes, mimicking nodes clustered around machines in an industrial setting~\cite{civerchia17industrial}.
 The OpenTestbed is built from off-the-shelf components,
     networked together using the building's 5~GHz Wi-Fi network (i.e. no dedicated Ethernet network),
     without requiring back-end servers, and
     with an open access interface.
-Interaction with the OpenTestbed is done entirely over MQTT.
+Interaction with the OpenTestbed is done entirely over \update{Message Queuing Telemetry Transport (MQTT) protocol}.
 The Raspberry Pi single-board computers to which the OpenMote~B boards are attached implement a number of commands to reprogram and reset the boards.
 During an experiment, one can interact (read/write) with the serial port of each OpenMote~B board, in real-time, using MQTT messages.
 
-\begin{figure}
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\figwidth\columnwidth]{building_motes}
-	\caption{Location of the 42~motes of the OpenTestbed across an office floor at Inria-Paris.}
+	\caption{Locations of the 42~motes of the OpenTestbed across an office floor at Inria-Paris.}
     \label{fig:building_motes}
 \end{figure}
 
 % OpenMote
 
-As shown in Fig.~\ref{fig:mote_ot}, the OpenMote~B is an IoT platform which features both
+As shown in \update{Figure}~\ref{fig:mote_ot}, the OpenMote~B is an IoT platform which features both
     a CC2538 (a micro-controller and \oqpsk\ radio) and
     an AT86RF215 (an \fsk\ and \ofdm\  radio)~\cite{tuset16openmote}.
 There are two antennas:
@@ -479,12 +485,25 @@ We use a combination of JTAG in-circuit debugging and a logic analyzer to debug 
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.90\columnwidth]{mote_ot}
+	\begin{subfigure}{0.69\columnwidth}
+    	\centering
+    	\includegraphics[width=1.00\columnwidth]{openmoteb}
+        \subcaption{\update{The OpenMote~B}}
+        \label{fig:openmoteb}
+	\end{subfigure}
+	\begin{subfigure}{0.24\columnwidth}
+		\centering
+    	\includegraphics[width=1.00\columnwidth]{ot_box}
+    	\subcaption{\update{the OpenTestbox, part of the OpenTestbed}}
+        \label{fig:ot_box}
+	\end{subfigure}
+	
 	\caption{
-	    The OpenMote~B \textit{(left)}; the OpenTestbox, part of the OpenTestbed \textit{(right)}.
+	    \update{Components of the OpenTestbed experiment setup}
 	}
-    \label{fig:mote_ot}
+	\label{fig:mote_ot}
 \end{figure}
+
 
 \subsection{\update{Methodology}}
 \label{sec:methodology}
@@ -494,8 +513,8 @@ We use a combination of JTAG in-circuit debugging and a logic analyzer to debug 
 We run the OpenWSN network once for each of the three PHYs.
 During the experiments, the floor is mostly unoccupied, so we don't expect WiFi interference beyond the regular 100~ms beaconing interval of the 8~WiFi access points on that floor~\cite{munoz18overview}.
 Each time, we load the firmware onto the testbed, then switch on the OpenVisualizer software, which connects to all motes over their serial port (over MQTT).
-In the OpenVisualizer, we then select the mote that we want to play the role of DAG root.
-We always select the same mote, shown in Fig.~\ref{fig:building_motes}, which is positioned at the center of the floor in room~A.
+In the OpenVisualizer, we then select the mote that we want to play the role of \update{Directed Acyclic Graph (DAG)} root.
+We always select the same mote, shown in \update{Figure}~\ref{fig:building_motes}, which is positioned at the center of the floor in room~A.
 We then let the network run for 90~min, recording all the data generated by the motes.
 
 % application layer
@@ -575,10 +594,10 @@ All motes trying to join approximately at the same time will cause a lot of cont
 
 % network formation time
 
-Fig.~\ref{fig:time_firstpacket_cdf} shows that the \fsk\, \ofdm\  , and \oqpsk\ network is 90\%-formed in 7, 9, and 11~min, respectively.
+\update{Figure}~\ref{fig:time_firstpacket_cdf} shows that the \fsk\, \ofdm\  , and \oqpsk\ network is 90\%-formed in 7, 9, and 11~min, respectively.
 The higher the link budget (i.e., the longer the range), the faster the network forms.
 
-\begin{figure}
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\figwidth\columnwidth]{time_firstpacket_cdf}
 	\caption{The network tends to form faster when using a longer-range PHY.}
@@ -587,7 +606,7 @@ The higher the link budget (i.e., the longer the range), the faster the network 
 
 % num. neighbors over time
 
-To understand the impact of PHY on network formation time, we plotted in Fig.~\ref{fig:neighbors_time} the number of neighbors evolving over time.
+To understand the impact of PHY on network formation time, we plotted in \update{Figure}~\ref{fig:neighbors_time} the number of neighbors evolving over time.
 Because of its long range, a mote using \fsk\ tends to discover more nodes, faster than a node using \oqpsk.
 This observation exactly follows the link budget from Table~\ref{tab:phys}.
 Discovering many neighbors is helpful in two ways.
@@ -595,7 +614,7 @@ First, it allows a mote to quickly hear a node that is already part of the netwo
     hence to synchronize quickly.
 Second, it gives a mote a higher probability of joining through a neighbor closer to the root; this decreases the number of hops necessary for joining.
 
-\begin{figure}
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\figwidth\columnwidth]{neighbors_time}
     \caption{Motes discover more neighbors faster when using a longer-range PHY.}
@@ -611,13 +630,13 @@ We note that none of the standards makes clear recommendation for neighbor table
 
 % rank over time
 
-Fig.~\ref{fig:dagrank_time} gives some insights into the network formation itself.
+\update{Figure}~\ref{fig:dagrank_time} gives some insights into the network formation itself.
 It plots how the rank reported by the motes evolves over time.
-Per the RPL and MSF standards~\cite{rfc6550,draft-ietf-6tisch-msf}, a mote's rank is computed using~\eqref{eq:rank}, where $numTx$ and $numAck$ are counters of the number of transmission attempts and transmission successes to a neighbor, respectively.
+Per the RPL and \update{Minimal Scheduling Function} standards~\cite{rfc6550,draft-ietf-6tisch-msf}, a mote's rank is computed using~\eqref{eq:rank}, where $numTx$ and $numAck$ are counters of the number of transmission attempts and transmission successes to a neighbor, respectively.
 $minHopIncrease = 256$ is the rank increase if the link to the mote's routing parent is ideal.
 If that link becomes lossy (i.e.~$numTx/numAck>1$), the ``cost'' associated with the link increases, and the mote's rank increases accordingly.
 
-\begin{figure}
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\figwidth\columnwidth]{dagrank_time}
     \caption{Contention and slow neighbor discovery cause the nodes' rank to be artificially high at the beginning of network formation.}
@@ -629,7 +648,7 @@ If that link becomes lossy (i.e.~$numTx/numAck>1$), the ``cost'' associated with
     \label{eq:rank}
 \end{equation}
 
-The first portion of Fig.~\ref{fig:dagrank_time} ($t<50~min$) shows that the nodes start by having a very high rank.
+The first portion of \update{Figure}~\ref{fig:dagrank_time} ($t<50~min$) shows that the nodes start by having a very high rank.
 This is caused by two phenomena, combined.
 First, a mote may not discover its neighbor with the lowest rank immediately, and instead join with a artificially high rank; this resolves over time as the network stabilizes by becoming shallower.
 Second, all motes attempting to join create contention on the minimal cell, causing
@@ -638,7 +657,7 @@ Second, all motes attempting to join create contention on the minimal cell, caus
     the motes' rank to increase.
 This, again, resolves as the network stabilizes by having less contention on the shared cells.
 These two phenomena compete: the longer the PHY range, the shallower the initial network, but the higher the contention.
-Fig.~\ref{fig:dagrank_time} shows that, once the network has stabilized, it tends to be shallower (smaller DAG rank) when using a longer-range PHY.
+\update{Figure}~\ref{fig:dagrank_time} shows that, once the network has stabilized, it tends to be shallower (smaller DAG rank) when using a longer-range PHY.
 
 %------------------------------------------------------------------------------
 \subsection{End-to-End Reliability}
@@ -646,12 +665,13 @@ Fig.~\ref{fig:dagrank_time} shows that, once the network has stabilized, it tend
 
 % definition
 
-We call end-to-end reliability the portion of UDP datagrams of each mote that reach the root, and use the counter in the datagrams to compute it.
+We call end-to-end reliability the portion of \update {User Datagram Protocol (UDP)} datagrams of each mote that reach the root, and use the counter in the datagrams to compute it.
 Table~\ref{tab:pdr_table} shows PDR statistics over the last 15~min of the experiments, computed for all motes in the network.
 We expect close to 100\% PDR in all cases (commercial TSCH implementation offer >99.999\% PDR~\cite{vucinic20key}).
 
-\begin{table}
+\begin{table}[ht]
     \centering
+    \caption{End-to-end PDR statistics over all motes in the network, computed over the last 15~min of the experiments.}
     \begin{tabular}{|r|r|r|r|r|r|}
         \hline
                 &      Min &  Average &   Median &      Max &  StDev \\ \hline
@@ -659,7 +679,7 @@ We expect close to 100\% PDR in all cases (commercial TSCH implementation offer 
         \ofdm   &   93.8\% &   99.8\% &  100.0\% &  100.0\% &  0.9\% \\ \hline
         \oqpsk  &   73.3\% &   98.1\% &  100.0\% &  100.0\% &  6.0\% \\ \hline
     \end{tabular}
-    \caption{End-to-end PDR statistics over all motes in the network, computed over the last 15~min of the experiments.}
+
     \label{tab:pdr_table}
 \end{table}
 
@@ -667,13 +687,13 @@ We expect close to 100\% PDR in all cases (commercial TSCH implementation offer 
 
 Besides possible bugs in our implementation, packet drop might be happening because of queue overflow.
 As shown in Section~\ref{sec:res_formation}, a lower link budget leads to higher DAG rank, and more relaying, which increases the likelihood of filling up the packet buffer and dropping packets.
-Fig.~\ref{fig:maxBufferSize_cdf_plot_full_steady_15} show the Cumulative Density Function of the queue occupancy values reported by the motes, in the same period corresponding to Table~\ref{tab:pdr_table}.
+\update{Figure}~\ref{fig:maxBufferSize_cdf_plot_full_steady_15} show the Cumulative Density Function of the queue occupancy values reported by the motes, in the same period corresponding to Table~\ref{tab:pdr_table}.
 Even though Table~\ref{tab:stack_params} correctly indicates the buffer can hold up to 15~packets, 5~additional buffer entries are reserved for control frames such as Enhanced Beacons and acknowledgements.
 When the number of occupied entries in the buffer exceeds 15, more data packets cannot be admitted into the buffer and are dropped .
 Motes running \oqpsk\ and \ofdm\ drop packets 3\% and 1\% of the time, respectively.
 \fsk\ does not suffer buffer overflow, as the network is much shallower.
 
-\begin{figure}
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\figwidth\columnwidth]{maxBufferSize_cdf_plot_full_steady_15}
 	\caption{CDF of buffer occupancy over the last 15~mins of the experiment. Having more than 15~entries occupied in the buffer (the red line) leads to data packet drops.}
@@ -691,40 +711,46 @@ It is computed at the root using a timestamp inside the datagram.
 
 % latency over time
 
-Fig.~\ref{fig:latency_time} plots the evolution of latency over time.
-As shown in Fig.~\ref{fig:latency_cdf}, 90\% of the data reaches the root after 10, 25, and 35~s for \fsk, \ofdm\ and \oqpsk, respectively.
-Fig.~\ref{fig:latency_pdf} shows a long-tailed distribution of latency for shorter range PHYs.
+\update{Figure}~\ref{fig:latency_time} plots the evolution of latency over time.
+As shown in \update{Figure}~\ref{fig:latency_cdf}, 90\% of the data reaches the root after 10, 25, and 35~s for \fsk, \ofdm\ and \oqpsk, respectively.
+\update{Figure}~\ref{fig:latency_pdf} shows a long-tailed distribution of latency for shorter range PHYs.
 
 % discussion
 
 With 41 slots per slotframe and 40~ms timeslot, each mote on average gets one transmission opportunity every 1.68~s.
 Given the increased number of hops for lower range PHYs, the higher latency of \oqpsk, compared to that of \fsk, was to be expected.
 
-\begin{figure}
-	\centering
-	\begin{subfigure}{0.49\columnwidth}
+\begin{figure}[ht]
+
+\begin{subfigure}[b]{.49\textwidth}
     	\centering
     	\includegraphics[width=1.00\columnwidth]{latency_time}
         \subcaption{Time series}
         \label{fig:latency_time}
-	\end{subfigure}
-	\begin{subfigure}{0.49\columnwidth}
-		\centering
+\end{subfigure}
+\hfill
+\begin{subfigure}[b]{.49\textwidth}
     	\includegraphics[width=1.00\columnwidth]{latency_cdf}
     	\subcaption{Cumulative Density Function (CDF)}
         \label{fig:latency_cdf}
-	\end{subfigure}
-	\begin{subfigure}{0.49\columnwidth}
+\end{subfigure}\vspace{2mm}
+
+\begin{subfigure}[b]{.49\textwidth}
 		\centering
     	\includegraphics[width=1.00\columnwidth]{latency_pdf}
-    	\subcaption{Probability Density Function (PDF)}
+    	\subcaption{Probability Density Function (PDF)} 
     	\label{fig:latency_pdf}
-	\end{subfigure}
-	\caption{
+\end{subfigure}
+\hfill
+\begin{minipage}[b]{.49\textwidth}
+%\captionsetup{justification=justified}
+\caption{
 	    End-to-end latency in the network recorded over the entire 90~min experiments.
 	    The longer the PHY range, the lower the latency.
 	}
 	\label{fig:latency_all}
+\end{minipage}
+
 \end{figure}
 
 %------------------------------------------------------------------------------
@@ -742,11 +768,11 @@ Even though this is not an accurate prediction of the lifetime of the mote on a 
 % duty-cycle
 
 We compute a mote's radio duty cycle as $T_{on}/T_{total}$ (see Section~\ref{sec:methodology}).
-Fig.~\ref{fig:dutyCycle_time} shows the evolution of the duty cycle over time.
+\update{Figure}~\ref{fig:dutyCycle_time} shows the evolution of the duty cycle over time.
 We expect the duty cycle to decrease with data rate.
-This does \textit{not} hold for \ofdm\ because of the time to issue SPI commands to the AT86RF215, which can take up to 1~ms as explained in section~\ref{sec:openwsn} and shown in Fig.~\ref{fig:timeslot_templates}.
+This does \textit{not} hold for \ofdm\ because of the time to issue SPI commands to the AT86RF215, which can take up to 1~ms as explained in section~\ref{sec:openwsn} and shown in \update{Figure}~\ref{fig:timeslot_templates}.
 
-\begin{figure}
+\begin{figure}[ht]
 	\centering
 	\includegraphics[width=\figwidth\columnwidth]{dutyCycle_time}
 	\caption{
@@ -760,22 +786,22 @@ Given $T_{TX}$ and $T_{on}$, we use~\eqref{eq:dc} to compute reception time $T_{
 \begin{equation}
     \left\{
         \begin{array}{lcl}
-            T_{RX}  & = & T_{on}-T_{TX}            \\
-            DC_{TX} & = & \frac{T_{TX}}{T_{total}} \\
+            T_{RX}  & = & T_{on}-T_{TX}             \,, \\
+            DC_{TX} & = & \frac{T_{TX}}{T_{total}} \,, \\
             DC_{RX} & = & \frac{T_{RX}}{T_{total}}
         \end{array}
     \right.
     \label{eq:dc}
 \end{equation}
-
 Table~\ref{tab:energy_table} details the calculation of battery lifetime, assuming a mote is powered by a pair of AA batteries holding 8.2~Wh of energy.
 \oqpsk\ exhibits a battery lifetime
       5~times larger than \ofdm\ and
      10~times larger than \fsk.
 Despite the advantages of \fsk\ and \ofdm\ in range, reliability and latency, their utilization leads to more frequent battery replacement.
 
-\begin{table}
+\begin{table}[ht]
     \centering
+    \caption{``Ideal battery'' lifetime for each configuration}
     \begin{tabular}{|r|r|r|r|}
     \hline
                           &      \fsk &     \ofdm &     \oqpsk \\ \hline
@@ -788,7 +814,6 @@ Despite the advantages of \fsk\ and \ofdm\ in range, reliability and latency, th
         energy per day    & 0.0141~Wh & 0.0033~Wh &  0.0015~Wh \\ \hline
         battery lifetime  & 1.6~years & 6.9~years & 15.1~years \\ \hline
         \end{tabular}
-    \caption{``Ideal battery'' lifetime for each configuration}
     \label{tab:energy_table}
 \end{table}
 
@@ -804,8 +829,12 @@ Table~\ref{tab:summary} summarizes the key performance indicators of our network
 \ofdm\ shows balanced results, between \fsk\ and \oqpsk.
 There is no single PHY layer that exhibits the best performance over all KPIs.
 
-\begin{table}
+\begin{table}[ht]
     \centering
+    \caption{
+        Summary of the Key Performance Indicator measured in our testing.
+        The best values are shown in \textbf{bold}.
+    }
     \begin{tabular}{|r|r|r|r|r|}
         \hline
                 & network formation & end-to-end reliability & end-to-end latency & battery lifetime    \\
@@ -817,10 +846,7 @@ There is no single PHY layer that exhibits the best performance over all KPIs.
         \ofdm   &             9~min &                99.84\% &               25~s &           6.9~years \\ \hline
         \oqpsk  &            11~min &                98.08\% &               35~s & \textbf{15.1~years} \\ \hline
     \end{tabular}
-    \caption{
-        Summary of the Key Performance Indicator measured in our testing.
-        The best values are shown in \textbf{bold}.
-    }
+
     \label{tab:summary}
 \end{table}
 
@@ -835,7 +861,7 @@ Finally, for an ``in between'' performance, choose \ofdm.
 % flawed
 
 The problem is that the reasoning in the paragraph above is flawed in at least two ways.
-First, the results presented in this article, while conducted and presented in a rigorous fashion, only hold for use cases very similar to the deployment shown in Fig.~\ref{fig:building_motes}.
+First, the results presented in this article, while conducted and presented in a rigorous fashion, only hold for use cases very similar to the deployment shown in \update{Figure}~\ref{fig:building_motes}.
 There are undoubtedly cases (deeply sparse network, heavily unbalanced deployment, \dots) where our results don't hold, and where the ``ranking'' of the different PHYs is different.
 Second, even if every precaution is taken to pick the right PHY during the design phase of the network, it is entirely possible that conditions or requirements change during the operation of the network.
 This could lead to operating with the ``wrong'' PHY layer, leading to sub-optimal performance.
@@ -887,7 +913,7 @@ All motes trying to join approximately at the same time will cause a lot of cont
 
 % results: why is it affected by link budget? 
 
-Fig.~\ref{fig:time_firstpacket_cdf} shows that the \fsk\, \ofdm\ , and \oqpsk\ network is 90\%-formed in 7, 9, and 11~min, respectively.
+\update{Figure}~\ref{fig:time_firstpacket_cdf} shows that the \fsk\, \ofdm\ , and \oqpsk\ network is 90\%-formed in 7, 9, and 11~min, respectively.
 The higher the link budget (i.e., the longer the range), the faster the network forms.
 
 \begin{figure}
@@ -916,11 +942,11 @@ Therefore, the higher the link budget, the higher the chance that more neighbors
 
 % how is it affected by link budget
 
-The impact of the PHY layer on neighbor reach can be observed in Fig.~\ref{fig:neighbors_all}: the mean and inter-quartile range of discovered neighbors (Fig.~\ref{fig:neighbors_time}) accelerate faster in an inverse correlation with link budget.
+The impact of the PHY layer on neighbor reach can be observed in \update{Figure}~\ref{fig:neighbors_all}: the mean and inter-quartile range of discovered neighbors (\update{Figure}~\ref{fig:neighbors_time}) accelerate faster in an inverse correlation with link budget.
 By minute 30, an average mote has discovered slightly more than half of the network with \fsk, and still in increase until one hour later.
 The range of \ofdm\ overlaps with that of \fsk\ even though it is 16 times faster in bit-rate; also it is better than \oqpsk\ by nearly 35\%  even though it is 3 times faster in bit-rate. 
-This is verified in Fig.~\ref{fig:neighbors_cdf} as the CDF of all the data samples in steady state shows the inverse correlation between the number of neighbors and the link budget. 
-The PDF in Fig.~\ref{fig:neighbors_pdf}  shows high neighbor reach for \oqpsk\ only in a dense setting: a cluster around 25 neighbors in room~B and a cluster around 14 neighbors in nearby rooms
+This is verified in \update{Figure}~\ref{fig:neighbors_cdf} as the CDF of all the data samples in steady state shows the inverse correlation between the number of neighbors and the link budget. 
+The PDF in \update{Figure}~\ref{fig:neighbors_pdf}  shows high neighbor reach for \oqpsk\ only in a dense setting: a cluster around 25 neighbors in room~B and a cluster around 14 neighbors in nearby rooms
 
 % conclusion pros and cons
 
@@ -969,9 +995,9 @@ Therefore, lower DAG ranks imply overall better path quality, reflecting a combi
 % why does it improves by link budget
 
 A higher link budget at the PHY layer leads to an improved DAG rank and shorter paths to the root as it reduces the need for re-transmissions and for relaying; which leads to faster network formation.
-It can be observed in Fig.~\ref{fig:dagrank_time} that \fsk\  maintains, generally, the lowest DAG ranks during both the network formation period and the ensuing steady state. 
-Link budget seems to be inversely correlated with the distribution of the DAG rank in the network as observed in Fig.~\ref{fig:dagrank_cdf}: \fsk\ demonstrates the highest DAG rank at steady state for 90\% of the motes, followed by \ofdm\ and \oqpsk\ respectively.
-This observation is stressed in Fig.~\ref{fig:dagrank_pdf} which shows that the center of the distribution of the \fsk\ is at the absolute lowest rank possible while the distributions of \ofdm\ shifts to higher ranks followed by \oqpsk. 
+It can be observed in \update{Figure}~\ref{fig:dagrank_time} that \fsk\  maintains, generally, the lowest DAG ranks during both the network formation period and the ensuing steady state. 
+Link budget seems to be inversely correlated with the distribution of the DAG rank in the network as observed in \update{Figure}~\ref{fig:dagrank_cdf}: \fsk\ demonstrates the highest DAG rank at steady state for 90\% of the motes, followed by \ofdm\ and \oqpsk\ respectively.
+This observation is stressed in \update{Figure}~\ref{fig:dagrank_pdf} which shows that the center of the distribution of the \fsk\ is at the absolute lowest rank possible while the distributions of \ofdm\ shifts to higher ranks followed by \oqpsk. 
 
 % conclusion pros and cons 
 
