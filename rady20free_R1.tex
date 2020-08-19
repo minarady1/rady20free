@@ -27,7 +27,9 @@
 \newcommand{\quentin}[1]    {\textbf{\textcolor{blue}{[Quentin] #1}}}
 \newcommand{\dominique}[1]  {\textbf{\textcolor{blue}{[Dominique] #1}}}
 \newcommand{\thomas}[1]     {\textbf{\textcolor{blue}{[Thomas] #1}}}
-
+\newcommand{\update}[1]     {\textcolor{blue}{#1}}
+\definecolor{highlight}{rgb}{0.55, 0.71, 0.0}
+\newcommand{\focus}[1]     {\textcolor{highlight}{#1}}
 \Title{No Free Lunch: Characterizing the Performance of 6TiSCH when using Different Physical Layers}
 
 \newcommand{\orcidauthorA}{0000-0003-2529-8272}
@@ -172,9 +174,9 @@ The remainder of this article is organized as follows.
 Section~\ref{sec:related} surveys the most relevant related work.
 Section~\ref{sec:contributions} clearly states the problems and lists the contributions of this article.
 Section~\ref{sec:openwsn} introduces the agile extension to the OpenWSN PHY-layer that enabled this research.
-Section~\ref{sec:setup} introduces 
+\update {Section~\ref{sec:setup} introduces 
     the testbed used for the experimental campaigns of this paper and
-    the methodology of the experiments including the used metrics and KPIs.
+    the methodology of the experiments including the used metrics and KPIs.}
 Section~\ref{sec:results} demonstrates the experiment results and KPI evaluations.
 Finally, section~\ref{sec:conclusion} provides insights and conclusions based on the results.
 
@@ -219,7 +221,7 @@ The experiments report range and performance testing results in terms of PDR and
 \subsection{IEEE802.15.4g Performance Evaluation}
 \label{sec:related_4g}
 
-Some related work evaluate the performance of IEEE802.15.4g PHYs.
+Some related work evaluate the performance of IEEE802.15.4g PHYs \update{(without the 6TiSCH stack)}.
 
 Kojima~\etal~\cite{kojima15system} examine the impact of interference between MR-FSK mode 2 and MR-OFDM option 4 MCS 3. 
 Authors deploy IEEE802.15.4e MAC with multihop capability on top of each PHY layer and measure the impact of the interference between two networks, each running one PHY.
@@ -428,17 +430,18 @@ This increases to 77~kB with the additions listed above, in particular with both
 This is a very small footprint which comfortably fits in modern SoC which all have 512~kB of flash, or more.
 
 %==============================================================================
-\section{Experiment Setup and Methodology}
-\label{sec:setup}
 
+\section{\update{Experiment Setup and Methodology}}
+\label{sec:setup}
+\update{
 We use the OpenTestbed~\cite{munoz19opentestbed} to extract the performance of the OpenWSN stack with the extensions detailed in Section~\ref{sec:openwsn}.
 This section demonstrates
     the architecture of the OpenTestbed experimental setup
         (Sub-section~\ref{sec:opentestbed}) and
     the methodology for the experiment design and performance evaluation
         (Sub-section~\ref{sec:methodology}).
-        
-\subsection{The OpenTestbed}
+}        
+\subsection{\update{The OpenTestbed}}
 \label{sec:opentestbed}
 
 % intro testbed, architecture
@@ -483,7 +486,7 @@ We use a combination of JTAG in-circuit debugging and a logic analyzer to debug 
     \label{fig:mote_ot}
 \end{figure}
 
-\subsection{Methodology}
+\subsection{\update{Methodology}}
 \label{sec:methodology}
 
 % one experiment
