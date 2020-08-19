@@ -1,0 +1,94 @@
+diff --git "a/C:\\Users\\TQNW8927\\Documents\\Long Range Mesh Networks\\Papers and Posters\\comparison paper\\Multiple 6TiSCH\\Git\\output\\rady20free_initial.bib" "b/C:\\Users\\TQNW8927\\Documents\\Long Range Mesh Networks\\Papers and Posters\\comparison paper\\Multiple 6TiSCH\\Git\\rady20free.bib"
+index 44873f5..8bd5866 100644
+--- "a/C:\\Users\\TQNW8927\\Documents\\Long Range Mesh Networks\\Papers and Posters\\comparison paper\\Multiple 6TiSCH\\Git\\output\\rady20free_initial.bib"	
++++ "b/C:\\Users\\TQNW8927\\Documents\\Long Range Mesh Networks\\Papers and Posters\\comparison paper\\Multiple 6TiSCH\\Git\\rady20free.bib"	
+@@ -57,7 +57,7 @@
+   year         = {2015},
+   address      = {Milan, Italy},
+   month        = {December},
+-  organization = {IEEE},
++  publisher    = {IEEE},
+   pages        = {459--464},
+ }
+ 
+@@ -68,7 +68,7 @@
+   year         = {2016},
+   address      = {Messina, Italy},
+   month        = {June},
+-  organization = {IEEE},
++  publisher    = {IEEE},
+   pages        = {513--518},
+ }
+ 
+@@ -79,7 +79,7 @@
+   year         = {2019},
+   address      = {Osnabrueck, Germany},
+   month        = {October},
+-  organization = {IEEE},
++  publisher    = {IEEE},
+   pages        = {42--50},
+ }
+ 
+@@ -162,7 +162,7 @@
+   year         = {2018},
+   address      = {Dubai, UAE},
+   month        = {April},
+-  organization = {IEEE},
++  publisher    = {IEEE},
+   pages        = {123--130},
+ }
+ 
+@@ -173,7 +173,7 @@
+   year         = {2019},
+   address      = {Paris, France},
+   month        = {April},
+-  organization = {IEEE},
++  publisher    = {IEEE},
+   pages        = {467--471},
+ }
+ 
+@@ -248,7 +248,7 @@
+   year         = {2020},
+   address      = {Lyon, France},
+   month        = {February},
+-  organization = {ACM},
++  publisher    = {ACM},
+ }
+ 
+ @InProceedings{teleshermeto18reactions,
+@@ -257,7 +257,7 @@
+   title        = {{On the (over)-Reactions and the Stability of a 6TiSCH Network in an Indoor Environment}},
+   year         = {2018},
+   address      = {Montreal, QC, Canada},
+-  organization = {ACM},
++  publisher    = {ACM},
+   pages        = {83--90},
+ }
+ 
+@@ -267,7 +267,7 @@
+   title        = {{Experimental Validation of a Distributed Self-Configured 6TiSCH with Traffic Isolation in Low Power Lossy Networks}},
+   year         = {2016},
+   address      = {Malta, Malta},
+-  organization = {ACM},
++  publisher    = {ACM},
+   pages        = {102--110},
+ }
+ 
+@@ -287,7 +287,7 @@
+   booktitle    = {International Conference on Embedded Wireless Systems and Networks (EWSN)},
+   title        = {{OpenMote+: A Range-Agile Multi-Radio Mote}},
+   year         = {2016},
+-  organization = {ACM},
++  publisher    = {ACM},
+ }
+ 
+ @Article{vilajosana19ietf,
+@@ -326,7 +326,7 @@
+   year         = {2018},
+   address      = {{Barcelona, Catalunya, Spain}},
+   month        = {April},
+-  organization = {IEEE},
++  publisher    = {IEEE},
+   pages        = {167--172},
+ }
+ 
